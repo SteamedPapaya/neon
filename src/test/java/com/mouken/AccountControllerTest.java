@@ -7,8 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -20,7 +19,8 @@ class AccountControllerTest {
     void signupForm() throws Exception {
         mockMvc.perform(get("/signup"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("account/signup"));
+                .andExpect(view().name("account/signup"))
+                .andExpect(model().attributeExists("signUpForm"));
 
     }
 
