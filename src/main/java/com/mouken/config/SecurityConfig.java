@@ -12,7 +12,8 @@ public class SecurityConfig implements WebSecurityCustomizer {
 
     @Override
     public void customize(WebSecurity web) {
-        web.ignoring().mvcMatchers("/", "/login", "/signup");
-        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        web.ignoring()
+                .mvcMatchers("/", "/login", "/sign-up", "/check-email-token", "/check-email")
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 }
