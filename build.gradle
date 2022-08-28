@@ -2,6 +2,14 @@ plugins {
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'java'
+    id "com.github.node-gradle.node" version "3.4.0"
+}
+
+node  {
+    download = true
+    version = "16.16.0"
+    npmInstallCommand = "install"
+    nodeProjectDir  = file("${project.projectDir}/src/main/resources/static")
 }
 
 group = 'com.teamy'
@@ -33,11 +41,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
-
-
 }
 
 tasks.named('test') {
