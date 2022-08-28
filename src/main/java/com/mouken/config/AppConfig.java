@@ -1,4 +1,4 @@
-package com.mouken;
+package com.mouken.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

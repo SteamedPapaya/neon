@@ -1,6 +1,6 @@
 package com.mouken.account;
 
-import com.mouken.account.Account;
+import com.mouken.domain.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
