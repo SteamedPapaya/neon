@@ -33,7 +33,7 @@ public class Account {
     private boolean emailVerified;
     private LocalDateTime joinedAt;
 
-
+    // profile
     private String bio;
 
     private String url;
@@ -45,6 +45,10 @@ public class Account {
     @Lob
     @Basic(fetch = FetchType.EAGER)
     private String profileImage;
+
+
+
+
 
     private boolean studyCreatedByEmail;
 

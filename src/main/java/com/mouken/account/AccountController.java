@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -101,6 +102,21 @@ public class AccountController {
         accountService.sendSignUpConfirmEmail(account);
         redirectAttributes.addFlashAttribute("info", "Email has sent");
         return "redirect:/check-email";
+    }
+
+    @GetMapping("profile/{username}")
+    public String viewProfile(
+            @PathVariable String username,
+            @CurrentUser Account account,
+            Model model) {
+        Account foundAccount = accountRepository.findByUsername(username);
+        if (account == null) {
+            throw new IllegalArgumentException("This user does not exist");
+        }
+
+        model.addAttribute(foundAccount);
+        model.addAttribute("isOwner", foundAccount.equals(account));
+        return "account/profile";
     }
 
 }
