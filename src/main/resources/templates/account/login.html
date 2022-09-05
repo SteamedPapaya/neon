@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments.html :: head-css ('/css/sign-in.css')}"></head>
+
+<body class="text-center">
+  <main class="form-signin w-100 m-auto">
+    <form action="#" th:action="@{/login}" method="post">
+      <img class="mb-4" src="/assets/brand/logo_lg.png" alt="" width="60" height="60">
+      <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+
+      <div class="form-floating">
+        <input type="text" class="form-control" id="floatingUsername" placeholder="Username">
+        <label for="floatingUsername">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+      </div>
+
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+      </div>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+<!--        TODO-->
+        <div class="find_text">Forgot your
+          <a target="_blank" id="pw-inquiry" href="#" class="en_find_text">Password</a> or
+          <a target="_blank" id="id-inquiry" href="#" class="en_find_text">Username</a>?<br>
+          <a target="_blank" id="join" href="#" class="en_find_text">Sign up</a>
+        </div>
+    </form>
+  </main>
+</body>
+</html>

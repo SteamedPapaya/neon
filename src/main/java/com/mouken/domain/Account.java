@@ -23,12 +23,13 @@ public class Account {
     private String email;
 
     @Column(unique = true)
-    private String nickname;
+    private String username;
 
     private String password;
 
     private String emailCheckToken;
-
+    private int emailCheckTokenCount;
+    private LocalDateTime emailCheckTokenGeneratedAt;
     private boolean emailVerified;
     private LocalDateTime joinedAt;
 
@@ -67,5 +68,13 @@ public class Account {
 
     public boolean isValidToken(String token) {
         return this.getEmailCheckToken().equals(token);
+    }
+
+    public boolean canSendConfirmEmail() {
+        return this.emailCheckTokenCount < 2 || this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusMinutes(15));
+    }
+
+    public void addEmailCheckTokenCount() {
+        this.emailCheckTokenCount++;
     }
 }

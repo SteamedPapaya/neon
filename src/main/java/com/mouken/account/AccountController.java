@@ -1,7 +1,9 @@
 package com.mouken.account;
 
+import com.mouken.View;
 import com.mouken.domain.Account;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class AccountController {
@@ -20,6 +24,8 @@ public class AccountController {
 
     @GetMapping("/sign-up")
     public String signUpForm(Model model) {
+        log.info("signUpForm");
+
         model.addAttribute(new SignUpForm());
         return "account/sign-up";
     }
@@ -28,6 +34,7 @@ public class AccountController {
     public String signUpSubmit(
             @Validated SignUpForm signUpForm,
             BindingResult bindingResult) {
+        log.info("signUpSubmit");
 
         if (bindingResult.hasErrors()) {
             return "account/sign-up";
@@ -35,31 +42,65 @@ public class AccountController {
 
         Account account = accountService.processNewAccount(signUpForm);
         accountService.login(account);
-        return "redirect:/";
+        accountService.sendSignUpConfirmEmail(account);
+        return "redirect:/check-email";
     }
 
+    @GetMapping("/login")
+    public String loginForm() {
+        return "account/login";
+    }
+
+
     @GetMapping("/check-email-token")
-    public String checkEmailToken(String token, String email, Model model) {
+    public String checkEmailToken(String token, String email, Model model, RedirectAttributes redirectAttributes) {
 
         // check account of email
         Account account = accountRepository.findByEmail(email);
-        String view = "account/checked-email";
 
         if (account == null) {
-            model.addAttribute("error", "wrong.email");
-            return view;
+            redirectAttributes.addFlashAttribute("error", "wrong.email");
+            return "redirect:/check-email";
         }
 
         // check token
         if (!account.isValidToken(token)) {
-            model.addAttribute("error", "wrong.token");
-            return view;
+            redirectAttributes.addFlashAttribute("error", "wrong.token");
+            return "redirect:/check-email";
         }
 
         // verify account
         account.completeSignUp();
         accountService.login(account);
-        model.addAttribute("nickname", account.getNickname());
-        return view;
+        redirectAttributes.addFlashAttribute("info", "Complete");
+        return "redirect:/check-email";
     }
+
+    @GetMapping("/check-email")
+    public String checkEmail(@CurrentUser Account account, Model model) {
+        if (account != null) {
+            model.addAttribute(account);
+            model.addAttribute("username", account.getUsername());
+            model.addAttribute("email", account.getEmail());
+        }
+        return "account/check-email";
+    }
+
+    @GetMapping("/send-email")
+    public String sendEmail(@CurrentUser Account account, Model model, RedirectAttributes redirectAttributes) {
+
+        if (account.isEmailVerified()) {
+            return "redirect:/";
+        }
+
+        if (!account.canSendConfirmEmail()) {
+            redirectAttributes.addFlashAttribute("error", "You can get an email once per in 15 minutes");
+            return "redirect:/check-email";
+        }
+
+        accountService.sendSignUpConfirmEmail(account);
+        redirectAttributes.addFlashAttribute("info", "Email has sent");
+        return "redirect:/check-email";
+    }
+
 }
