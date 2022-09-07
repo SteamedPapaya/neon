@@ -37,61 +37,9 @@ class AccountControllerTest {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private AccountService accountService;
-
     @MockBean
     JavaMailSender javaMailSender;
 
-    @BeforeEach
-    void beforeEach() {
-        SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setUsername("test");
-        signUpForm.setEmail("test@email.com");
-        signUpForm.setPassword("12345678");
-        accountService.processNewAccount(signUpForm);
-    }
-
-    @AfterEach
-    void afterEach() {
-        accountRepository.deleteAll();
-    }
-
-    @DisplayName("Login with Email - correct input")
-    @Test
-    void login_with_email() throws Exception {
-        mockMvc.perform(post("/login") // SS 에 의해 처리됨 (이때 redirection 발생)
-                        .param("username", "test@email.com")
-                        .param("password", "12345678")
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"))
-                .andExpect(authenticated().withUsername("test"));
-    }
-
-    @DisplayName("Login with Username - correct input")
-    @Test
-    void login_with_username() throws Exception {
-        mockMvc.perform(post("/login")
-                        .param("username", "test")
-                        .param("password", "12345678")
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"))
-                .andExpect(authenticated().withUsername("test"));
-    }
-
-    @DisplayName("Login - wrong input")
-    @Test
-    void login_fail() throws Exception {
-        mockMvc.perform(post("/login")
-                        .param("username", "WRONG_USERNAME")
-                        .param("password", "WRONG_PASSWORD")
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login?error"))
-                .andExpect(unauthenticated());
-    }
 
     @DisplayName("Sign Up - Form")
     @Test
@@ -139,11 +87,13 @@ class AccountControllerTest {
 
     }
 
+
+
     @DisplayName("Email Checking - Incorrect Input")
     @Test
     void checkEmailToken_with_wrong_input() throws Exception {
         mockMvc.perform(get("/check-email-token")
-                        .param("token", "sdfjslwfwef")
+                        .param("token", "WRONG_TOKEN")
                         .param("email", "email@email.com"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeExists("error"))

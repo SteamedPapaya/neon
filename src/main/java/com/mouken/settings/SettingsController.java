@@ -10,10 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -21,6 +18,7 @@ import javax.validation.Valid;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/settings")
 public class SettingsController {
 
     @InitBinder("passwordForm")
@@ -30,14 +28,14 @@ public class SettingsController {
 
     private final AccountService accountService;
 
-    @GetMapping("/settings/profile")
+    @GetMapping("/profile")
     public String profileUpdateForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(new Profile(account));
         return "settings/profile";
     }
 
-    @PostMapping("/settings/profile")
+    @PostMapping("/profile")
     public String updateProfile(
             @CurrentUser Account account,
             @Valid @ModelAttribute Profile profile,
@@ -57,14 +55,14 @@ public class SettingsController {
 	    return "redirect:/settings/profile";
     }
 
-    @GetMapping("/settings/password")
+    @GetMapping("/password")
     public String updatePasswordForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(new PasswordForm());
         return "settings/password";
     }
 
-    @PostMapping("/settings/password")
+    @PostMapping("/password")
     public String updatePassword(@CurrentUser Account account, @Validated PasswordForm passwordForm, Errors errors,
                                  Model model, RedirectAttributes attributes) {
 

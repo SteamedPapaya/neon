@@ -52,10 +52,7 @@ public class AccountController {
         return "redirect:/check-email";
     }
 
-    @GetMapping("/login")
-    public String loginForm() {
-        return "login";
-    }
+
 
 
     @GetMapping("/check-email-token")
