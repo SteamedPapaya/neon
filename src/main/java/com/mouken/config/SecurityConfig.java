@@ -14,21 +14,40 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests((requests) -> requests
+                        .antMatchers("/", "/home", "/login", "/sign-up").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin((form) -> form
+                        .loginPage("/login")
+                        .permitAll()
+                )
+                .logout((logout) -> logout
+                        .logoutSuccessUrl("/?logout")
+                        .permitAll()
+                );
+
+        return http.build();
+    }
+
+/*    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
-                .mvcMatchers("/", "/login", "/sign-up", "/sign-in", "/check-email-token",
-                        "/email-login", "/check-email-login", "/logout", "/login-link").permitAll()
+                .mvcMatchers("/", "home", "/login").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/profile/*").permitAll()
                 .anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").permitAll()
-                .and().logout().logoutSuccessUrl("/")
+                .and().formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll()
+                .and().logout().logoutSuccessUrl("/").permitAll()
                 .and().build();
-    }
+    }*/
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .mvcMatchers("/node_modules/**", "/assets/brand/**")
+                .mvcMatchers("/node_modules/**", "/assets/**", "/css/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+
     }
 }

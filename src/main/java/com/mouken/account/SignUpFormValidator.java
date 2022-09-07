@@ -25,7 +25,7 @@ public class SignUpFormValidator implements Validator {
             errors.rejectValue("email", "invalid.email", new Object[]{signUpForm.getEmail()}, "an invalid email");
         }
         if (accountRepository.existsByUsername(signUpForm.getUsername())) {
-            errors.rejectValue("username,e", "invalid.username", new Object[]{signUpForm.getUsername()}, "an invalid ID");
+            errors.rejectValue("username", "invalid.username", new Object[]{signUpForm.getUsername()}, "an invalid ID");
         }
     }
 }

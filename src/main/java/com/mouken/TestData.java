@@ -6,6 +6,7 @@ import com.mouken.account.SignUpForm;
 import com.mouken.domain.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
@@ -19,12 +20,15 @@ public class TestData {
     /**
      * Data for Test
      */
+    @Transactional
     @PostConstruct
     public void init() {
         SignUpForm signUpForm = new SignUpForm();
         signUpForm.setEmail("admin@email.com");
         signUpForm.setUsername("admin");
         signUpForm.setPassword("admin123");
-        accountService.saveAccount(signUpForm);
+        Account account = accountService.processNewAccount(signUpForm);
+        account.completeSignUp();
+        accountService.login(account);
     }
 }

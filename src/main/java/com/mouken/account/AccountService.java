@@ -1,6 +1,7 @@
 package com.mouken.account;
 
 import com.mouken.domain.Account;
+import com.mouken.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AccountService  implements UserDetailsService {
 
@@ -28,13 +30,12 @@ public class AccountService  implements UserDetailsService {
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
     public Account processNewAccount(SignUpForm signUpForm){
         log.info("processNewAccount");
         Account savedAccount = saveAccount(signUpForm);
 
         savedAccount.generateEmailCheckToken();
-        // TODO Delete sendSignUpConfirmEmail(savedAccount);
+        sendSignUpConfirmEmail(savedAccount);
         return savedAccount;
     }
 
@@ -77,7 +78,7 @@ public class AccountService  implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(token);
     }
 
-
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String emailOrUsername) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(emailOrUsername);
@@ -89,4 +90,25 @@ public class AccountService  implements UserDetailsService {
         }
         return new UserAccount(account);
     }
+
+
+    public void completeSignUp(Account account) {
+        account.completeSignUp();
+        login(account);
+    }
+
+    public void updateProfile(Account account, Profile profile) {
+        account.setUrl(profile.getUrl());
+        account.setOccupation(profile.getOccupation());
+        account.setLocation(profile.getLocation());
+        account.setBio(profile.getBio());
+        account.setProfileImage(profile.getProfileImage());
+        accountRepository.save(account); // !
+    }
+
+    public void updatePassword(Account account, String newPassword) {
+        account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+    }
+
 }

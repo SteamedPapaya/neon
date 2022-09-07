@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!--<head th:replace="~{fragments.html :: head-css ('/css/sign-in.css')}"></head>-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <title>Login</title>
+
+  <link rel="stylesheet" href="/css/sign-in.css" />
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+</head>
+<body class="text-center">
+
+
+  <main class="form-signin w-100 m-auto">
+    <form class="needs-validation" action="#" th:action="@{/login}" method="post" novalidate>
+      <img class="mb-4" src="/assets/brand/logo_lg.png" alt="" width="60" height="60">
+      <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+
+      <div class="form-floating">
+        <input type="text" class="form-control" name="username" id="floatingInputTop" placeholder="Username" required>
+        <label for="floatingInputTop">Username</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" name="password" id="floatingInputBottom" placeholder="Password" required>
+        <label for="floatingInputBottom">Password</label>
+      </div>
+      <div class="form-floating">
+          <button class="w-100 btn btn-lg btn-primary" type="submit" >Sign in</button>
+      </div>
+    </form>
+  </main>
+
+  <!--        TODO-->
+  <!--        <div class="find_text">Forgot your
+            <a target="_blank" id="pw-inquiry" href="#" class="en_find_text">Password</a> or
+            <a target="_blank" id="id-inquiry" href="#" class="en_find_text">Username</a>?<br>
+            <a target="_blank" id="join" href="#" class="en_find_text">Sign up</a>
+          </div>-->
+
+  <!--      <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>-->
+  <script th:replace="fragments.html :: form-validation"></script>
+</body>
+</html>

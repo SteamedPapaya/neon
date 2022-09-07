@@ -1,4 +1,4 @@
-package com.mouken;
+package com.mouken.account;
 
 import com.mouken.account.AccountRepository;
 import com.mouken.account.AccountService;

@@ -22,6 +22,12 @@ public class AccountController {
 
     private final AccountService accountService;
     private final AccountRepository accountRepository;
+    private final SignUpFormValidator signUpFormValidator;
+
+    @InitBinder("signUpForm")
+    public void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(signUpFormValidator);
+    }
 
     @GetMapping("/sign-up")
     public String signUpForm(Model model) {
@@ -43,13 +49,12 @@ public class AccountController {
 
         Account account = accountService.processNewAccount(signUpForm);
         accountService.login(account);
-        accountService.sendSignUpConfirmEmail(account);
         return "redirect:/check-email";
     }
 
     @GetMapping("/login")
     public String loginForm() {
-        return "account/login";
+        return "login";
     }
 
 
@@ -71,8 +76,7 @@ public class AccountController {
         }
 
         // verify account
-        account.completeSignUp();
-        accountService.login(account);
+        accountService.completeSignUp(account);
         redirectAttributes.addFlashAttribute("info", "Complete");
         return "redirect:/check-email";
     }
@@ -118,5 +122,6 @@ public class AccountController {
         model.addAttribute("isOwner", foundAccount.equals(account));
         return "account/profile";
     }
+
 
 }
