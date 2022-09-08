@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments.html :: head-css ('/css/headers.css')}"></head>
 <body class="bg-light">
-    <header th:replace="~{fragments.html :: header}"></header>
+    <header th:replace="~{fragments.html :: header1}"></header>
     <div class="container">
         <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
         <a href="#" th:href="@{/check-email}" class="alert-link">Please check your email to confirm.</a>

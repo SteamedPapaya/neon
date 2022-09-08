@@ -75,4 +75,24 @@ public class SettingsController {
         attributes.addFlashAttribute("message", "Password has been updated.");
         return "redirect:/settings/password";
     }
+
+    @GetMapping("/notifications")
+    public String updateNotificationsForm(@CurrentUser Account account, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(new Notifications(account));
+        return "settings/notifications";
+    }
+
+    @PostMapping("/notifications")
+    public String updateNotifications(@CurrentUser Account account, @Valid Notifications notifications, Errors errors,
+                                      Model model, RedirectAttributes attributes) {
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            return "settings/notifications";
+        }
+
+        accountService.updateNotifications(account, notifications);
+        attributes.addFlashAttribute("message", "Notification settings has been updated.");
+        return "redirect:/settings/notifications";
+    }
 }
