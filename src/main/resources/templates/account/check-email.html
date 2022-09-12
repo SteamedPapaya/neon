@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments.html :: head-css ('/css/headers.css')}"></head>
-<body class="text-center">
 
-<header th:replace="~{fragments.html :: header}"></header>
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+    <title>index</title>
+</head>
 
+<body>
+<header th:replace="~{fragments/header.html :: header-common}"></header>
 
 <div class="container">
     <div th:if="${error}" class="alert alert-danger" role="alert">
@@ -29,5 +31,6 @@
     </div>
 </div>
 
+<footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 </body>
 </html>

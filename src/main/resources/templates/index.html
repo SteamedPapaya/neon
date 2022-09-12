@@ -2,17 +2,28 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments.html :: head-css ('/css/headers.css')}"></head>
-<body class="bg-light">
-    <header th:replace="~{fragments.html :: header1}"></header>
-    <div class="container">
-        <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
+
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+    <title>index</title>
+</head>
+
+<body>
+<header th:replace="~{fragments/header.html :: header-common}"></header>
+
+<div class="container">
+
+    <!-- if the email is not verified -->
+    <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
         <a href="#" th:href="@{/check-email}" class="alert-link">Please check your email to confirm.</a>
-        </div>
-        <div class="py-5 text-center">
-            <h2>INDEX</h2>
-        </div>
     </div>
 
+    <div class="py-5 text-center">
+        <h2>HELLO</h2>
+    </div>
+
+</div>
+
+<footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 </body>
+
 </html>

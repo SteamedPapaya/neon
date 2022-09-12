@@ -5,6 +5,7 @@ import com.mouken.domain.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -51,8 +52,6 @@ public class AccountController {
         accountService.login(account);
         return "redirect:/check-email";
     }
-
-
 
 
     @GetMapping("/check-email-token")
@@ -120,5 +119,53 @@ public class AccountController {
         return "account/profile";
     }
 
+    @GetMapping("/check-email-login")
+    public String checkEmailLoginForm(@CurrentUser Account account, Model model) {
+        if (account != null) {
+            model.addAttribute(account);
+            model.addAttribute("username", account.getUsername());
+            model.addAttribute("email", account.getEmail());
+        }
+        return "account/check-email-login";
+    }
 
+    @GetMapping("/send-email-login-link")
+    public String sendEmailLoginLinkForm() {
+        return "account/send-email-login-link";
+    }
+
+    //@Transactional
+    @PostMapping("/send-email-login-link")
+    public String sendEmailLoginLink(String email, Model model, RedirectAttributes attributes) {
+        Account account = accountRepository.findByEmail(email);
+
+        if (account == null) {
+            attributes.addFlashAttribute("error", "invalid email");
+            return "redirect:/send-email-login-link";
+        }
+
+        log.info("account.canSendConfirmEmail()={}", account.canSendConfirmEmail());
+        if (!account.canSendConfirmEmail()) {
+            attributes.addFlashAttribute("error", "You can get the email once per 15 minutes.");
+            return "redirect:/send-email-login-link";
+        }
+
+        accountService.sendEmailLoginLink(account);
+        attributes.addFlashAttribute("email", account.getEmail());
+        attributes.addFlashAttribute("info", "Login email has sent.");
+        return "redirect:/check-email-login";
+    }
+
+    @GetMapping("/email-login")
+    public String emailLogin(String token, String email, Model model, RedirectAttributes redirectAttributes) {
+        Account account = accountRepository.findByEmail(email);
+
+        if (account == null || !account.isValidToken(token)) {
+            redirectAttributes.addFlashAttribute("error", "You can not sign in");
+            return "redirect:/check-email-login";
+        }
+
+        accountService.login(account);
+        return "redirect:/check-email-login";
+    }
 }

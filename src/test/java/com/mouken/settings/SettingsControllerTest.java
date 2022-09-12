@@ -1,9 +1,13 @@
 package com.mouken.settings;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouken.account.AccountRepository;
 import com.mouken.account.AccountService;
 import com.mouken.account.SignUpForm;
 import com.mouken.domain.Account;
+import com.mouken.domain.Tag;
+import com.mouken.settings.form.TagForm;
+import com.mouken.tag.TagRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,10 +15,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -23,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
-
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 class SettingsControllerTest {
@@ -36,6 +42,10 @@ class SettingsControllerTest {
     AccountService accountService;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    ObjectMapper objectMapper;
+    @Autowired
+    TagRepository tagRepository;
 
     @BeforeEach
     void beforeEach() {
@@ -49,6 +59,99 @@ class SettingsControllerTest {
     @AfterEach
     void afterEach() {
         accountRepository.deleteAll();
+    }
+
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Update Tag Form")
+    @Test
+    void updateTagsForm() throws Exception {
+        mockMvc.perform(get("/settings/tags"))
+                .andExpect(view().name("settings/tags"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("whitelist"))
+                .andExpect(model().attributeExists("tags"));
+    }
+
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Add tag in account")
+    @Test
+    void addTag() throws Exception {
+        TagForm tagForm = new TagForm();
+        tagForm.setTagTitle("newTag");
+
+        mockMvc.perform(post("/settings/tags/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(tagForm))
+                        .with(csrf()))
+                .andExpect(status().isOk());
+
+        Tag newTag = tagRepository.findByTitle("newTag");
+        assertNotNull(newTag);
+        Account account= accountRepository.findByUsername("test");
+        assertTrue(account.getTags().contains(newTag));
+    }
+
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Remove tag from account")
+    @Test
+    void removeTag() throws Exception {
+        Account account= accountRepository.findByUsername("test");
+        Tag newTag = tagRepository.save(Tag.builder().title("newTag").build());
+        accountService.addTag(account, newTag);
+
+        assertTrue(account.getTags().contains(newTag));
+
+        TagForm tagForm = new TagForm();
+        tagForm.setTagTitle("newTag");
+
+        mockMvc.perform(post("/settings/tags/remove")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(tagForm))
+                        .with(csrf()))
+                .andExpect(status().isOk());
+
+        assertFalse(account.getTags().contains(newTag));
+    }
+
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Account Update Form")
+    @Test
+    void updateAccountForm() throws Exception {
+        mockMvc.perform(get("/settings/account"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("usernameForm"));
+    }
+
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Username Update Success")
+    @Test
+    void updateAccount() throws Exception {
+        mockMvc.perform(post("/settings/account")
+                        .param("newUsername", "new_test")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/settings/account"))
+                .andExpect(flash().attributeExists("message"));
+
+        assertNull(accountRepository.findByUsername("test"));
+        assertNotNull(accountRepository.findByUsername("new_test"));
+
+
+    }
+
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Username Update Failure")
+    @Test
+    void updateAccount_failure() throws Exception {
+        mockMvc.perform(post("/settings/account")
+                        .param("newUsername", "¯\\_(ツ)_/¯")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("settings/account"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("usernameForm"));
     }
 
     @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)

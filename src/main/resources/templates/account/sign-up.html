@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments.html :: head-css ('/css/sign-up.css')}"></head>
 
-<body class="text-center">
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+    <title>index</title>
+</head>
 
-    <main class="form-signup w-100 m-auto">
+<body>
+<header th:replace="~{fragments/header.html :: header-common}"></header>
+
+<main class="form-signup text-center w-100 m-auto">
     <form class="needs-validation" action="#" th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
         <img class="mb-4" src="/assets/brand/logo_lg.png" alt="" width="60" height="60">
         <h1 class="h3 mb-3 fw-normal">Sign Up</h1>
@@ -29,8 +33,9 @@
 <!--                <a href="#">terms</a>-->
 <!--            </small>-->
     </form>
-    </main>
+</main>
 
-    <script th:replace="fragments.html :: form-validation"></script>
+<footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
+<script th:replace="~{fragments/script.html :: form-validation}"></script>
 </body>
 </html>

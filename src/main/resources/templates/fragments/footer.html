@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <footer th:fragment="footer-common" class="text-center">
+        <small>&copy; 2022</small>
+    </footer>
+
+    <footer th:fragment="footerParam (param1, param2)">
+        <p>Parammeters</p>
+        <p th:text="${param1}"></p>
+        <p th:text="${param2}"></p>
+    </footer>
+
+    <footer th:fragment="footer-row">
+        <div class="row">
+            <!--<img class="mb-2" src="/images/logo_wide.png" alt="" width="96">-->
+            <small class="d-block mb-3 text-muted">&copy; 2022</small>
+        </div>
+    </footer>
+</body>
+</html>

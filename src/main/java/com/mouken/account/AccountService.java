@@ -1,10 +1,12 @@
 package com.mouken.account;
 
 import com.mouken.domain.Account;
-import com.mouken.settings.Notifications;
-import com.mouken.settings.Profile;
+import com.mouken.domain.Tag;
+import com.mouken.settings.form.Notifications;
+import com.mouken.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +22,8 @@ import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -30,42 +34,36 @@ public class AccountService  implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
-    public Account processNewAccount(SignUpForm signUpForm){
-        log.info("processNewAccount");
-        Account savedAccount = saveAccount(signUpForm);
-
-        savedAccount.generateEmailCheckToken();
-        sendSignUpConfirmEmail(savedAccount);
-        return savedAccount;
+    public Account processNewAccount(SignUpForm signUpForm) {
+        Account newAccount = saveAccount(signUpForm);
+        sendSignUpConfirmEmail(newAccount);
+        return newAccount;
     }
 
-    public void sendSignUpConfirmEmail(Account savedAccount) {
+    public void sendSignUpConfirmEmail(Account account) {
         log.info("sendSignUpConfirmEmail");
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(savedAccount.getEmail());
+        mailMessage.setTo(account.getEmail());
         mailMessage.setSubject("Finish signing up for Mouken");
         mailMessage.setText("/check-email-token" +
-                "?token=" + savedAccount.getEmailCheckToken() +
-                "&email=" + savedAccount.getEmail()); // TODO Why
+                "?token=" + account.getEmailCheckToken() +
+                "&email=" + account.getEmail()); // TODO Why
         javaMailSender.send(mailMessage);
 
-        savedAccount.addEmailCheckTokenCount();
-        savedAccount.setEmailCheckTokenGeneratedAt(LocalDateTime.now());
+        log.info("account.TokenCount={}", account.getEmailCheckTokenCount());
+        log.info("account.TokenTime={}", account.getEmailCheckTokenGeneratedAt());
+        account.addEmailCheckTokenCount();
+        account.setEmailCheckTokenGeneratedAt(LocalDateTime.now());
 
     }
 
-    public Account saveAccount(@Validated SignUpForm form) {
-        log.info("saveAccount");
-
-        Account account = Account.builder()
-                .email(form.getEmail())
-                .username(form.getUsername())
-                .password(passwordEncoder.encode(form.getPassword())) // encoding
-                .emailCheckTokenCount(0)
-                .build();
-
+    private Account saveAccount(@Validated SignUpForm signUpForm) {
+        signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+        Account account = modelMapper.map(signUpForm, Account.class);
+        account.generateEmailCheckToken();
         return accountRepository.save(account);
     }
 
@@ -99,12 +97,8 @@ public class AccountService  implements UserDetailsService {
     }
 
     public void updateProfile(Account account, Profile profile) {
-        account.setUrl(profile.getUrl());
-        account.setOccupation(profile.getOccupation());
-        account.setLocation(profile.getLocation());
-        account.setBio(profile.getBio());
-        account.setProfileImage(profile.getProfileImage());
-        accountRepository.save(account); // !
+        modelMapper.map(profile, account);
+        accountRepository.save(account);
     }
 
     public void updatePassword(Account account, String newPassword) {
@@ -113,12 +107,45 @@ public class AccountService  implements UserDetailsService {
     }
 
     public void updateNotifications(Account account, Notifications notifications) {
-        account.setStudyCreatedByWeb(notifications.isStudyCreatedByWeb());
-        account.setStudyCreatedByEmail(notifications.isStudyCreatedByEmail());
-        account.setStudyUpdatedByWeb(notifications.isStudyUpdatedByWeb());
-        account.setStudyUpdatedByEmail(notifications.isStudyUpdatedByEmail());
-        account.setStudyEnrollmentResultByEmail(notifications.isStudyEnrollmentResultByEmail());
-        account.setStudyEnrollmentResultByWeb(notifications.isStudyEnrollmentResultByWeb());
+        modelMapper.map(notifications, account);
         accountRepository.save(account);
+    }
+
+    public void updateUsername(Account account, String username) {
+        account.setUsername(username);
+        accountRepository.save(account);
+        login(account);
+    }
+
+    public void sendEmailLoginLink(Account account) {
+
+        account.generateEmailCheckToken();
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(account.getEmail());
+        mailMessage.setSubject("Mouken Login Link");
+        mailMessage.setText("/email-login" +
+                "?token=" + account.getEmailCheckToken() +
+                "&email=" + account.getEmail());
+        javaMailSender.send(mailMessage);
+
+        log.info("account.TokenCount={}", account.getEmailCheckTokenCount());
+        log.info("account.TokenTime={}", account.getEmailCheckTokenGeneratedAt());
+        account.addEmailCheckTokenCount();
+        account.setEmailCheckTokenGeneratedAt(LocalDateTime.now());
+    }
+
+    public Set<Tag> getTags(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getTags();
+    }
+
+    public void addTag(Account account, Tag tag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getTags().add(tag));
+    }
+
+    public void removeTag(Account account, Tag tag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getTags().remove(tag));
     }
 }

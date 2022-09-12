@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments.html :: head-css ('/css/headers.css')}"></head>
-<body class="bg-light">
-    <header th:replace="~{fragments.html :: header}"></header>
-    <div class="container">
+
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+    <title>index</title>
+</head>
+
+<body>
+<header th:replace="~{fragments/header.html :: header-common}"></header>
+
+<div class="container">
     <div class="row mt-5 justify-content-center">
         <div class="col-2"><!-- menu -->
             <div th:replace="fragments.html :: settings-menu(currentMenu='profile')"></div>
@@ -107,84 +112,86 @@
 
         </div><!-- introduce end -->
     </div>
-    </div>
+</div>
 
-    <link  href="/node_modules/cropper/dist/cropper.min.css" rel="stylesheet">
-    <script src="/node_modules/cropper/dist/cropper.min.js"></script>
-    <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
-    <script type="application/javascript">
-        <!-- jquery -->
-        $(function() {
-            cropper = '';
-            let $confirmBtn = $("#confirm-button");
-            let $resetBtn = $("#reset-button");
-            let $cutBtn = $("#cut-button");
-            let $newProfileImage = $("#new-profile-image");
-            let $currentProfileImage = $("#current-profile-image");
-            let $resultImage = $("#cropped-new-profile-image");
-            let $profileImage = $("#profileImage");
+<footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 
+<link  href="/node_modules/cropper/dist/cropper.min.css" rel="stylesheet">
+<script src="/node_modules/cropper/dist/cropper.min.js"></script>
+<script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
+<script type="application/javascript">
+    <!-- jquery -->
+    $(function() {
+        cropper = '';
+        let $confirmBtn = $("#confirm-button");
+        let $resetBtn = $("#reset-button");
+        let $cutBtn = $("#cut-button");
+        let $newProfileImage = $("#new-profile-image");
+        let $currentProfileImage = $("#current-profile-image");
+        let $resultImage = $("#cropped-new-profile-image");
+        let $profileImage = $("#profileImage");
+
+        $newProfileImage.hide();
+        $cutBtn.hide();
+        $resetBtn.hide();
+        $confirmBtn.hide();
+
+        $("#profile-image-file").change(function(e) {
+            if (e.target.files.length === 1) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    if (e.target.result) {
+                        let img = document.createElement("img");
+                        img.id = 'new-profile';
+                        img.src = e.target.result;
+                        img.width = 250;
+
+                        $newProfileImage.html(img);
+                        $newProfileImage.show();
+                        $currentProfileImage.hide();
+
+                        let $newImage = $(img);
+                        $newImage.cropper({aspectRatio: 1});
+                        cropper = $newImage.data('cropper');
+
+                        $cutBtn.show();
+                        $confirmBtn.hide();
+                        $resetBtn.show();
+                    }
+                };
+
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        $resetBtn.click(function() {
+            $currentProfileImage.show();
             $newProfileImage.hide();
-            $cutBtn.hide();
+            $resultImage.hide();
             $resetBtn.hide();
+            $cutBtn.hide();
             $confirmBtn.hide();
+            $profileImage.val('');
+        });
 
-            $("#profile-image-file").change(function(e) {
-                if (e.target.files.length === 1) {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        if (e.target.result) {
-                            let img = document.createElement("img");
-                            img.id = 'new-profile';
-                            img.src = e.target.result;
-                            img.width = 250;
+        $cutBtn.click(function () {
+            let dataUrl = cropper.getCroppedCanvas().toDataURL();
+            let newImage = document.createElement("img");
+            newImage.id = "cropped-new-profile-image";
+            newImage.src = dataUrl;
+            newImage.width = 125;
+            $resultImage.html(newImage);
+            $resultImage.show();
+            $confirmBtn.show();
 
-                            $newProfileImage.html(img);
-                            $newProfileImage.show();
-                            $currentProfileImage.hide();
-
-                            let $newImage = $(img);
-                            $newImage.cropper({aspectRatio: 1});
-                            cropper = $newImage.data('cropper');
-
-                            $cutBtn.show();
-                            $confirmBtn.hide();
-                            $resetBtn.show();
-                        }
-                    };
-
-                    reader.readAsDataURL(e.target.files[0]);
-                }
-            });
-
-            $resetBtn.click(function() {
-                $currentProfileImage.show();
-                $newProfileImage.hide();
-                $resultImage.hide();
-                $resetBtn.hide();
+            $confirmBtn.click(function () {
+                $newProfileImage.html(newImage);
                 $cutBtn.hide();
                 $confirmBtn.hide();
-                $profileImage.val('');
-            });
-
-            $cutBtn.click(function () {
-                let dataUrl = cropper.getCroppedCanvas().toDataURL();
-                let newImage = document.createElement("img");
-                newImage.id = "cropped-new-profile-image";
-                newImage.src = dataUrl;
-                newImage.width = 125;
-                $resultImage.html(newImage);
-                $resultImage.show();
-                $confirmBtn.show();
-
-                $confirmBtn.click(function () {
-                    $newProfileImage.html(newImage);
-                    $cutBtn.hide();
-                    $confirmBtn.hide();
-                    $profileImage.val(dataUrl);
-                });
+                $profileImage.val(dataUrl);
             });
         });
-    </script>
+    });
+</script>
 </body>
 </html>

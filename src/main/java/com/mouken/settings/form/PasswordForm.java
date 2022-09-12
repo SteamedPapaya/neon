@@ -1,4 +1,4 @@
-package com.mouken.settings;
+package com.mouken.settings.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
