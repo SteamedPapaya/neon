@@ -11,7 +11,8 @@
 
 <div class="container">
     <div class="row mt-5 justify-content-center">
-        <div class="col-2"><!-- menu -->
+        <div class="col-2">
+            <!-- menu -->
             <div th:replace="fragments.html :: settings-menu(currentMenu='profile')"></div>
         </div>
 
@@ -22,7 +23,7 @@
             </div>
 
             <div class="row">
-                <!-- username -->
+                <!-- title -->
                 <h2 class="col-sm-12" th:text="${account.username}">username</h2>
             </div>
 
@@ -31,48 +32,48 @@
                       action="#" th:action="@{/settings/profile}"
                       th:object="${profile}" method="post" novalidate><!-- update form -->
                     <!-- update form -->
-                    <div class="form-group">
+                    <div class="form-group row mt-2">
                         <label for="bio">bio</label>
                         <input id="bio" type="text" th:field="*{bio}" class="form-control"
-                               placeholder="Please introduce yourself in a sentence." aria-describedby="bioHelp" required>
-                        <small id="bioHelp" class="form-text text-muted">
+                               placeholder="I love potato." aria-describedby="bioHelp" required>
+                        <!--<small id="bioHelp" class="form-text text-muted">
                             You can write up to 35 letters.
-                        </small>
+                        </small>-->
                         <small class="form-text text-danger" th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}">
                             Please enter more short.
                         </small>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row mt-2">
                         <label for="url">URL</label>
                         <input id="url" type="url" th:field="*{url}" class="form-control"
                                placeholder="http://github.com/steve" aria-describedby="urlHelp" required>
-                        <small id="urlHelp" class="form-text text-muted">
+                        <!--<small id="urlHelp" class="form-text text-muted">
                             GitHub, Instagram, YouTube...
-                        </small>
+                        </small>-->
                         <small class="form-text text-danger" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">
                             Please enter URL.
                         </small>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row mt-2">
                         <label for="company">Jobs</label>
                         <input id="company" type="text" th:field="*{occupation}" class="form-control"
-                               placeholder="What is your job?" aria-describedby="occupationHelp" required>
-                        <small id="occupationHelp" class="form-text text-muted">
-                        </small>
+                               placeholder="Programmer" aria-describedby="occupationHelp" required>
+                        <!--<small id="occupationHelp" class="form-text text-muted">
+                        </small>-->
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row mt-2">
                         <label for="location">Location</label>
                         <input id="location" type="text" th:field="*{location}" class="form-control"
                                placeholder="Redmond, WA, USA"
                                aria-describedby="locationdHelp" required>
-                        <small id="locationdHelp" class="form-text text-muted">
+                        <!--<small id="locationdHelp" class="form-text text-muted">
                             London, NewYork, Tokyo, Seoul
-                        </small>
+                        </small>-->
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row mt-2">
                         <input id="profileImage" type="hidden" th:field="*{profileImage}" class="form-control" />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row mt-2">
                         <button class="btn btn-primary btn-block" type="submit"
                                 aria-describedby="submitHelp">Update</button>
                     </div>

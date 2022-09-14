@@ -5,7 +5,9 @@
     <title>index</title>
     <link rel="stylesheet" th:href="@{/css/tagify.css}">
 </head>
-
+<!--<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+    <title>index</title>
+</head>-->
 <body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
@@ -28,8 +30,7 @@
                     </div>
                     <!-- function -->
                     <div id="whitelist" th:text="${whitelist}" hidden></div>
-                    <input id="tags" type="text" name="tags-outside"
-                           th:value="${#strings.listJoin(tags, ',')}"
+                    <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
                            class="tagify-outside" aria-describedby="tagHelp"/>
                 </div>
             </div>
@@ -42,7 +43,6 @@
 <script th:replace="~{fragments/script.html :: ajax-csrf-header}"></script>
 <script type="application/javascript">
     $(function () {
-
         function tagRequest(url, tagTitle) {
             $.ajax({
                 dataType: "json",
@@ -67,27 +67,26 @@
             tagRequest("/remove", e.detail.data.value);
         }
 
-        var input = document.querySelector('input[name=tags-outside]');
+        var tagInput = document.querySelector("#tags");
 
-        var tagify = new Tagify(input, {
+        var tagify = new Tagify(tagInput, {
             pattern: /^.{0,20}$/,
             whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
-            dropdown: {
-                position: "input",
+            dropdown : {
                 enabled: 1, // suggest tags after a single character input
-                // enabled : 0 // always opens dropdown when input gets focus
-            }
+            } // map tags
         });
 
-        tagify.on("add", onAdd);
-        tagify.on("remove", onRemove);
+        tagify.on("add", onAdd)
+            .on("remove", onRemove);
 
         // add a class to Tagify's input element
         tagify.DOM.input.classList.add('form-control');
         // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
         tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
-
     });
 </script>
+
+
 </body>
 </html>

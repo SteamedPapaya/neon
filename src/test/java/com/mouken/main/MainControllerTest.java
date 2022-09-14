@@ -89,7 +89,7 @@ class MainControllerTest {
     }
 
     @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @DisplayName("로그아웃")
+    @DisplayName("Logout")
     @Test
     void logout() throws Exception {
         mockMvc.perform(post("/logout")

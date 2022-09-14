@@ -17,3 +17,9 @@
     transition:0s;
     border-color: var(--tags-focus-border-color);
 }
+
+.tagify-outside{
+    border: 0;
+    padding: 0;
+    margin: 0;
+}

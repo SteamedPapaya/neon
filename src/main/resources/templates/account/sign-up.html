@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
-    <title>index</title>
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+    <title>Sign up</title>
+    <link rel="stylesheet" th:href="@{/css/sign-up.css}" />
 </head>
 
 <body>

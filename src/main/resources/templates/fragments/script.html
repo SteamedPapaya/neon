@@ -28,7 +28,7 @@
         }())
     </script>
 
-    <script th:fragment="ajax-csrf-header" type="application/javascript" th:inline="javascript">
+    <script type="application/javascript" th:inline="javascript" th:fragment="ajax-csrf-header">
         $(function() {
             var csrfToken = /*[[${_csrf.token}]]*/ null;
             var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
