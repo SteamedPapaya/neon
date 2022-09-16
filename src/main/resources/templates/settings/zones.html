@@ -11,23 +11,23 @@
 <div class="container">
     <div class="row mt-5 justify-content-center">
         <div class="col-2"><!-- menu -->
-            <div th:replace="fragments.html :: settings-menu(currentMenu='tags')"></div>
+            <div th:replace="fragments.html :: settings-menu(currentMenu='zones')"></div>
         </div>
 
         <div class="col-8">
             <div class="row">
                 <!-- title -->
-                <h2 class="col-12">Tags</h2>
+                <h2 class="col-12">Zones</h2>
             </div>
             <div class="row">
                 <div class="col-12">
                     <!-- description -->
                     <div class="alert alert-info" role="alert">
-                        You can add a tag with comma or enter key
+                        You can add a zone with comma or enter key
                     </div>
                     <!-- function -->
                     <div id="whitelist" th:text="${whitelist}" hidden></div>
-                    <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+                    <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(zones, ',')}"
                            class="tagify-outside" aria-describedby="tagHelp"/>
                 </div>
             </div>
@@ -40,7 +40,7 @@
 <script th:replace="~{fragments/script.html :: ajax-csrf-header}"></script>
 <script type="application/javascript">
     $(function () {
-        function tagRequest(url, tagTitle) {
+        function tagRequest(url, zoneName) {
             $.ajax({
                 dataType: "json",
                 autocomplete: {
@@ -49,8 +49,8 @@
                 },
                 contentType: "application/json; charset=utf-8",
                 method: "POST",
-                url: "/settings/tags" + url,
-                data: JSON.stringify({'tagTitle': tagTitle})
+                url: "/settings/zones" + url,
+                data: JSON.stringify({'zoneName': zoneName})
             }).done(function (data, status) {
                 console.log("${data} and status is ${status}");
             });
@@ -67,15 +67,15 @@
         var tagInput = document.querySelector("#tags");
 
         var tagify = new Tagify(tagInput, {
-            pattern: /^.{0,20}$/,
+            enforceWhitelist: true,
             whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
             dropdown : {
                 enabled: 1, // suggest tags after a single character input
             } // map tags
         });
 
-        tagify.on("add", onAdd)
-            .on("remove", onRemove);
+        tagify.on("add", onAdd);
+        tagify.on("remove", onRemove);
 
         // add a class to Tagify's input element
         tagify.DOM.input.classList.add('form-control');
@@ -83,7 +83,6 @@
         tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
     });
 </script>
-
 
 </body>
 </html>

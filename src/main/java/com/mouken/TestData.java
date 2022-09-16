@@ -15,11 +15,7 @@ import javax.annotation.PostConstruct;
 public class TestData {
 
     private final AccountService accountService;
-    private final AccountRepository accountRepository;
 
-    /**
-     * Data for Test
-     */
     @Transactional
     @PostConstruct
     public void init() {

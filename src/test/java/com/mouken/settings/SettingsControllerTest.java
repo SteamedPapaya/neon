@@ -6,8 +6,11 @@ import com.mouken.account.AccountService;
 import com.mouken.account.SignUpForm;
 import com.mouken.domain.Account;
 import com.mouken.domain.Tag;
+import com.mouken.domain.Zone;
 import com.mouken.settings.form.TagForm;
+import com.mouken.settings.form.ZoneForm;
 import com.mouken.tag.TagRepository;
+import com.mouken.zone.ZoneRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +49,10 @@ class SettingsControllerTest {
     ObjectMapper objectMapper;
     @Autowired
     TagRepository tagRepository;
+    @Autowired
+    ZoneRepository zoneRepository;
+
+    private Zone testZone = Zone.builder().city("CITY").province("none").country("COUNTRY").build();
 
     @BeforeEach
     void beforeEach() {
@@ -54,11 +61,63 @@ class SettingsControllerTest {
         signUpForm.setUsername("test");
         signUpForm.setPassword("12345678");
         accountService.processNewAccount(signUpForm);
+
+        zoneRepository.save(testZone);
     }
 
     @AfterEach
     void afterEach() {
         accountRepository.deleteAll();
+        zoneRepository.deleteAll();
+    }
+
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Account Zone Update Form")
+    @Test
+    void updateZonesForm() throws Exception {
+        mockMvc.perform(get("/settings/zones"))
+                .andExpect(view().name("settings/zones"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("whitelist"))
+                .andExpect(model().attributeExists("zones"));
+    }
+
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Account Zone ADD")
+    @Test
+    void addZone() throws Exception {
+        ZoneForm zoneForm = new ZoneForm();
+        zoneForm.setZoneName(testZone.toString());
+
+        mockMvc.perform(post("/settings/zones/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(zoneForm))
+                        .with(csrf()))
+                .andExpect(status().isOk());
+
+        Account account = accountRepository.findByUsername("test");
+        Zone zone = zoneRepository.findByCityAndCountry(testZone.getCity(), testZone.getCountry());
+        assertTrue(account.getZones().contains(zone));
+    }
+
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Account Zone REMOVE")
+    @Test
+    void removeZone() throws Exception {
+        Account account = accountRepository.findByUsername("test");
+        Zone zone = zoneRepository.findByCityAndCountry(testZone.getCity(), testZone.getCountry());
+        accountService.addZone(account, zone);
+
+        ZoneForm zoneForm = new ZoneForm();
+        zoneForm.setZoneName(testZone.toString());
+
+        mockMvc.perform(post("/settings/zones/remove")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(zoneForm))
+                        .with(csrf()))
+                .andExpect(status().isOk());
+
+        assertFalse(account.getZones().contains(zone));
     }
 
     @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)

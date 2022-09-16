@@ -1,11 +1,9 @@
 package com.mouken.account;
 
-import com.mouken.View;
 import com.mouken.domain.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -78,7 +76,7 @@ public class AccountController {
     }
 
     @GetMapping("/check-email")
-    public String checkEmail(@CurrentUser Account account, Model model) {
+    public String checkEmail(@CurrentAccount Account account, Model model) {
         if (account != null) {
             model.addAttribute(account);
             model.addAttribute("username", account.getUsername());
@@ -88,7 +86,7 @@ public class AccountController {
     }
 
     @GetMapping("/send-email")
-    public String sendEmail(@CurrentUser Account account, Model model, RedirectAttributes redirectAttributes) {
+    public String sendEmail(@CurrentAccount Account account, Model model, RedirectAttributes redirectAttributes) {
 
         if (account.isEmailVerified()) {
             return "redirect:/";
@@ -107,7 +105,7 @@ public class AccountController {
     @GetMapping("profile/{username}")
     public String viewProfile(
             @PathVariable String username,
-            @CurrentUser Account account,
+            @CurrentAccount Account account,
             Model model) {
         Account foundAccount = accountRepository.findByUsername(username);
         if (account == null) {
@@ -120,7 +118,7 @@ public class AccountController {
     }
 
     @GetMapping("/check-email-login")
-    public String checkEmailLoginForm(@CurrentUser Account account, Model model) {
+    public String checkEmailLoginForm(@CurrentAccount Account account, Model model) {
         if (account != null) {
             model.addAttribute(account);
             model.addAttribute("username", account.getUsername());

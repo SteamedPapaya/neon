@@ -4,6 +4,8 @@ import com.mouken.account.AccountRepository;
 import com.mouken.account.AccountService;
 import com.mouken.account.SignUpForm;
 import com.mouken.domain.Account;
+import com.mouken.mail.EmailMessage;
+import com.mouken.mail.EmailService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +40,7 @@ class AccountControllerTest {
     private AccountRepository accountRepository;
 
     @MockBean
-    JavaMailSender javaMailSender;
+    EmailService emailService;
 
 
     @DisplayName("Sign Up - Form")
@@ -84,7 +86,7 @@ class AccountControllerTest {
         // then; Is the password encoded?
         assertNotEquals(account.getPassword(), "12345678");
         assertNotNull(account.getEmailCheckToken());
-
+        then(emailService).should().sendEmail(any(EmailMessage.class));
     }
 
 
