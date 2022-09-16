@@ -57,7 +57,7 @@ public class AccountService  implements UserDetailsService {
                 "&email=" + account.getEmail());
         context.setVariable("username", account.getUsername());
         context.setVariable("linkName", "Link");
-        context.setVariable("message", "you can finish signing up for Mouken with the link.");
+        context.setVariable("message", "You can finish signing up. please click the link below.");
         context.setVariable("host", appProperties.getHost());
         String message = templateEngine.process("mail/simple-link", context);
 

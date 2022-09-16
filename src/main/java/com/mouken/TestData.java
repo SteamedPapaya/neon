@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class TestData {
 
-    private final AccountService accountService;
+/*    private final AccountService accountService;
 
     @Transactional
     @PostConstruct
@@ -26,5 +26,5 @@ public class TestData {
         Account account = accountService.processNewAccount(signUpForm);
         account.completeSignUp();
         //accountService.login(account);
-    }
+    }*/
 }
