@@ -107,15 +107,14 @@ public class AccountController {
             @PathVariable String username,
             @CurrentAccount Account account,
             Model model) {
-        Account foundAccount = accountRepository.findByUsername(username);
-        if (account == null) {
-            throw new IllegalArgumentException("This user does not exist");
-        }
+        Account foundAccount = accountService.getAccount(username, account);
 
         model.addAttribute(foundAccount);
         model.addAttribute("isOwner", foundAccount.equals(account));
         return "account/profile";
     }
+
+
 
     @GetMapping("/check-email-login")
     public String checkEmailLoginForm(@CurrentAccount Account account, Model model) {

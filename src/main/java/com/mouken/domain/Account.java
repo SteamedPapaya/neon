@@ -52,17 +52,17 @@ public class Account {
 
 
 
-    private boolean studyCreatedByEmail;
+    private boolean partyCreatedByEmail;
 
-    private boolean studyCreatedByWeb = true;
+    private boolean partyCreatedByWeb = true;
 
-    private boolean studyEnrollmentResultByEmail;
+    private boolean partyEnrollmentResultByEmail;
 
-    private boolean studyEnrollmentResultByWeb = true;
+    private boolean partyEnrollmentResultByWeb = true;
 
-    private boolean studyUpdatedByEmail;
+    private boolean partyUpdatedByEmail;
 
-    private boolean studyUpdatedByWeb = true;
+    private boolean partyUpdatedByWeb = true;
 
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();
@@ -89,5 +89,9 @@ public class Account {
 
     public void addEmailCheckTokenCount() {
         this.emailCheckTokenCount++;
+    }
+
+    public boolean isManagerOf(Party party) {
+        return party.getManagers().contains(this);
     }
 }

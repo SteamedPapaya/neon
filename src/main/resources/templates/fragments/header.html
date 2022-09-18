@@ -29,7 +29,7 @@
                         <a class="nav-link p-2 active" aria-current="true" href="/">Docs</a>
                     </li>
                     <li class="nav-item col-12 col-md-auto">
-                        <a class="nav-link p-2" href="/" >Examples</a>
+                        <a class="nav-link p-2" href="/" th:href="@{/new}" >Parties</a>
                     </li>
                     <li class="nav-item col-12 col-md-auto">
                         <a class="nav-link p-2" href="/" target="_blank" rel="noopener">Icons</a>
@@ -59,7 +59,7 @@
                      width="32" height="32" class="rounded border"/>
             </a>
             <ul class="dropdown-menu dropdown-menu-sm-right text-small" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);">
-                <li><a class="dropdown-item" href="#">New project</a></li>
+                <li><a class="dropdown-item" href="#" th:href="@{/new-party}">New party</a></li>
                 <li><a class="dropdown-item" href="#">Settings</a></li>
                 <li><a class="dropdown-item" href="#" th:href="@{'/profile/' + ${#authentication.name}}">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
