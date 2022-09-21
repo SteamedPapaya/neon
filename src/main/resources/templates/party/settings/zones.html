@@ -1,33 +1,35 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
     <title>index</title>
-    <link rel="stylesheet" th:href="@{/css/tagify.css}">
 </head>
 <body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
+<div th:replace="fragments.html :: party-banner"></div>
 
 <div class="container">
-    <div class="row mt-5 justify-content-center">
-        <div class="col-2"><!-- menu -->
-            <div th:replace="fragments.html :: settings-menu(currentMenu='tags')"></div>
-        </div>
+    <div th:replace="fragments.html :: party-info"></div>
+    <div th:replace="fragments.html :: party-menu(partyMenu='zones')"></div>
 
+    <div class="row mt-3 justify-content-center">
+
+        <div class="col-2">
+            <div th:replace="fragments.html :: party-settings-menu(currentMenu='zones')"></div>
+        </div>
         <div class="col-8">
             <div class="row">
                 <!-- title -->
-                <h2 class="col-12">Tags</h2>
+                <h2 class="col-12">Zones</h2>
             </div>
             <div class="row">
                 <div class="col-12">
                     <!-- description -->
                     <div class="alert alert-info" role="alert">
-                        You can add a tag with comma or enter key.
+                        You can add a zone with comma or enter key
                     </div>
                     <!-- function -->
                     <div id="whitelist" th:text="${whitelist}" hidden></div>
-                    <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+                    <input id="zones" type="text" name="zones" th:value="${#strings.listJoin(zones, ',')}"
                            class="tagify-outside" aria-describedby="tagHelp"/>
                 </div>
             </div>
@@ -37,8 +39,6 @@
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <script th:replace="~{fragments/script.html :: ajax-csrf-header}"></script>
-<script th:replace="~{fragments/script.html :: update-tags(baseUrl='/settings/tags')}"></script>
-
-
+<script th:replace="~{fragments/script.html :: update-zones(baseUrl='/party/' + ${party.path} + '/settings/zones')}"></script>
 </body>
 </html>

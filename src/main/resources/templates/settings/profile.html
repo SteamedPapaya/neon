@@ -142,10 +142,15 @@
                 const reader = new FileReader();
                 reader.onload = e => {
                     if (e.target.result) {
+                        if (!e.target.result.startsWith("data:image")) {
+                            alert("Please select an image file");
+                            return;
+                        }
+
                         let img = document.createElement("img");
                         img.id = 'new-profile';
                         img.src = e.target.result;
-                        img.width = 250;
+                        img.setAttribute('width', '100%');
 
                         $newProfileImage.html(img);
                         $newProfileImage.show();
@@ -177,6 +182,12 @@
 
         $cutBtn.click(function () {
             let dataUrl = cropper.getCroppedCanvas().toDataURL();
+
+            if (dataUrl.length > 1000 * 1024) {
+                alert("image file size is too large. (max = 1,024,000 byte, current = " + dataUrl.length + " byte)");
+                return;
+            }
+
             let newImage = document.createElement("img");
             newImage.id = "cropped-new-profile-image";
             newImage.src = dataUrl;

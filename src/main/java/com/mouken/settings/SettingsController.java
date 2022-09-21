@@ -11,6 +11,7 @@ import com.mouken.settings.form.*;
 import com.mouken.settings.validator.PasswordFormValidator;
 import com.mouken.settings.validator.UsernameFormValidator;
 import com.mouken.tag.TagRepository;
+import com.mouken.tag.TagService;
 import com.mouken.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,7 @@ public class SettingsController {
     private final TagRepository tagRepository;
     private final ObjectMapper objectMapper;
     private final ZoneRepository zoneRepository;
+    private final TagService tagService;
 
     @InitBinder("passwordForm")
     public void passwordFormInitBinder(WebDataBinder webDataBinder) {
@@ -69,13 +71,12 @@ public class SettingsController {
 
 
         if (errors.hasErrors()) {
-            log.info("updateProfilehasErrors");
             model.addAttribute(account);
             return "settings/profile";
         }
 
         accountService.updateProfile(account, profile);
-        redirectAttributes.addFlashAttribute("message", "Profile has updated.");
+        redirectAttributes.addFlashAttribute("message", "Profile has been updated.");
         return "redirect:/settings/profile";
     }
 
@@ -156,13 +157,7 @@ public class SettingsController {
     @PostMapping("/tags/add")
     @ResponseBody
     public ResponseEntity addTag(@CurrentAccount Account account, @RequestBody TagForm tagForm) {
-        String title = tagForm.getTagTitle();
-
-        Tag tag = tagRepository.findByTitle(title);
-        if (tag == null) {
-            tag = tagRepository.save(Tag.builder().title(tagForm.getTagTitle()).build());
-        }
-
+        Tag tag = tagService.findOrCreateNew(tagForm.getTagTitle());
         accountService.addTag(account, tag);
         return ResponseEntity.ok().build();
     }

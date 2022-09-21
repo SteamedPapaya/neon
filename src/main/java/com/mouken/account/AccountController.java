@@ -98,7 +98,7 @@ public class AccountController {
         }
 
         accountService.sendSignUpConfirmEmail(account);
-        redirectAttributes.addFlashAttribute("info", "Email has sent");
+        redirectAttributes.addFlashAttribute("info", "Email has been sent");
         return "redirect:/check-email";
     }
 
@@ -108,6 +108,7 @@ public class AccountController {
             @CurrentAccount Account account,
             Model model) {
         Account foundAccount = accountService.getAccount(username, account);
+
 
         model.addAttribute(foundAccount);
         model.addAttribute("isOwner", foundAccount.equals(account));
@@ -149,7 +150,7 @@ public class AccountController {
 
         accountService.sendEmailLoginLink(account);
         attributes.addFlashAttribute("email", account.getEmail());
-        attributes.addFlashAttribute("info", "Login email has sent.");
+        attributes.addFlashAttribute("info", "Login email has been sent.");
         return "redirect:/check-email-login";
     }
 

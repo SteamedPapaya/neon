@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head.html :: head-title(~{::title})}">
     <title>index</title>
 </head>
@@ -11,18 +11,13 @@
 
 <div class="container">
     <div th:replace="fragments.html :: party-info"></div>
-    <div th:replace="fragments.html :: party-menu(partyMenu='info')"></div>
+    <div th:replace="fragments.html :: party-menu(partyMenu='members')"></div>
 
     <div th:replace="fragments.html :: member-list(members=${party.managers},isManager=${true})"></div>
     <div th:replace="fragments.html :: member-list(members=${party.members},isManager=${false})"></div>
 </div>
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
-
-<script type="application/javascript">
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>
+<script th:replace="~{fragments/script.html :: tooltip}"></script>
 </body>
 </html>
