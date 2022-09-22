@@ -12,7 +12,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Account {
