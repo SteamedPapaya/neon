@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head.html :: head-title(~{::title})}">
-    <title>index</title>
+  <title>index</title>
 </head>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 <div th:replace="fragments.html :: party-banner"></div>
@@ -9,7 +9,7 @@
 <body class="bg-light">
 
 <div class="container">
-    <div th:replace="fragments.html :: event-form (mode='new', action='/party/' + ${party.path} + '/new-event/')"></div>
+  <div th:replace="fragments.html :: event-form (mode='edit', action='/party/' + ${party.path} + '/events/' + ${event.id} + '/edit')"></div>
 </div>
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
