@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+    <title>index</title>
+</head>
+<header th:replace="~{fragments/header.html :: header-common}"></header>
+<div th:replace="fragments.html :: party-banner"></div>
+
+<body>
+<div class="container">
+
+    <div class="row">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb text-center h2">
+                <li class="breadcrumb-item active" aria-current="page" th:text="${party.title}">Party Title</li>
+                <li class="breadcrumb-item" th:text="${event.title}"><a href="#">New Event</a></li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <span sec:authorize="isAuthenticated()">
+            <button th:if="${event.isEnrollableFor(#authentication.principal)}"
+                    class="btn btn-outline-primary" data-toggle="modal" data-target="#enroll">
+                <i class="fa fa-plus-circle"></i> Applying
+            </button>
+            <button th:if="${event.isDisenrollableFor(#authentication.principal)}"
+                    class="btn btn-outline-primary" data-toggle="modal" data-target="#disenroll">
+                <i class="fa fa-minus-circle"></i> Cancel
+            </button>
+            <span class="text-success" th:if="${event.isAttended(#authentication.principal)}" disabled>
+                <i class="fa fa-check-circle"></i> Confirmed
+            </span>
+        </span>
+    </div>
+
+    <div class="modal fade" id="disenroll" tabindex="-1" role="dialog" aria-labelledby="leaveTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="leaveTitle" th:text="${event.title}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>모임 참가 신청을 취소하시겠습니까?</p>
+                    <p><strong>확인</strong>하시면 본 참가 신청을 취소하고 다른 대기자에게 참석 기회를 줍니다.</p>
+                    <p>감사합니다.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <form th:action="@{'/party/' + ${party.path} + '/events/' + ${event.id} + '/leave'}" method="post">
+                        <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="enroll" tabindex="-1" role="dialog" aria-labelledby="enrollmentTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="enrollmentTitle" th:text="${event.title}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>모임에 참석하시겠습니까? 일정을 캘린더에 등록해 두시면 좋습니다.</p>
+                    <p><strong>확인</strong> 버튼을 클릭하면 모임 참가 신청을 합니다.</p>
+                    <p>감사합니다.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <form th:action="@{'/party/' + ${party.path} + '/events/' + ${event.id} + '/enroll'}" method="post">
+                        <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt-3 justify-content-center">
+        <dt class="font-weight-light">Description</dt>
+        <dd th:utext="${event.description}"></dd>
+
+        <dt class="font-weight-light">Applying (<span th:text="${event.enrollments.size()}"></span>)</dt>
+        <dd>
+            <table class="table table-borderless table-sm" th:if="${event.enrollments.size() > 0}">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Participant</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                    <th th:if="${party.isManager(#authentication.principal)}" scope="col">
+                        Management
+                    </th>
+                    <th th:if="${party.isManager(#authentication.principal)}" scope="col">
+                        Attendance
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="enroll: ${event.enrollments}">
+                    <th scope="row" th:text="${enrollStat.count}"></th>
+                    <td>
+                        <a th:href="@{'/profile/' + ${enroll.account.username}}"
+                           class="text-decoration-none">
+                            <svg th:if="${#strings.isEmpty(enroll.account?.profileImage)}" data-jdenticon-value="username"
+                                 th:data-jdenticon-value="${enroll.account.username}" width="24" height="24" class="rounded border bg-light"></svg>
+                            <img th:if="${!#strings.isEmpty(enroll.account?.profileImage)}"
+                                 th:src="${enroll.account?.profileImage}" width="24" height="24" class="rounded border"/>
+                            <span th:text="${enroll.account.username}"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <span class="date-time" th:text="${enroll.enrolledAt}"></span>
+                    </td>
+                    <td>
+                        <span th:if="${enroll.accepted}">Confirmed</span>
+                        <span th:if="${!enroll.accepted}">Wating</span>
+                    </td>
+                    <td th:if="${party.isManager(#authentication.principal)}">
+                        <a th:if="${event.isAcceptable(enroll)}" href="#" class="text-decoration-none"
+                           th:href="@{'/party/' + ${party.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/accept'}" >Accept</a>
+                        <a th:if="${event.isRejectable(enroll)}" href="#" class="text-decoration-none"
+                           th:href="@{'/party/' + ${party.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/reject'}">Cancel</a>
+                    </td>
+                    <td th:if="${party.isManager(#authentication.principal)}">
+                        <a th:if="${enroll.accepted && !enroll.attended}" href="#" class="text-decoration-none"
+                           th:href="@{'/party/' + ${party.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/checkin'}">Check In</a>
+                        <a th:if="${enroll.accepted && enroll.attended}" href="#" class="text-decoration-none"
+                           th:href="@{'/party/' + ${party.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/cancel-checkin'}">Cancel</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </dd>
+    </div>
+    <dl class="row pt-3 text-right">
+        <dt class="font-weight-light">Enrollment Type</dt>
+        <dd>
+            <span th:if="${event.eventType == T(com.mouken.domain.EventType).FCFS}">FCFS</span>
+            <span th:if="${event.eventType == T(com.mouken.domain.EventType).CONFIRMATIVE}">Confirmative</span>
+        </dd>
+
+        <dt class="font-weight-light">The limit of enrollment</dt>
+        <dd>
+            <span th:text="${event.limitOfEnrollments}"></span>
+        </dd>
+
+        <dt class="font-weight-light">Enrollment Deadline</dt>
+        <dd>
+            <span class="date" th:text="${event.endEnrollmentDateTime}"></span>
+            <span class="weekday" th:text="${event.endEnrollmentDateTime}"></span><br/>
+            <span class="time" th:text="${event.endEnrollmentDateTime}"></span>
+        </dd>
+
+        <dt class="font-weight-light">Event Date</dt>
+        <dd>
+            <span class="date" th:text="${event.startDateTime}"></span>
+            <span class="weekday" th:text="${event.startDateTime}"></span><br/>
+            <span class="time" th:text="${event.startDateTime}"></span> -
+            <span class="time" th:text="${event.endDateTime}"></span>
+        </dd>
+
+        <dt class="font-weight-light">Leader</dt>
+        <dd>
+            <a th:href="@{'/profile/' + ${event.createdBy.username}}" class="text-decoration-none">
+                <svg th:if="${#strings.isEmpty(event.createdBy?.profileImage)}"
+                     th:data-jdenticon-value="${event.createdBy.username}" width="24" height="24" class="rounded border bg-light"></svg>
+                <img th:if="${!#strings.isEmpty(event.createdBy?.profileImage)}"
+                     th:src="${event.createdBy?.profileImage}" width="24" height="24" class="rounded border"/>
+                <span th:text="${event.createdBy.username}"></span>
+            </a>
+        </dd>
+
+        <dt th:if="${party.isManager(#authentication.principal)}" class="font-weight-light">Management</dt>
+        <dd th:if="${party.isManager(#authentication.principal)}">
+            <a class="btn btn-outline-primary btn-sm my-1"
+               th:href="@{'/party/' + ${party.path} + '/events/' + ${event.id} + '/edit'}" >
+                Update
+            </a> <br/>
+            <button class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#cancel">
+                Cancel
+            </button>
+        </dd>
+    </dl>
+
+    <div class="modal fade" id="cancel" tabindex="-1" role="dialog" aria-labelledby="cancelTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelTitle" th:text="${event.title}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>모임을 취소 하시겠습니까?</p>
+                    <p><strong>확인</strong>하시면 본 모임 및 참가 신청 관련 데이터를 삭제합니다.</p>
+                    <p>감사합니다.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <form th:action="@{'/party/' + ${party.path} + '/events/' + ${event.id}}" th:method="delete">
+                        <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script type="application/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        moment.locale('ko');
+        $(".date-time").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LLL');
+        });
+        $(".date").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LL');
+        });
+        $(".weekday").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('dddd');
+        });
+        $(".time").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LT');
+        });
+    })
+</script>
+</body>
+</html>
