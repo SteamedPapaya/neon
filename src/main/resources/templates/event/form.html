@@ -38,16 +38,16 @@
         </div>
         <div class="row g-3 mb-2">
             <div class="col-md">
-                <label for="startDateTime">Start</label>
-                <input id="startDateTime" type="datetime-local" th:field="*{startDateTime}" class="form-control"
-                       aria-describedby="startDateTimeHelp" required>
-                <small class="form-text text-danger" th:if="${#fields.hasErrors('startDateTime')}" th:errors="*{startDateTime}">Error</small>
-            </div>
-            <div class="col-md">
-                <label for="endEnrollmentDateTime">End of enrollment</label>
+                <label for="endEnrollmentDateTime">End of Enrollment</label>
                 <input id="endEnrollmentDateTime" type="datetime-local" th:field="*{endEnrollmentDateTime}" class="form-control"
                        aria-describedby="endEnrollmentDateTimeHelp" required>
                 <small class="form-text text-danger" th:if="${#fields.hasErrors('endEnrollmentDateTime')}" th:errors="*{endEnrollmentDateTime}">Error</small>
+            </div>
+            <div class="col-md">
+                <label for="startDateTime">Start of Event</label>
+                <input id="startDateTime" type="datetime-local" th:field="*{startDateTime}" class="form-control"
+                       aria-describedby="startDateTimeHelp" required>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('startDateTime')}" th:errors="*{startDateTime}">Error</small>
             </div>
             <div class="col-md">
                 <label for="endDateTime">End of Event</label>
