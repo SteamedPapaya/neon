@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-class PartyControllerTest {
+public class PartyControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;

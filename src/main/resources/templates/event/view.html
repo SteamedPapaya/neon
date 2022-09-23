@@ -123,9 +123,9 @@
                         <span th:if="${!enroll.accepted}">Wating</span>
                     </td>
                     <td th:if="${party.isManager(#authentication.principal)}">
-                        <a th:if="${event.isAcceptable(enroll)}" href="#" class="text-decoration-none"
+                        <a th:if="${event.canAccept(enroll)}" href="#" class="text-decoration-none"
                            th:href="@{'/party/' + ${party.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/accept'}" >Accept</a>
-                        <a th:if="${event.isRejectable(enroll)}" href="#" class="text-decoration-none"
+                        <a th:if="${event.canReject(enroll)}" href="#" class="text-decoration-none"
                            th:href="@{'/party/' + ${party.path} + '/events/' + ${event.id} + '/enrollments/' + ${enroll.id} + '/reject'}">Cancel</a>
                     </td>
                     <td th:if="${party.isManager(#authentication.principal)}">
@@ -183,30 +183,31 @@
                th:href="@{'/party/' + ${party.path} + '/events/' + ${event.id} + '/edit'}" >
                 Update
             </a> <br/>
-            <button class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#cancel">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancel">
                 Cancel
             </button>
         </dd>
     </dl>
 
-    <div class="modal fade" id="cancel" tabindex="-1" role="dialog" aria-labelledby="cancelTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="cancel" tabindex="-1" aria-labelledby="cancelLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="cancelTitle" th:text="${event.title}"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="cancelLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>모임을 취소 하시겠습니까?</p>
-                    <p><strong>확인</strong>하시면 본 모임 및 참가 신청 관련 데이터를 삭제합니다.</p>
-                    <p>감사합니다.</p>
+                    <p>Do you want to delete this event?</p>
+                    <p>If you so, please click the <strong>'confirm'</strong></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <form th:action="@{'/party/' + ${party.path} + '/events/' + ${event.id}}" th:method="delete">
-                        <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인</button>
+                        <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">Confirm</button>
                     </form>
                 </div>
             </div>

@@ -160,4 +160,10 @@ public class PartyService {
     public void removeMember(Party party, Account account) {
         party.removeMember(account);
     }
+
+    public Party getPartyToEnroll(String path) {
+        Party party = partyRepository.findPartyOnlyByPath(path);
+        checkIfExistingParty(path, party);
+        return party;
+    }
 }

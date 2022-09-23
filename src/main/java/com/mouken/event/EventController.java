@@ -3,6 +3,7 @@ package com.mouken.event;
 
 import com.mouken.account.CurrentAccount;
 import com.mouken.domain.Account;
+import com.mouken.domain.Enrollment;
 import com.mouken.domain.Event;
 import com.mouken.domain.Party;
 import com.mouken.event.form.EventForm;
@@ -122,5 +123,60 @@ public class EventController {
 
         eventService.updateEvent(event, eventForm);
         return "redirect:/party/" + party.getPath() +  "/events/" + event.getId();
+    }
+
+    @DeleteMapping("/events/{id}")
+    public String cancelEvent(@CurrentAccount Account account, @PathVariable String path, @PathVariable Long id) {
+        Party party = partyService.getPartyToUpdateStatus(account, path);
+        eventService.deleteEvent(eventRepository.findById(id).orElseThrow());
+        return "redirect:/party/" + party.getPath() + "/events";
+    }
+
+    @PostMapping("/events/{id}/enroll")
+    public String newEnrollment(@CurrentAccount Account account,
+                                @PathVariable String path, @PathVariable Long id) {
+        Party party = partyService.getPartyToEnroll(path);
+        eventService.newEnrollment(eventRepository.findById(id).orElseThrow(), account);
+        return "redirect:/party/" + party.getPath() +  "/events/" + id;
+    }
+
+    @PostMapping("/events/{id}/disenroll")
+    public String cancelEnrollment(@CurrentAccount Account account,
+                                   @PathVariable String path, @PathVariable Long id) {
+        Party party = partyService.getPartyToEnroll(path);
+        eventService.cancelEnrollment(eventRepository.findById(id).orElseThrow(), account);
+        return "redirect:/party/" + party.getPath() +  "/events/" + id;
+    }
+
+    @GetMapping("events/{eventId}/enrollments/{enrollmentId}/accept")
+    public String acceptEnrollment(@CurrentAccount Account account, @PathVariable String path,
+                                   @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Party party = partyService.getPartyToUpdate(account, path);
+        eventService.acceptEnrollment(event, enrollment);
+        return "redirect:/party/" + party.getPath() + "/events/" + event.getId();
+    }
+
+    @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/reject")
+    public String rejectEnrollment(@CurrentAccount Account account, @PathVariable String path,
+                                   @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Party party = partyService.getPartyToUpdate(account, path);
+        eventService.rejectEnrollment(event, enrollment);
+        return "redirect:/party/" + party.getPath() + "/events/" + event.getId();
+    }
+
+    @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/checkin")
+    public String checkInEnrollment(@CurrentAccount Account account, @PathVariable String path,
+                                    @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Party party = partyService.getPartyToUpdate(account, path);
+        eventService.checkInEnrollment(enrollment);
+        return "redirect:/party/" + party.getPath() + "/events/" + event.getId();
+    }
+
+    @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/cancel-checkin")
+    public String cancelCheckInEnrollment(@CurrentAccount Account account, @PathVariable String path,
+                                          @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Party party = partyService.getPartyToUpdate(account, path);
+        eventService.cancelCheckInEnrollment(enrollment);
+        return "redirect:/party/" + party.getPath() + "/events/" + event.getId();
     }
 }
