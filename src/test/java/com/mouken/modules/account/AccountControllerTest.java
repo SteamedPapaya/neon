@@ -1,5 +1,6 @@
 package com.mouken.modules.account;
 
+import com.mouken.infra.MockMvcTest;
 import com.mouken.infra.mail.EmailMessage;
 import com.mouken.infra.mail.EmailService;
 import com.mouken.modules.account.Account;
@@ -22,9 +23,7 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 class AccountControllerTest {
 
     @Autowired

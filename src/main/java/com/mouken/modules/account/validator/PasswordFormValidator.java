@@ -1,6 +1,6 @@
-package com.mouken.modules.settings.validator;
+package com.mouken.modules.account.validator;
 
-import com.mouken.modules.settings.form.PasswordForm;
+import com.mouken.modules.account.form.PasswordForm;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

@@ -1,8 +1,8 @@
 package com.mouken.modules.account;
 
 import com.mouken.infra.config.AppProperties;
-import com.mouken.modules.settings.form.Notifications;
-import com.mouken.modules.settings.form.Profile;
+import com.mouken.modules.account.form.Notifications;
+import com.mouken.modules.account.form.Profile;
 import com.mouken.modules.tag.Tag;
 import com.mouken.modules.zone.Zone;
 import com.mouken.infra.mail.EmailMessage;

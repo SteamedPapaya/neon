@@ -154,4 +154,8 @@ public class Party {
     public void removeMember(Account account) {
         this.getMembers().remove(account);
     }
+
+    public boolean isManagedBy(Account account) {
+        return this.getManagers().contains(account);
+    }
 }

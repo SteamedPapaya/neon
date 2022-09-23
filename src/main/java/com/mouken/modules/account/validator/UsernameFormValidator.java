@@ -1,7 +1,7 @@
-package com.mouken.modules.settings.validator;
+package com.mouken.modules.account.validator;
 
 import com.mouken.modules.account.AccountRepository;
-import com.mouken.modules.settings.form.UsernameForm;
+import com.mouken.modules.account.form.UsernameForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

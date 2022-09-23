@@ -1,5 +1,6 @@
 package com.mouken.modules.main;
 
+import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.account.AccountRepository;
 import com.mouken.modules.account.AccountService;
 import com.mouken.modules.account.SignUpForm;
@@ -22,8 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 class MainControllerTest {
 
     @Autowired

@@ -97,7 +97,7 @@ public class PartyService {
     }
     
     private void checkIfManager(Account account, Party party) {
-        if (!account.isManagerOf(party)) {
+        if (!party.isManagedBy(account)) {
             throw new AccessDeniedException("You're inaccessible.");
         }
     }

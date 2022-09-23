@@ -1,5 +1,6 @@
 package com.mouken.modules.event;
 
+import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.account.Account;
 import com.mouken.modules.party.Party;
 import com.mouken.modules.party.PartyControllerTest;
@@ -17,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@MockMvcTest
 class EventControllerTest extends PartyControllerTest {
 
     @Autowired

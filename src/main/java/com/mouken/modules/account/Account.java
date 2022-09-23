@@ -94,7 +94,4 @@ public class Account {
         this.emailCheckTokenCount++;
     }
 
-    public boolean isManagerOf(Party party) {
-        return party.getManagers().contains(this);
-    }
 }

@@ -1,17 +1,16 @@
-package com.mouken.modules.settings;
+package com.mouken.modules.account;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouken.modules.account.AccountService;
 import com.mouken.modules.account.CurrentAccount;
 import com.mouken.modules.account.Account;
-import com.mouken.modules.settings.form.*;
-import com.mouken.modules.settings.validator.PasswordFormValidator;
+import com.mouken.modules.account.form.*;
+import com.mouken.modules.account.validator.PasswordFormValidator;
 import com.mouken.modules.zone.Zone;
 import com.mouken.modules.zone.ZoneRepository;
 import com.mouken.modules.tag.Tag;
-import com.mouken.modules.settings.form.*;
-import com.mouken.modules.settings.validator.UsernameFormValidator;
+import com.mouken.modules.account.validator.UsernameFormValidator;
 import com.mouken.modules.tag.TagRepository;
 import com.mouken.modules.tag.TagService;
 import lombok.RequiredArgsConstructor;

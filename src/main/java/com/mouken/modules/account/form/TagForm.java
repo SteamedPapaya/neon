@@ -1,4 +1,4 @@
-package com.mouken.modules.settings.form;
+package com.mouken.modules.account.form;
 
 import lombok.Data;
 

@@ -1,5 +1,6 @@
 package com.mouken.modules.party;
 
+import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.account.Account;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 class PartySettingsControllerTest extends PartyControllerTest {
 
     @Test

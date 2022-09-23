@@ -51,6 +51,9 @@ dependencies {
     // modelmapper
     implementation 'org.modelmapper:modelmapper:2.1.1'
 
+    // archunit
+    testImplementation 'com.tngtech.archunit:archunit:1.0.0-rc1'
+    testImplementation 'com.tngtech.archunit:archunit-junit5:1.0.0-rc1'
 }
 
 tasks.named('test') {

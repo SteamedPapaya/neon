@@ -1,14 +1,11 @@
-package com.mouken.modules.settings;
+package com.mouken.modules.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mouken.modules.account.AccountRepository;
-import com.mouken.modules.account.AccountService;
-import com.mouken.modules.account.SignUpForm;
-import com.mouken.modules.account.Account;
+import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.tag.Tag;
 import com.mouken.modules.zone.Zone;
-import com.mouken.modules.settings.form.TagForm;
-import com.mouken.modules.settings.form.ZoneForm;
+import com.mouken.modules.account.form.TagForm;
+import com.mouken.modules.account.form.ZoneForm;
 import com.mouken.modules.tag.TagRepository;
 import com.mouken.modules.zone.ZoneRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -32,9 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 class SettingsControllerTest {
     
     @Autowired
