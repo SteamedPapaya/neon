@@ -1,14 +1,18 @@
 package com.mouken.modules.event;
 
 import com.mouken.infra.MockMvcTest;
-import com.mouken.modules.account.Account;
+import com.mouken.modules.account.*;
 import com.mouken.modules.party.Party;
 import com.mouken.modules.party.PartyControllerTest;
+import com.mouken.modules.party.PartyFactory;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
@@ -19,19 +23,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockMvcTest
-class EventControllerTest extends PartyControllerTest {
+class EventControllerTest {
 
+    @Autowired
+    MockMvc mockMvc;
+    @Autowired
+    AccountRepository accountRepository;
     @Autowired
     EventService eventService;
     @Autowired
     EnrollmentRepository enrollmentRepository;
+    @Autowired
+    AccountFactory accountFactory;
+    @Autowired
+    AccountService accountService;
+    @Autowired
+    PartyFactory partyFactory;
+
+    @BeforeEach
+    void beforeEach() {
+        SignUpForm signUpForm = new SignUpForm();
+        signUpForm.setEmail("test@email.com");
+        signUpForm.setUsername("test");
+        signUpForm.setPassword("12345678");
+        accountService.processNewAccount(signUpForm);
+    }
+
+    @AfterEach
+    void afterEach() {
+        accountRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("enroll to FCFS event - Accepted")
     @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void newEnrollment_to_FCFS_event_accepted() throws Exception {
-        Account user1 = createAccount("user1");
-        Party party = createParty("test-party", user1);
+        Account user1 = accountFactory.createAccount("user1");
+        Party party = partyFactory.createParty(user1);
         Event event = createEvent("test-event", EventType.FCFS, 2, party, user1);
 
         mockMvc.perform(post("/party/" + party.getPath() + "/events/" + event.getId() + "/enroll")
@@ -47,12 +75,12 @@ class EventControllerTest extends PartyControllerTest {
     @DisplayName("enroll to FCFS event - Wating (overstaffed)")
     @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void newEnrollment_to_FCFS_event_not_accepted() throws Exception {
-        Account user1 = createAccount("user1");
-        Party party = createParty("test-party", user1);
+        Account user1 = accountFactory.createAccount("user1");
+        Party party = partyFactory.createParty(user1);
         Event event = createEvent("test-event", EventType.FCFS, 2, party, user1);
 
-        Account may = createAccount("may");
-        Account june = createAccount("june");
+        Account may = accountFactory.createAccount("may");
+        Account june = accountFactory.createAccount("june");
         eventService.newEnrollment(event, may);
         eventService.newEnrollment(event, june);
 
@@ -70,9 +98,9 @@ class EventControllerTest extends PartyControllerTest {
     @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void accepted_account_cancelEnrollment_to_FCFS_event_not_accepted() throws Exception {
         Account account = accountRepository.findByUsername("test");
-        Account user1 = createAccount("user1");
-        Account may = createAccount("may");
-        Party party = createParty("test-party", user1);
+        Account user1 = accountFactory.createAccount("user1");
+        Account may = accountFactory.createAccount("may");
+        Party party = partyFactory.createParty(user1);
         Event event = createEvent("test-event", EventType.FCFS, 2, party, user1);
 
         eventService.newEnrollment(event, may);
@@ -98,9 +126,9 @@ class EventControllerTest extends PartyControllerTest {
     @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void not_accepted_account_cancelEnrollment_to_FCFS_event_not_accepted() throws Exception {
         Account account = accountRepository.findByUsername("test");
-        Account user1 = createAccount("user1");
-        Account may = createAccount("may");
-        Party party = createParty("test-party", user1);
+        Account user1 = accountFactory.createAccount("user1");
+        Account may = accountFactory.createAccount("may");
+        Party party = partyFactory.createParty(user1);
         Event event = createEvent("test-event", EventType.FCFS, 2, party, user1);
 
         eventService.newEnrollment(event, may);
@@ -133,8 +161,8 @@ class EventControllerTest extends PartyControllerTest {
     @DisplayName("Enrollment to confirmative event - Wating")
     @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void newEnrollment_to_CONFIMATIVE_event_not_accepted() throws Exception {
-        Account user1 = createAccount("user1");
-        Party party = createParty("test-party", user1);
+        Account user1 = accountFactory.createAccount("user1");
+        Party party = partyFactory.createParty(user1);
         Event event = createEvent("test-event", EventType.CONFIRMATIVE, 2, party, user1);
 
         mockMvc.perform(post("/party/" + party.getPath() + "/events/" + event.getId() + "/enroll")

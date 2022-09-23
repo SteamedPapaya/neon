@@ -236,6 +236,7 @@ public class PartySettingsController {
     @PostMapping("/party/path")
     public String updatePartyPath(@CurrentAccount Account account, @PathVariable String path,
                                   Model model, RedirectAttributes attributes) {
+
         String newPath = partyService.getNewPath();
 
         Party party = partyService.getPartyToUpdateStatus(account, path);

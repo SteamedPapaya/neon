@@ -56,7 +56,6 @@ class SettingsControllerTest {
         signUpForm.setUsername("test");
         signUpForm.setPassword("12345678");
         accountService.processNewAccount(signUpForm);
-
         zoneRepository.save(testZone);
     }
 

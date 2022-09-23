@@ -25,6 +25,8 @@ import java.util.Set;
         @NamedAttributeNode("managers")})
 @NamedEntityGraph(name = "Party.withManagers", attributeNodes = {
         @NamedAttributeNode("managers")})
+@NamedEntityGraph(name = "Party.withMembers", attributeNodes = {
+        @NamedAttributeNode("members")})
 @Entity
 @Getter @Setter
 @EqualsAndHashCode(of = "id")

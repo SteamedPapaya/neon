@@ -24,6 +24,8 @@ public class PartyService {
     public Party createNewParty(Party party, Account account) {
         log.info("createNewParty");
 
+        party.setPath(getNewPath());
+
         Party newParty = partyRepository.save(party);
         log.info("newParty Path = {}", newParty.getPath());
         newParty.addManager(account);

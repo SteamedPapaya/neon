@@ -56,8 +56,6 @@ public class PartyController {
             Errors errors,
             Model model) {
 
-        partyForm.setPath(partyService.getNewPath());
-        log.info("PARTY PATH = {}", partyForm.getPath());
         if (errors.hasErrors()) {
             log.info("ERROR={}", errors.toString());
             model.addAttribute(account);
@@ -70,14 +68,14 @@ public class PartyController {
     }
 
 
-    @PostMapping("/party/{path}/join")
+    @GetMapping("/party/{path}/join")
     public String joinParty(@CurrentAccount Account account, @PathVariable String path) {
         Party party = partyRepository.findPartyWithMembersByPath(path);
         partyService.addMember(party, account);
         return "redirect:/party/" + party.getPath() + "/members";
     }
 
-    @PostMapping("/party/{path}/leave")
+    @GetMapping("/party/{path}/leave")
     public String leaveParty(@CurrentAccount Account account, @PathVariable String path) {
         Party party = partyRepository.findPartyWithMembersByPath(path);
         partyService.removeMember(party, account);

@@ -1,10 +1,7 @@
 package com.mouken.modules.party;
 
 import com.mouken.infra.MockMvcTest;
-import com.mouken.modules.account.AccountRepository;
-import com.mouken.modules.account.AccountService;
-import com.mouken.modules.account.SignUpForm;
-import com.mouken.modules.account.Account;
+import com.mouken.modules.account.*;
 import com.mouken.modules.party.Party;
 import com.mouken.modules.party.PartyRepository;
 import com.mouken.modules.party.PartyService;
@@ -20,6 +17,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -39,6 +38,9 @@ public class PartyControllerTest {
     protected AccountRepository accountRepository;
     @Autowired
     protected AccountService accountService;
+    @Autowired
+    AccountFactory accountFactory;
+    @Autowired PartyFactory partyFactory;
 
     @BeforeEach
     void beforeEach() {
@@ -109,33 +111,49 @@ public class PartyControllerTest {
     @Test
     void viewParty() throws Exception {
         Party party = new Party();
-        party.setPath("test-path");
         party.setTitle("TEST_PARTY");
         party.setShortDescription("INTRO");
         party.setFullDescription("<p>CONTENT</p>");
 
         Account account = accountRepository.findByUsername("test");
-        partyService.createNewParty(party, account);
+        Party newParty = partyService.createNewParty(party, account);
 
-        mockMvc.perform(get("/party/test-path"))
+        mockMvc.perform(get("/party/" + newParty.getPath()))
                 .andExpect(view().name("party/view"))
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attributeExists("party"));
     }
 
-    protected Party createParty(String path, Account manager) {
-        Party party = new Party();
-        party.setPath(path);
-        partyService.createNewParty(party, manager);
-        return party;
+    @Test
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Join party")
+    void joinParty() throws Exception {
+        Account user1 = accountFactory.createAccount("user1");
+        Party party = partyFactory.createParty(user1);
+
+        mockMvc.perform(get("/party/" + party.getPath() + "/join"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/party/" + party.getPath() + "/members"));
+
+        Account account = accountRepository.findByUsername("test");
+        assertTrue(party.getMembers().contains(account));
     }
 
-    protected Account createAccount(String username) {
-        Account account = new Account();
-        account.setUsername(username);
-        account.setEmail(username + "@email.com");
-        accountRepository.save(account);
-        return account;
+    @Test
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Leave party")
+    void leaveParty() throws Exception {
+        Account user1 = accountFactory.createAccount("user1");
+        Party party = partyFactory.createParty(user1);
+        
+        Account account = accountRepository.findByUsername("test");
+        partyService.addMember(party, account);
+
+        mockMvc.perform(get("/party/" + party.getPath() + "/leave"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/party/" + party.getPath() + "/members"));
+
+        assertFalse(party.getMembers().contains(account));
     }
     
 }
