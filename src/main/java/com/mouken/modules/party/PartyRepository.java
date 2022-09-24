@@ -25,4 +25,7 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
     Party findPartyWithMembersByPath(String path);
 
     Party findPartyOnlyByPath(String path);
+
+    @EntityGraph(value = "Party.withTagsAndZones", type = EntityGraph.EntityGraphType.FETCH)
+    Party findPartyWithTagsAndZonesById(Long id);
 }

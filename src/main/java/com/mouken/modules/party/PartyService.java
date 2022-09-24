@@ -116,6 +116,7 @@ public class PartyService {
 
     public void publish(Party party) {
         party.publish();
+        this.eventPublisher.publishEvent(new PartyCreatedEvent(party));
     }
 
     public void close(Party party) {

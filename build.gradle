@@ -1,8 +1,15 @@
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'java'
     id "com.github.node-gradle.node" version "3.4.0"
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 node  {
@@ -59,8 +66,41 @@ dependencies {
     testImplementation "org.testcontainers:junit-jupiter:1.17.3"
     testImplementation "org.testcontainers:postgresql:1.17.3"
 
+    // querydsl
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+/**
+ * QueryDSL
+ */
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true // use JPA or not
+    querydslSourcesDir = querydslDir
+}
+
+// sourceSet when it build
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+// compile options
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+// to inherit compileClassPath
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
 }
