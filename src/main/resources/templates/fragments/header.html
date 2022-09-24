@@ -42,6 +42,16 @@
                     <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
                 </form>
 
+                <ul sec:authorize="isAuthenticated()" class="navbar-nav flex-row flex-wrap bd-navbar-nav pt-2">
+                    <li class="nav-item col-12 col-md-auto">
+                        <a class="nav-link p-2" th:href="@{/notifications}">
+                            <i th:if="${!hasNotification}" class="fa fa-bell-o" aria-hidden="true"></i>
+                            <span class="text-info" th:if="${hasNotification}">
+                                <i class="fa fa-bell" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
 

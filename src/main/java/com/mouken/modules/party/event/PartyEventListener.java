@@ -1,9 +1,14 @@
 package com.mouken.modules.party.event;
 
 import com.mouken.infra.config.AppProperties;
+import com.mouken.infra.mail.EmailMessage;
 import com.mouken.infra.mail.EmailService;
 import com.mouken.modules.account.Account;
+import com.mouken.modules.account.AccountPredicates;
 import com.mouken.modules.account.AccountRepository;
+import com.mouken.modules.notification.Notification;
+import com.mouken.modules.notification.NotificationRepository;
+import com.mouken.modules.notification.NotificationType;
 import com.mouken.modules.party.Party;
 import com.mouken.modules.party.PartyRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +30,13 @@ import java.time.LocalDateTime;
 public class PartyEventListener {
 
     private final PartyRepository partyRepository;
-//    private final AccountRepository accountRepository;
-//    private final EmailService emailService;
-//    private final TemplateEngine templateEngine;
-//    private final AppProperties appProperties;
-//    private final NotificationRepository notificationRepository;
+    private final AccountRepository accountRepository;
+    private final EmailService emailService;
+    private final TemplateEngine templateEngine;
+    private final AppProperties appProperties;
+    private final NotificationRepository notificationRepository;
 
-/*    @EventListener
+    @EventListener
     public void handlePartyCreatedEvent(PartyCreatedEvent partyCreatedEvent) {
         Party party = partyRepository.findPartyWithTagsAndZonesById(partyCreatedEvent.getParty().getId());
         Iterable<Account> accounts = accountRepository.findAll(AccountPredicates.findByTagsAndZones(party.getTags(), party.getZones()));
@@ -44,12 +49,12 @@ public class PartyEventListener {
                 savePartyCreatedNotification(party, account);
             }
         });
-    }*/
+    }
 
-/*    private void savePartyCreatedNotification(Party party, Account account) {
+    private void savePartyCreatedNotification(Party party, Account account) {
         Notification notification = new Notification();
         notification.setTitle(party.getTitle());
-        notification.setLink("/party/" + party.getEncodedPath());
+        notification.setLink("/party/" + party.getPath());
         notification.setChecked(false);
         notification.setCreatedLocalDateTime(LocalDateTime.now());
         notification.setMessage(party.getShortDescription());
@@ -60,20 +65,20 @@ public class PartyEventListener {
 
     private void sendPartyCreatedEmail(Party party, Account account) {
         Context context = new Context();
-        context.setVariable("nickname", account.getNickname());
-        context.setVariable("link", "/party/" + party.getEncodedPath());
+        context.setVariable("username", account.getUsername());
+        context.setVariable("link", "/party/" + party.getPath());
         context.setVariable("linkName", party.getTitle());
-        context.setVariable("message", "새로운 스터디가 생겼습니다");
+        context.setVariable("message", "new party is created.");
         context.setVariable("host", appProperties.getHost());
         String message = templateEngine.process("mail/simple-link", context);
 
         EmailMessage emailMessage = EmailMessage.builder()
-                .subject("스터디올래, '" + party.getTitle() + "' 스터디가 생겼습니다.")
+                .subject("Mouken, '" + party.getTitle() + "' the new party is created")
                 .to(account.getEmail())
                 .message(message)
                 .build();
 
         emailService.sendEmail(emailMessage);
-    }*/
+    }
 
 }
