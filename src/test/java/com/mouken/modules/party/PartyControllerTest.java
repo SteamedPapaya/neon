@@ -1,5 +1,6 @@
 package com.mouken.modules.party;
 
+import com.mouken.infra.AbstractContainerBaseTest;
 import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.account.*;
 import com.mouken.modules.party.Party;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @MockMvcTest
-public class PartyControllerTest {
+public class PartyControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     protected MockMvc mockMvc;

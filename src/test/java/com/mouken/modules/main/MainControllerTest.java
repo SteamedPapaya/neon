@@ -1,5 +1,6 @@
 package com.mouken.modules.main;
 
+import com.mouken.infra.AbstractContainerBaseTest;
 import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.account.AccountRepository;
 import com.mouken.modules.account.AccountService;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @MockMvcTest
-class MainControllerTest {
+class MainControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     private MockMvc mockMvc;

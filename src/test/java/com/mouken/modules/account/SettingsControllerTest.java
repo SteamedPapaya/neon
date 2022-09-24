@@ -1,6 +1,7 @@
 package com.mouken.modules.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mouken.infra.AbstractContainerBaseTest;
 import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.tag.Tag;
 import com.mouken.modules.zone.Zone;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @MockMvcTest
-class SettingsControllerTest {
+class SettingsControllerTest extends AbstractContainerBaseTest {
     
     @Autowired
     MockMvc mockMvc;

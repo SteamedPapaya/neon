@@ -1,5 +1,6 @@
 package com.mouken.modules.account;
 
+import com.mouken.infra.AbstractContainerBaseTest;
 import com.mouken.infra.MockMvcTest;
 import com.mouken.infra.mail.EmailMessage;
 import com.mouken.infra.mail.EmailService;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcTest
-class AccountControllerTest {
+class AccountControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     private MockMvc mockMvc;

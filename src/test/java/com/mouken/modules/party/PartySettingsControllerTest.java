@@ -1,5 +1,6 @@
 package com.mouken.modules.party;
 
+import com.mouken.infra.AbstractContainerBaseTest;
 import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.account.*;
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @MockMvcTest
-class PartySettingsControllerTest{
+class PartySettingsControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     MockMvc mockMvc;
