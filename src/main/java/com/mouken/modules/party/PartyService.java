@@ -2,6 +2,7 @@ package com.mouken.modules.party;
 
 import com.mouken.modules.account.Account;
 import com.mouken.modules.party.event.PartyCreatedEvent;
+import com.mouken.modules.party.event.PartyUpdateEvent;
 import com.mouken.modules.party.form.PartyDescriptionForm;
 import com.mouken.modules.tag.Tag;
 import com.mouken.modules.zone.Zone;
@@ -51,6 +52,7 @@ public class PartyService {
 
     public void updatePartyDescription(Party party, PartyDescriptionForm partyDescriptionForm) {
         modelMapper.map(partyDescriptionForm, party);
+        eventPublisher.publishEvent(new PartyUpdateEvent(party, "Party intro has been updated."));
     }
 
     public void updatePartyBanner(Party party, String image) {
@@ -121,14 +123,17 @@ public class PartyService {
 
     public void close(Party party) {
         party.close();
+        eventPublisher.publishEvent(new PartyUpdateEvent(party, "Party has been closed."));
     }
 
     public void startRecruit(Party party) {
         party.startRecruit();
+        eventPublisher.publishEvent(new PartyUpdateEvent(party, "Enrollment has been started."));
     }
 
     public void stopRecruit(Party party) {
         party.stopRecruit();
+        eventPublisher.publishEvent(new PartyUpdateEvent(party, "Enrollment has been stopped."));
     }
 
     public String getNewPath() {

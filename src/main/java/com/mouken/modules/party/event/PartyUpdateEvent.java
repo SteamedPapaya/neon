@@ -3,15 +3,14 @@ package com.mouken.modules.party.event;
 import com.mouken.modules.party.Party;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEvent;
 
 @Getter
 @RequiredArgsConstructor
-public class PartyCreatedEvent {
+public class PartyUpdateEvent {
 
-    private Party party;
+    private final Party party;
 
-    public PartyCreatedEvent(Party party) {
-        this.party = party;
-    }
+    private final String message;
 
 }

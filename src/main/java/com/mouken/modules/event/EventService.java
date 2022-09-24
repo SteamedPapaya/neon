@@ -1,10 +1,14 @@
 package com.mouken.modules.event;
 
 import com.mouken.modules.account.Account;
+import com.mouken.modules.event.event.EnrollmentAcceptedEvent;
+import com.mouken.modules.event.event.EnrollmentRejectedEvent;
 import com.mouken.modules.event.form.EventForm;
 import com.mouken.modules.party.Party;
+import com.mouken.modules.party.event.PartyUpdateEvent;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,21 +22,28 @@ public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
     private final EnrollmentRepository enrollmentRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Event createEvent(Event event, Party party, Account account) {
         event.setCreatedBy(account);
         event.setCreatedDateTime(LocalDateTime.now());
         event.setParty(party);
+        eventPublisher.publishEvent(new PartyUpdateEvent(event.getParty(),
+                "'" + event.getTitle() + "' the new event."));
         return eventRepository.save(event);
     }
 
     public void updateEvent(Event event, EventForm eventForm) {
         modelMapper.map(eventForm, event);
-        // TODO 모집 인원을 늘린 선착순 모임의 경우에, 자동으로 추가 인원의 참가 신청을 확정 상태로 변경해야 한다.
+        event.acceptWaitingList();
+        eventPublisher.publishEvent(new PartyUpdateEvent(event.getParty(),
+                "'" + event.getTitle() + "' event intro has been updated."));
     }
 
     public void deleteEvent(Event event) {
         eventRepository.delete(event);
+        eventPublisher.publishEvent(new PartyUpdateEvent(event.getParty(),
+                "'" + event.getTitle() + "' event has been deleted."));
     }
 
     public void newEnrollment(Event event, Account account) {
@@ -48,17 +59,21 @@ public class EventService {
 
     public void cancelEnrollment(Event event, Account account) {
         Enrollment enrollment = enrollmentRepository.findByEventAndAccount(event, account);
-        event.removeEnrollment(enrollment);
-        enrollmentRepository.delete(enrollment);
-        event.acceptNextWaitingEnrollment();
+        if (!enrollment.isAttended()) {
+            event.removeEnrollment(enrollment);
+            enrollmentRepository.delete(enrollment);
+            event.acceptNextWaitingEnrollment();
+        }
     }
 
     public void acceptEnrollment(Event event, Enrollment enrollment) {
         event.accept(enrollment);
+        eventPublisher.publishEvent(new EnrollmentAcceptedEvent(enrollment));
     }
 
     public void rejectEnrollment(Event event, Enrollment enrollment) {
         event.reject(enrollment);
+        eventPublisher.publishEvent(new EnrollmentRejectedEvent(enrollment));
     }
 
     public void checkInEnrollment(Enrollment enrollment) {

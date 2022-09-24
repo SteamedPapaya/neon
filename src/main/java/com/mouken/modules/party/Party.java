@@ -30,6 +30,9 @@ import java.util.Set;
 @NamedEntityGraph(name = "Party.withTagsAndZones", attributeNodes = {
         @NamedAttributeNode("tags"),
         @NamedAttributeNode("zones")})
+@NamedEntityGraph(name = "Party.withManagersAndMembers", attributeNodes = {
+        @NamedAttributeNode("managers"),
+        @NamedAttributeNode("members")})
 @Entity
 @Getter @Setter
 @EqualsAndHashCode(of = "id")

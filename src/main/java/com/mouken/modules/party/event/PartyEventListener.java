@@ -21,6 +21,8 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 @Async
@@ -42,38 +44,58 @@ public class PartyEventListener {
         Iterable<Account> accounts = accountRepository.findAll(AccountPredicates.findByTagsAndZones(party.getTags(), party.getZones()));
         accounts.forEach(account -> {
             if (account.isPartyCreatedByEmail()) {
-                sendPartyCreatedEmail(party, account);
+                sendPartyCreatedEmail(party, account, "New party",
+                        "Mouken, '" + party.getTitle() + "' the new party.");
             }
 
             if (account.isPartyCreatedByWeb()) {
-                savePartyCreatedNotification(party, account);
+                createNotification(party, account, party.getShortDescription(), NotificationType.STUDY_CREATED);
             }
         });
     }
 
-    private void savePartyCreatedNotification(Party party, Account account) {
+    @EventListener
+    public void handlePartyUpdateEvent(PartyUpdateEvent partyUpdateEvent) {
+        Party party = partyRepository.findPartyWithManagersAndMembersById(partyUpdateEvent.getParty().getId());
+        Set<Account> accounts = new HashSet<>();
+        accounts.addAll(party.getManagers());
+        accounts.addAll(party.getMembers());
+
+        accounts.forEach(account -> {
+            if (account.isPartyUpdatedByEmail()) {
+                sendPartyCreatedEmail(party, account, partyUpdateEvent.getMessage(),
+                        "Mouken, there are notifications in '" + party.getTitle() + "' party.");
+            }
+
+            if (account.isPartyUpdatedByWeb()) {
+                createNotification(party, account, partyUpdateEvent.getMessage(), NotificationType.STUDY_UPDATED);
+            }
+        });
+    }
+
+    private void createNotification(Party party, Account account, String message, NotificationType notificationType) {
         Notification notification = new Notification();
         notification.setTitle(party.getTitle());
         notification.setLink("/party/" + party.getPath());
         notification.setChecked(false);
-        notification.setCreatedLocalDateTime(LocalDateTime.now());
-        notification.setMessage(party.getShortDescription());
+        notification.setCreatedDateTime(LocalDateTime.now());
+        notification.setMessage(message);
         notification.setAccount(account);
-        notification.setNotificationType(NotificationType.STUDY_CREATED);
+        notification.setNotificationType(notificationType);
         notificationRepository.save(notification);
     }
 
-    private void sendPartyCreatedEmail(Party party, Account account) {
+    private void sendPartyCreatedEmail(Party party, Account account, String contextMessage, String emailSubject) {
         Context context = new Context();
         context.setVariable("username", account.getUsername());
         context.setVariable("link", "/party/" + party.getPath());
         context.setVariable("linkName", party.getTitle());
-        context.setVariable("message", "new party is created.");
+        context.setVariable("message", contextMessage);
         context.setVariable("host", appProperties.getHost());
         String message = templateEngine.process("mail/simple-link", context);
 
         EmailMessage emailMessage = EmailMessage.builder()
-                .subject("Mouken, '" + party.getTitle() + "' the new party is created")
+                .subject(emailSubject)
                 .to(account.getEmail())
                 .message(message)
                 .build();
