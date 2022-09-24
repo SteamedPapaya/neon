@@ -1,6 +1,7 @@
 package com.mouken.modules.party;
 
 import com.mouken.modules.account.Account;
+import com.mouken.modules.party.event.PartyCreatedEvent;
 import com.mouken.modules.party.form.PartyDescriptionForm;
 import com.mouken.modules.tag.Tag;
 import com.mouken.modules.zone.Zone;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ public class PartyService {
 
     private final PartyRepository partyRepository;
     private final ModelMapper modelMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Party createNewParty(Party party, Account account) {
         log.info("createNewParty");
@@ -29,6 +32,7 @@ public class PartyService {
         Party newParty = partyRepository.save(party);
         log.info("newParty Path = {}", newParty.getPath());
         newParty.addManager(account);
+        eventPublisher.publishEvent(new PartyCreatedEvent(newParty));
         return newParty;
     }
 
