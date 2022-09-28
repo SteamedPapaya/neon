@@ -165,4 +165,5 @@ public class AccountController {
         accountService.login(account);
         return "redirect:/check-email-login";
     }
+
 }

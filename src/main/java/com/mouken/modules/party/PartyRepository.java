@@ -1,34 +1,44 @@
 package com.mouken.modules.party;
 
+import com.mouken.modules.account.Account;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional(readOnly = true)
-public interface PartyRepository extends JpaRepository<Party, Long> {
+public interface PartyRepository extends JpaRepository<Party, Long>, PartyRepositoryExtension {
 
     boolean existsByPath(String path);
 
-    @EntityGraph(value = "Party.withAll", type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"tags", "zones", "managers", "members"}, type = EntityGraph.EntityGraphType.LOAD)
     Party findByPath(String path);
 
-    @EntityGraph(value = "Party.withTagsAndManagers", type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(attributePaths = {"tags", "managers"})
     Party findPartyWithTagsByPath(String path);
 
-    @EntityGraph(value = "Party.withZonesAndManagers", type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(attributePaths = {"zones", "managers"})
     Party findPartyWithZonesByPath(String path);
 
-    @EntityGraph(value = "Party.withManagers", type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(attributePaths = "managers")
     Party findPartyWithManagersByPath(String path);
 
-    @EntityGraph(value = "Party.withMembers", type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(attributePaths = "members")
     Party findPartyWithMembersByPath(String path);
 
     Party findPartyOnlyByPath(String path);
 
-    @EntityGraph(value = "Party.withTagsAndZones", type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(attributePaths = {"zones", "tags"})
     Party findPartyWithTagsAndZonesById(Long id);
 
-    @EntityGraph(value = "Party.withManagersAndMembers", type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(attributePaths = {"members", "managers"})
     Party findPartyWithManagersAndMembersById(Long id);
+
+    @EntityGraph(attributePaths = {"zones", "tags"})
+    List<Party> findFirst9ByPublishedAndClosedOrderByPublishedDateTimeDesc(boolean published, boolean closed);
+
+    List<Party> findFirst5ByManagersContainingAndClosedOrderByPublishedDateTimeDesc(Account account, boolean closed);
+
+    List<Party> findFirst5ByMembersContainingAndClosedOrderByPublishedDateTimeDesc(Account account, boolean closed);
 }

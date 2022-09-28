@@ -15,6 +15,7 @@ public class PackageDependencyTests {
     private static final String ACCOUNT = "..modules.account..";
     private static final String TAG = "..modules.tag..";
     private static final String ZONE = "..modules.zone..";
+    private static final String MAIN = "..modules.main..";
 
     @ArchTest
     ArchRule modulesPackageRule = classes().that().resideInAPackage("com.mouken.modules..")
@@ -22,9 +23,9 @@ public class PackageDependencyTests {
             .resideInAnyPackage("com.mouken.modules..");
 
     @ArchTest
-    ArchRule partyPackageRule = classes().that().resideInAPackage("..modules.party..")
+    ArchRule partyPackageRule = classes().that().resideInAPackage(PARTY)
             .should().onlyBeAccessed().byClassesThat()
-            .resideInAnyPackage(PARTY, EVENT);
+            .resideInAnyPackage(PARTY, EVENT, MAIN);
 
     @ArchTest
     ArchRule eventPackageRule = classes().that().resideInAPackage(EVENT)

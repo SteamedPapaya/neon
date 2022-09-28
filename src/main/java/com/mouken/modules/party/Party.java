@@ -12,27 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@NamedEntityGraph(name = "Party.withAll", attributeNodes = {
-        @NamedAttributeNode("tags"),
-        @NamedAttributeNode("zones"),
-        @NamedAttributeNode("managers"),
-        @NamedAttributeNode("members")})
-@NamedEntityGraph(name = "Party.withTagsAndManagers", attributeNodes = {
-        @NamedAttributeNode("tags"),
-        @NamedAttributeNode("managers")})
-@NamedEntityGraph(name = "Party.withZonesAndManagers", attributeNodes = {
-        @NamedAttributeNode("zones"),
-        @NamedAttributeNode("managers")})
-@NamedEntityGraph(name = "Party.withManagers", attributeNodes = {
-        @NamedAttributeNode("managers")})
-@NamedEntityGraph(name = "Party.withMembers", attributeNodes = {
-        @NamedAttributeNode("members")})
-@NamedEntityGraph(name = "Party.withTagsAndZones", attributeNodes = {
-        @NamedAttributeNode("tags"),
-        @NamedAttributeNode("zones")})
-@NamedEntityGraph(name = "Party.withManagersAndMembers", attributeNodes = {
-        @NamedAttributeNode("managers"),
-        @NamedAttributeNode("members")})
 @Entity
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
@@ -86,6 +65,8 @@ public class Party {
     private boolean closed;
 
     private boolean useBanner;
+
+    private int memberCount;
 
     public void addManager(Account account) {
         this.managers.add(account);
@@ -157,10 +138,12 @@ public class Party {
 
     public void addMember(Account account) {
         this.getMembers().add(account);
+        this.memberCount++;
     }
 
     public void removeMember(Account account) {
         this.getMembers().remove(account);
+        this.memberCount--;
     }
 
     public boolean isManagedBy(Account account) {

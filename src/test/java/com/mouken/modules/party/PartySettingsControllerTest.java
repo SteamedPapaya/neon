@@ -59,7 +59,8 @@ class PartySettingsControllerTest extends AbstractContainerBaseTest {
         Party party = partyFactory.createParty(account);
 
         mockMvc.perform(get("/party/" + party.getPath() + "/settings/description"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isOk())
+                .andExpect(view().name("error"));
     }
 
     @Test
