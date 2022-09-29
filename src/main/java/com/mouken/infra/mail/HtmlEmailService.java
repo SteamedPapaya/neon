@@ -11,7 +11,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Slf4j
-// TODO @Profile("dev")
+@Profile("aws")
 @Component
 @RequiredArgsConstructor
 public class HtmlEmailService implements EmailService {
