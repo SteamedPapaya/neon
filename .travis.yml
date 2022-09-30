@@ -17,6 +17,22 @@ before_install:
 
 script: "./gradlew clean build"
 
+before_deploy:
+  - zip -r mouken * # CodeDeploy 는 .jar 은 인식하지 못하므로 .jar 와 설정 파일들을 .zip 으로 압축
+  - mkdir -p deploy
+  - mv mouken.zip deploy/mouken.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY key
+    secret_access_key: $AWS_SECRET_KEY key
+    bucket: ryuu-bucket
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private # file access to zip
+    local_dir: deploy # upload to S3 only the files in this dir
+    wait-until-deployed: true
+
 notifications:
   email:
     recipients:
