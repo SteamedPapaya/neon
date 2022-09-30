@@ -15,9 +15,6 @@ cache:
 before_install:
   - chmod +x gradlew
 
-before_script:
-  - chmod a+x gradlew
-
 script: "./gradlew clean build"
 
 notifications:
