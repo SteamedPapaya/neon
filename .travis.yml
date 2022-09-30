@@ -32,6 +32,8 @@ deploy:
     acl: private # file access to zip
     local_dir: deploy # upload to S3 only the files in this dir
     wait-until-deployed: true
+    on:
+      branch: main
 
 notifications:
   email:
