@@ -34,6 +34,17 @@ deploy:
     wait-until-deployed: true
     on:
       branch: main
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: ryuu-bucket # s3 bucket name
+    key: mouken.zip # compress the build files
+    bundle_type: zip # compression extension
+    application: mouken # the CodeDeploy application
+    deployment_group: mouken-group # the CodeDeploy deployment group
+    region: ap-northeast-2
+    wait-until-deployed: true
+
 
 notifications:
   email:
