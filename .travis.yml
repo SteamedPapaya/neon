@@ -16,7 +16,7 @@ before_install:
   - chmod +x gradlew
 
 script:
-  - "gradle nodeInstall"
+  - "npm install"
   - "./gradlew clean build"
 
 before_deploy:
