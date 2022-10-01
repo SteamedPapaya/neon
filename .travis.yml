@@ -15,7 +15,9 @@ cache:
 before_install:
   - chmod +x gradlew
 
-script: "./gradlew clean build"
+script:
+  - "nodeInstall"
+  - "./gradlew clean build"
 
 before_deploy:
   - mkdir -p before-deploy
