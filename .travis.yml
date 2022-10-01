@@ -21,8 +21,8 @@ script:
 
 before_deploy:
   - mkdir -p before-deploy
-  - mkdir -p before-deploy/src/main/resources/static
-  - cp -r src/main/resources/static/node_modules before-deploy/src/main/resources/static/
+  - mkdir -p before-deploy/src/main/resources/static/node_modules
+  - cp -r src/main/resources/static/node_modules/** before-deploy/src/main/resources/static/node_modules/
   - cp scripts/*.sh before-deploy/
   - cp appspec.yml before-deploy/
   - cp build/libs/*.jar before-deploy/
