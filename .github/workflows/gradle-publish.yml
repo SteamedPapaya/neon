@@ -39,6 +39,10 @@ jobs:
       run: chmod +x ./gradlew
       shell: bash
 
+    - name: npm install
+      run: | 
+        gradle npmInstall
+
     - name: Build with Gradle
       run: ./gradlew clean -x test build
       shell: bash
@@ -56,8 +60,7 @@ jobs:
 
     - name: Generate deployment package
       run: |
-        mkdir -p before-deploy
-        gradle npmInstall
+        mkdir -p before-deploy       
         cp scripts/*.sh before-deploy/
         cp appspec.yml before-deploy/
         cp build/libs/*.jar before-deploy/
