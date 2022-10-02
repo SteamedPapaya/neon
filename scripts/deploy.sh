@@ -9,7 +9,8 @@ cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
 echo "> check PID of application now running"
 
-CURRENT_PID=$(pgrep -fl mouken | grep jar | awk '{print $1}')
+CURRENT_PID=$(lsof -ti tcp:8080)
+# CURRENT_PID=$(pgrep -fl mouken | grep jar | awk '{print $1}')
 
 echo "> pid : $CURRENT_PID"
 
