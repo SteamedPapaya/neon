@@ -19,7 +19,9 @@ echo "> authorize to $JAR_NAME"
 chmod +x $JAR_NAME
 
 echo "> Run $JAR_NAME with profile=$IDLE_PROFILE"
+
 IDLE_PROFILE=$(find_idle_profile)
+
 nohup java -jar \
   -Dspring.config.location=classpath:/application.properties,classpath:/application-$IDLE_PROFILE.properties,/home/ec2-user/app/application-real-db.properties,/home/ec2-user/app/application-mail.properties \
   -Dspring.profiles.active=$IDLE_PROFILE \
