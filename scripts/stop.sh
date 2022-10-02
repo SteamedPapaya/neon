@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+
+ABSPATH=$(readlink -f $0)
 ABSDIR=$(dirname $ABSPATH)
 # current absolute path in which stop.sh is included
 

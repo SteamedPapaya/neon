@@ -31,6 +31,7 @@ do
   then
     echo "> Health check failure"
     echo "> It doesn't connect to Nginx and the deployment end"
+    exit 1
   fi
 
   echo "> Health check connection failure. retrying..."
