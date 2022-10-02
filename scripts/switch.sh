@@ -11,5 +11,5 @@ function switch_proxy() {
   echo "> Switching"
   echo "set \$service_url http://127.0.0.1:${IDLE_PORT};" | sudo tee /etc/nginx/conf.d/service-url.inc
   echo ">> Reload Nginx"
-  sudo service nginx -s reload
+  sudo nginx -s reload
 }
