@@ -6,7 +6,6 @@ function find_idle_profile() {
   # 응답값을 HttpStatus 로 받는다.
 
   # 정상이면 200, 오류가 발생하면 400~503 이므로 400 이상을 예외로 보고 real2 를 사용합니다.
-  echo "> RESPONSE_CODE=$RESPONSE_CODE"
   if [ ${RESPONSE_CODE} -ge 400 ]
   then
     CURRENT_PROFILE=real2
@@ -14,7 +13,6 @@ function find_idle_profile() {
     CURRENT_PROFILE=$(curl -s http://localhost/app-profile)
   fi
 
-  echo "> CURRENT_PROFILE=$CURRENT_PROFILE"
   if [ ${CURRENT_PROFILE} == real1 ]
   then
     IDLE_PROFILE=real2
