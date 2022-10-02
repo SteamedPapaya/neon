@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function find_idle_profile() {
-  RESPONSE_CODE=$(curl -s -o /dev/null -w "${http_code}" http://localhost/app-profile)
+  RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/app-profile)
   # 현재 Nginx 가 바라보고 있는 스프링 부터가 정상적으로 수행 중인지 확인
   # 응답값을 HttpStatus 로 받는다.
 

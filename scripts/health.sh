@@ -15,7 +15,7 @@ sleep 10
 for RETRY_COUNT in {1..10}
 do
   RESPONSE=$(curl -s http://localhost:${IDLE_PORT}/app-profile)
-  UP_COUNT=$echo ${RESPONSE} | grep 'real' | wc -l)
+  UP_COUNT=$(echo ${RESPONSE} | grep 'real' | wc -l)
 
   if [ ${UP_COUNT} -ge 1 ]
   then
@@ -24,7 +24,7 @@ do
     break
   else
     echo "> You can not find the response about health check or It's not running."
-    echo "> health check: ${REPONSE}"
+    echo "> health check: ${RESPONSE}"
   fi
 
   if [ ${RETRY_COUNT} -eq 10 ]
