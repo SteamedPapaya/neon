@@ -6,6 +6,7 @@ function find_idle_profile() {
   # 응답값을 HttpStatus 로 받는다.
 
   # 정상이면 200, 오류가 발생하면 400~503 이므로 400 이상을 예외로 보고 real2 를 사용합니다.
+  echo "> RESPONSE_CODE=$RESPONSE_CODE"
   if [ ${RESPONSE_CODE} -ge 400 ]
   then
     CURRENT_PROFILE=real2
@@ -14,7 +15,7 @@ function find_idle_profile() {
   fi
 
   echo "> CURRENT_PROFILE=$CURRENT_PROFILE"
-  if [ ${CURRENT_PROFILE} == "real1" ]
+  if [ ${CURRENT_PROFILE} == real1 ]
   then
     IDLE_PROFILE=real2
   else
@@ -31,7 +32,7 @@ function find_idle_profile() {
 function find_idle_port() {
   IDLE_PROFILE=$(find_idle_profile)
 
-  if [ ${IDLE_PROFILE} == "real1" ]
+  if [ ${IDLE_PROFILE} == real1 ]
   then
     echo "8081"
   else
