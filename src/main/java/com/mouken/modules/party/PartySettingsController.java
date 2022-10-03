@@ -89,6 +89,11 @@ public class PartySettingsController {
     public String enablePartyBanner(@CurrentAccount Account account, @PathVariable String path) {
         Party party = partyService.getPartyToUpdate(account, path);
         partyService.enablePartyBanner(party);
+
+        int max_num = 24;
+        String random_num = String.valueOf((int) (Math.random() * max_num) + 1);
+        String image_path = "/assets/banner/" + random_num + ".png";
+        partyService.updatePartyBanner(party, image_path);
         return "redirect:/party/" + path + "/settings/banner";
     }
 
