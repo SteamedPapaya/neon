@@ -89,14 +89,7 @@ public class Party {
     }
 
     public String getImage() {
-        if (image == null) {
-            int max_num = 24;
-            int num = (int) (Math.random() * max_num) + 1; // {1 ~ max_num}.png
-            String num_str = String.valueOf(num);
-            return "/assets/banner/" + num_str + ".png";
-        }
-
-        return image;
+        return image != null ? image : "/assets/banner/default_banner.png";
     }
 
     public void publish() {
