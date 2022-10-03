@@ -260,7 +260,40 @@
     </a>
 </ul>
 
-<div th:fragment="party-list (partyList)" class="col-sm-12">
+<div th:fragment="party-list (partyList)" class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col" th:each="party: ${partyList}">
+                <div class="card shadow-sm">
+                    <img th:src="${party.image}" class="card-img-top" th:alt="${party.title}" >
+                    <!--{{< placeholder width="100%" height="225" background="#55595c" color="#eceeef" class="card-img-top" text="Thumbnail" >}}-->
+                    <div class="card-body">
+                        <p class="card-text" th:text="${party.shortDescription}">Short description</p>
+                        <p class="card-text context">
+                            <span th:each="tag: ${party.tags}" class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                                <a th:href="@{'/search/tag/' + ${tag.title}}" class="text-decoration-none text-white">
+                                    <i class="fa fa-tag"></i> <span th:text="${tag.title}">Tag</span>
+                                </a>
+                            </span>
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!--<div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Bookmark</button>
+                            </div>-->
+                            <small class="text-muted">
+                                <i class="fa fa-user-circle"></i>
+                                <span th:text="${party.memberCount}"></span>members
+                            </small>
+                            <small class="text-muted" th:text="${party.publishedDateTime}">3 mins</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
     <div class="row">
         <div class="col-md-4" th:each="party: ${partyList}">
             <div class="card mb-4 shadow-sm">
@@ -278,7 +311,7 @@
                                 </span>
                         <span th:each="zone: ${party.zones}" class="font-weight-light text-monospace badge badge-primary mr-3">
                                     <a th:href="@{'/search/zone/' + ${zone.id}}" class="text-decoration-none text-white">
-                                        <i class="fa fa-globe"></i> <span th:text="${zone.localNameOfCity}" class="text-white">City</span>
+                                        <i class="fa fa-globe"></i> <span th:text="${zone.city}" class="text-white">City</span>
                                     </a>
                                 </span>
                     </p>
