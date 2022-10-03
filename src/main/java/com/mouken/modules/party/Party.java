@@ -89,7 +89,7 @@ public class Party {
     }
 
     public String getImage() {
-        return image != null ? image : "/assets/banner/default_banner.png";
+        return image != null ? image : "/assets/banner/1.png";
     }
 
     public void publish() {
