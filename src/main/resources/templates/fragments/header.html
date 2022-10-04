@@ -6,91 +6,102 @@
 </head>
 <body>
 
-<header th:fragment="header-common" class="navbar navbar-expand-md navbar-dark bd-navbar" style="background-color: #212529;">
+
+
+
+<header th:fragment="header-common" class="navbar navbar-expand-lg navbar-dark bd-navbar sticky-top" style="background-color: #212529;">
     <nav class="container-xxl flex-wrap flex-md-nowrap" aria-label="Main navigation">
 
+        <div class="d-lg-none" style="width: 1.5rem;"></div>
+
         <a class="navbar-brand p-0 me-lg-2" href="/" aria-label="Mouken">
-            <img src="/assets/brand/logo-light.png" width="64" height="64">
+            <img src="/assets/brand/logo-light.png" width="48" height="48">
         </a>
 
-        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-expanded="false" aria-label="Toggle navigation">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi" fill="currentColor" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
-            </svg>
-        </button>
+        <div class="d-flex">
+            <button class="navbar-toggler d-flex d-lg-none order-3 p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-label="Toggle navigation">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
 
-        <div class="offcanvas offcanvas-end" id="bdNavbar" style="background-color: #212529;" aria-labelledby="offcanvasNavbarLabel">
-            <!--<div class="navbar-collapse collapse" id="bdNavbar" style="" aria-labelledby="offcanvasNavbarLabel">-->
-            <div class="offcanvas-body">
-                <!--<div class="container-fluid">-->
-                <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav pt-2">
-                    <li class="nav-item col-12 col-md-auto">
-                        <a class="nav-link p-2" href="/" >Home</a>
+        <div class="offcanvas-lg offcanvas-end flex-grow-1" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel" data-bs-scroll="true" style="background-color: #212529;">
+            <div class="offcanvas-header px-4 pb-0">
+                <h5 class="offcanvas-title text-white" id="bdNavbarOffcanvasLabel">Bootstrap</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
+            </div>
+
+            <div class="offcanvas-body p-4 pt-0 p-lg-0">
+                <hr class="d-lg-none text-white-50">
+                <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav">
+                    <li class="nav-item col-6 col-lg-auto">
+                        <a class="nav-link py-2 px-0 px-lg-2" href="/docs/5.2/getting-started/introduction/" onclick="ga('send', 'event', 'Navbar', 'Community links', 'Docs');">Docs</a>
                     </li>
-                    <li class="nav-item col-12 col-md-auto">
-                        <a class="nav-link p-2 active" aria-current="true" href="/">Docs</a>
+                    <li class="nav-item col-6 col-lg-auto">
+                        <a class="nav-link py-2 px-0 px-lg-2 active" aria-current="true" href="/docs/5.2/examples/" onclick="ga('send', 'event', 'Navbar', 'Community links', 'Examples');">Examples</a>
                     </li>
-                    <li class="nav-item col-12 col-md-auto">
-                        <a class="nav-link p-2" href="/" th:href="@{/new}" >Parties</a>
+                    <li class="nav-item col-6 col-lg-auto">
+                        <a class="nav-link py-2 px-0 px-lg-2" href="https://icons.getbootstrap.com/" onclick="ga('send', 'event', 'Navbar', 'Community links', 'Icons');" target="_blank" rel="noopener">Icons</a>
                     </li>
-                    <li class="nav-item col-12 col-md-auto">
-                        <a class="nav-link p-2" href="/" target="_blank" rel="noopener">Icons</a>
+                    <li class="nav-item col-6 col-lg-auto">
+                        <a class="nav-link py-2 px-0 px-lg-2" href="https://themes.getbootstrap.com/" onclick="ga('send', 'event', 'Navbar', 'Community links', 'Themes');" target="_blank" rel="noopener">Themes</a>
+                    </li>
+                    <li class="nav-item col-6 col-lg-auto">
+                        <a class="nav-link py-2 px-0 px-lg-2" href="https://blog.getbootstrap.com/" onclick="ga('send', 'event', 'Navbar', 'Community links', 'Blog');" target="_blank" rel="noopener">Blog</a>
                     </li>
                 </ul>
 
-                <hr class="d-md-none text-white-50">
+                <hr class="d-lg-none text-white-50">
 
-                <form class="navbar-nav navbar col-12 col-md-auto mb-3 mb-md-0 ms-auto me-4" role="search">
-                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-                </form>
-
-                <ul sec:authorize="isAuthenticated()" class="navbar-nav flex-row flex-wrap bd-navbar-nav pt-2">
-                    <li class="nav-item col-12 col-md-auto">
-                        <a class="nav-link p-2" th:href="@{/notifications}">
-                            <i th:if="${!hasNotification}" class="fa fa-bell-o" aria-hidden="true"></i>
-                            <span class="text-info" th:if="${hasNotification}">
-                                <i class="fa fa-bell" aria-hidden="true"></i>
-                            </span>
-                        </a>
+                <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
+                    <li class="nav-item col-6 col-lg-auto">
+                        <form class="navbar-nav navbar col-12 col-md-auto mb-3 mb-md-0 ms-auto me-4" role="search">
+                            <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                        </form>
                     </li>
+                    <li class="nav-item py-1 col-12 col-lg-auto">
+                        <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
+                        <hr class="d-lg-none text-white-50">
+                    </li>
+
+
+                    <li sec:authorize="!isAuthenticated()" class="nav-item dropdown">
+                        <button type="button" class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">
+                            <span class="d-lg-none" aria-hidden="true">Bootstrap</span>
+                            <span class="visually-hidden">Bootstrap&nbsp;</span>
+                            <span class="visually-hidden">(switch to other versions)</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><h6 class="dropdown-header">Account</h6></li>
+                            <li><a class="dropdown-item" href="#" th:href="@{/login}">Sign in</a></li>
+                            <li><a class="dropdown-item" href="#" th:href="@{/sign-up}">Sign up</a></li>
+                        </ul>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+                        <button type="button" class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">
+                            <svg th:if="${#strings.isEmpty(account?.profileImage)}"
+                                 data-jdenticon-value="user127"
+                                 th:data-jdenticon-value="${#authentication.name}"
+                                 width="32" height="32" class="rounded-circle">
+                            </svg>
+                            <img th:if="${!#strings.isEmpty(account?.profileImage)}"
+                                 th:src="${account.profileImage}"
+                                 width="32" height="32" class="rounded border"/>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><h6 class="dropdown-header">Account</h6></li>
+                            <li><a class="dropdown-item" href="#" th:href="@{'/profile/' + ${#authentication.name}}">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form class="form-inline my-lg-0" action="#" th:action="@{/logout}" method="post">
+                                    <button class="dropdown-item" type="submit">Sign out</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
-        </div>
-
-
-
-        <div sec:authorize="isAuthenticated()" class="navbar-expand dropdown" >
-            <a href="#" class="nav-link d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <svg th:if="${#strings.isEmpty(account?.profileImage)}"
-                     data-jdenticon-value="user127"
-                     th:data-jdenticon-value="${#authentication.name}"
-                     width="32" height="32" class="rounded-circle">
-                </svg>
-                <img th:if="${!#strings.isEmpty(account?.profileImage)}"
-                     th:src="${account.profileImage}"
-                     width="32" height="32" class="rounded border"/>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-sm-right text-small" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);">
-                <li><a class="dropdown-item" href="#" th:href="@{/new-party}">New party</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#" th:href="@{'/profile/' + ${#authentication.name}}">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                    <form class="form-inline my-lg-0" action="#" th:action="@{/logout}" method="post">
-                        <button class="dropdown-item" type="submit">Sign out</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-
-        <div sec:authorize="!isAuthenticated()" class="navbar-expand dropdown" >
-            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-user fa-lg" aria-hidden="true" style="color: white"></i>
-            </a>
-            <ul class="dropdown-menu text-small" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);">
-                <li><a class="dropdown-item" href="#" th:href="@{/login}">Sign in</a></li>
-                <li><a class="dropdown-item" href="#" th:href="@{/sign-up}">Sign up</a></li>
-            </ul>
         </div>
 
     </nav>

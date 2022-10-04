@@ -10,7 +10,7 @@
 <body class="bg-light">
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
-<div class="container">
+<main>
 
     <!-- if the email is not verified -->
     <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
@@ -34,7 +34,7 @@
         <div th:replace="fragments.html :: party-list (partyList=${partyList})"></div>
     </div>
 
-</div>
+</main>
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <div th:replace="~{fragments/script.html :: date-time}"></div>
