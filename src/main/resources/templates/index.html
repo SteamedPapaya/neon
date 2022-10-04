@@ -17,15 +17,16 @@
         <a href="#" th:href="@{/check-email}" class="alert-link">Please check your email to confirm.</a>
     </div>
 
-    <section class="jumbotron text-center">
-        <div class="container">
-            <h1 th:text="Welcome">Mouken</h1>
-            <p class="lead text-muted">
-                Contents<br/>
-            </p>
-            <p>
-                <a th:href="@{/sign-up}" class="btn btn-primary my-2">Create account</a>
-            </p>
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Mouken</h1>
+                <p class="lead text-muted">Look for a team you want.</p>
+                <p>
+                    <a href="#" th:href="@{/sign-up}" class="btn btn-primary my-2" >Create account</a>
+                    <a href="#" th:href="@{/login}" class="btn btn-secondary my-2">Sign in</a>
+                </p>
+            </div>
         </div>
     </section>
     
