@@ -10,7 +10,7 @@ source ${ABSDIR}/profile.sh
 
 IDLE_PORT=$(find_idle_port)
 echo "> Check the pid of the applications running on $IDLE_PORT"
-IDLE_PID=$(lsof ti tcp:${IDLE_PORT})
+IDLE_PID=$(lsof t i tcp:${IDLE_PORT})
 
 if [ -z ${IDLE_PID} ]
 then
