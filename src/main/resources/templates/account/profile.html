@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{fragments/head.html :: head-title(~{::title})}">
-    <title>index</title>
+    <title th:text="#{title.profile}">title.profile</title>
 </head>
 
 <body class="bg-light">

@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
-  <title>Login</title>
+  <title th:text="#{title.login}">title</title>
   <link rel="stylesheet" th:href="@{/css/sign-in.css}" />
 </head>
 
