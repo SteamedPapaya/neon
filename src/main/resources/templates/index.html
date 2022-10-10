@@ -10,8 +10,8 @@
 <body class="bg-light">
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
-<main>
 
+<main>
     <!-- if the email is not verified -->
     <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
         <a href="#" th:href="@{/check-email}" class="alert-link">Please check your email to confirm.</a>
@@ -29,14 +29,12 @@
             </div>
         </div>
     </section>
-    
-    <div class="row justify-content-center pt-3">
-        <div th:replace="fragments.html :: party-list (partyList=${partyList})"></div>
-    </div>
 
+    <div th:replace="fragments.html :: party-list (partyList=${partyList})"></div>
 </main>
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
+
 <div th:replace="~{fragments/script.html :: date-time}"></div>
 </body>
 
