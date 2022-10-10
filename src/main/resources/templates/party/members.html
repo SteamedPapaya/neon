@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
     <title th:text="#{title.party}">title.party</title>
+    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
 
 <body class="bg-light">
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 <div th:replace="fragments.html :: party-banner"></div>
 
-<div class="container">
+<main class="container">
     <div th:replace="fragments.html :: party-info"></div>
     <div th:replace="fragments.html :: party-menu(partyMenu='members')"></div>
 
     <div th:replace="fragments.html :: member-list(members=${party.managers},isManager=${true})"></div>
     <div th:replace="fragments.html :: member-list(members=${party.members},isManager=${false})"></div>
-</div>
-
+</main>
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <script th:replace="~{fragments/script.html :: tooltip}"></script>
 </body>

@@ -3,13 +3,15 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
     <title th:text="#{title.dashboard}">title.dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
 
 <body class="bg-light">
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
+<main>
     <!-- if the email is not verified -->
     <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
         <a href="#" th:href="@{/check-email}" class="alert-link">Please check your email to confirm.</a>
@@ -85,7 +87,7 @@
             </div>
         </div>
     </div>
-
+</main>
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <div th:replace="~{fragments/script.html :: date-time}"></div>
 </body>

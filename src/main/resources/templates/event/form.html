@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
     <title th:text="#{title.event}">title.event</title>
+    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 <div th:replace="fragments.html :: party-banner"></div>

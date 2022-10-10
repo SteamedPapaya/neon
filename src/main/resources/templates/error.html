@@ -3,22 +3,26 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
     <title th:text="#{title.error}">title.error</title>
+    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
 
 <body>
-<section class="jumbotron text-center">
-    <div class="container">
-        <h1>Mouken</h1>
-        <p class="lead text-muted">
-            It's wrong request.<br/>
-        </p>
-        <p>
-            <a th:href="@{/}" class="btn btn-primary my-2">Main page</a>
-        </p>
-    </div>
-</section>
+<main>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1>Mouken</h1>
+            <p class="lead text-muted">
+                It's wrong request.<br/>
+            </p>
+            <p>
+                <a th:href="@{/}" class="btn btn-primary my-2">Main page</a>
+            </p>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 </body>
 
 </html>

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
     <title th:text="#{title.party}">title.party</title>
+    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
 <body class="bg-light">
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
-<div class="container">
+<main class="container">
     <div class="py-5 text-center">
         <h2>New Party</h2>
     </div>
@@ -68,7 +69,7 @@
             </div>
         </form>
     </div>
-</div>
+</main>
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <script th:replace="~{fragments/script.html :: form-validation}"></script>
 <script th:replace="~{fragments/script.html :: editor-script}"></script>
