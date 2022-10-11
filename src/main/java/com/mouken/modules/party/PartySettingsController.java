@@ -90,7 +90,7 @@ public class PartySettingsController {
         Party party = partyService.getPartyToUpdate(account, path);
         partyService.enablePartyBanner(party);
 
-        int max_num = 6;
+        int max_num = 5;
         String random_num = String.valueOf((int) (Math.random() * max_num) + 1);
         String image_path = "/assets/banner/" + random_num + ".png";
         partyService.updatePartyBanner(party, image_path);
