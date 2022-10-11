@@ -60,7 +60,7 @@
 
     <div th:fragment="update-tags (baseUrl)">
         <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-        <script type="application/javascript"> /*th:inline="javascript">*/
+        <script type="application/javascript" th:inline="javascript">
             $(function() {
                 function tagRequest(url, tagTitle) {
                     $.ajax({
@@ -142,8 +142,8 @@
                     } // map tags
                 });
 
-                tagify.on("add", onAdd);
-                tagify.on("remove", onRemove);
+                tagify.on("add", onAdd)
+                .on("remove", onRemove);
 
                 // add a class to Tagify's input element
                 tagify.DOM.input.classList.add('form-control');

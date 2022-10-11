@@ -9,71 +9,60 @@
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
 <main class="container">
-    <div class="row mt-5 justify-content-center">
-
-        <div class="col-2">
+    <div class="row my-5 mx-4 justify-content-center">
+        <div class="col-lg-2 mb-2">
             <!-- menu -->
             <div th:replace="fragments.html :: settings-menu(currentMenu='notifications')"></div>
         </div>
-
-        <div class="col-8">
+        <div class="col-lg-8">
             <!-- alert -->
             <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
                 <span th:text="${message}">Update Complete</span>
             </div>
-
-            <div class="row"><!-- title -->
-                <h2 class="col-12">Notifications</h2>
-            </div>
-
-            <div class="row mt-3">
-                <form class="col-9" action="#" th:action="@{/settings/notifications}" th:object="${notifications}" method="post" novalidate>
-                    <div class="form-group row mt-2">
-                        <div class="alert alert-light" role="alert">
-                            Posting
-                        </div>
-                        <div class="form-check form-switch">
-                            <input type="checkbox" role="switch" th:field="*{partyCreatedByEmail}" class="form-check-input" id="partyCreatedByEmail">
-                            <label class="form-check-label" for="partyCreatedByEmail">Email</label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input type="checkbox" role="switch" th:field="*{partyCreatedByWeb}" class="form-check-input" id="partyCreatedByWeb" checked>
-                            <label class="form-check-label" for="partyCreatedByWeb">Web</label>
+                <form action="#" th:action="@{/settings/notifications}" th:object="${notifications}" method="post" novalidate>
+                    <label for="partyCreated" class="form-label">Posting</label>
+                    <div id="partyCreated" class="card form-group mb-2">
+                        <div class="card-body">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" role="switch" th:field="*{partyCreatedByEmail}" class="form-check-input" id="partyCreatedByEmail">
+                                <label class="form-check-label" for="partyCreatedByEmail">Email</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" role="switch" th:field="*{partyCreatedByWeb}" class="form-check-input" id="partyCreatedByWeb" checked>
+                                <label class="form-check-label" for="partyCreatedByWeb">Web</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row mt-2">
-                        <div class="alert alert-light" role="alert">
-                            Enrollment
-                        </div>
-                        <div class="form-check form-switch">
-                            <input type="checkbox" role="switch" th:field="*{partyEnrollmentResultByEmail}" class="form-check-input" id="partyEnrollmentResultByEmil">
-                            <label class="form-check-label" for="partyEnrollmentResultByEmil">Email</label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input type="checkbox" role="switch" th:field="*{partyEnrollmentResultByWeb}" class="form-check-input" id="partyEnrollmentResultByWeb" checked>
-                            <label class="form-check-label" for="partyEnrollmentResultByWeb">Web</label>
-                        </div>
-                    </div>
-                    <div class="form-group row mt-2">
-                        <div class="alert alert-light" role="alert">
-                            Group
-                        </div>
-                        <div class="form-check form-switch">
-                            <input type="checkbox" role="switch" th:field="*{partyUpdatedByEmail}" class="form-check-input" id="partyWatchByEmail">
-                            <label class="form-check-label" for="partyWatchByEmail">Email</label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input type="checkbox" role="switch" th:field="*{partyUpdatedByWeb}" class="form-check-input" id="partyWatchByWeb" checked>
-                            <label class="form-check-label" for="partyWatchByWeb">Web</label>
+                    <label for="partyEnrollment" class="form-label">Enrollment</label>
+                    <div id="partyEnrollment" class="card form-group mb-2">
+                        <div class="card-body">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" role="switch" th:field="*{partyEnrollmentResultByEmail}" class="form-check-input" id="partyEnrollmentResultByEmil">
+                                <label class="form-check-label" for="partyEnrollmentResultByEmil">Email</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" role="switch" th:field="*{partyEnrollmentResultByWeb}" class="form-check-input" id="partyEnrollmentResultByWeb" checked>
+                                <label class="form-check-label" for="partyEnrollmentResultByWeb">Web</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row mt-2">
-                        <div class="col-3">
-                            <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">Confirm</button>
+                    <label for="partyUpdate" class="form-label">Enrollment</label>
+                    <div id="partyUpdate" class="card form-group mb-2">
+                        <div class="card-body">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" role="switch" th:field="*{partyUpdatedByEmail}" class="form-check-input" id="partyWatchByEmail">
+                                <label class="form-check-label" for="partyWatchByEmail">Email</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" role="switch" th:field="*{partyUpdatedByWeb}" class="form-check-input" id="partyWatchByWeb" checked>
+                                <label class="form-check-label" for="partyWatchByWeb">Web</label>
+                            </div>
                         </div>
+                    </div>
+                    <div class="form-group d-flex align-items-end flex-column">
+                        <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">Confirm</button>
                     </div>
                 </form>
-            </div>
         </div>
     </div>
 </main>

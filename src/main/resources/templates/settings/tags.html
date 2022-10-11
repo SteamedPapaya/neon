@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
     <title th:text="#{title}">title</title>
     <link rel="stylesheet" th:href="@{/css/tagify.css}">
 </head>
@@ -9,34 +9,24 @@
 <body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
-<main>
-    <div class="container">
-        <div class="row mt-5 justify-content-center">
-            <div class="col-2"><!-- menu -->
-                <div th:replace="fragments.html :: settings-menu(currentMenu='tags')"></div>
+<main class="container">
+    <div class="row my-5 mx-4 justify-content-center">
+        <div class="col-lg-2 mb-2">
+            <!-- menu -->
+            <div th:replace="fragments.html :: settings-menu(currentMenu='tags')"></div>
+        </div>
+        <div class="col-lg-8">
+            <!-- description -->
+            <div class="alert alert-dark" role="alert">
+                You can add a tag with comma or enter key.
             </div>
-
-            <div class="col-8">
-                <div class="row">
-                    <!-- title -->
-                    <h2 class="col-12">Tags</h2>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <!-- description -->
-                        <div class="alert alert-info" role="alert">
-                            You can add a tag with comma or enter key.
-                        </div>
-                        <!-- function -->
-                        <div id="whitelist" th:text="${whitelist}" hidden></div>
-                        <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
-                               class="tagify-outside" aria-describedby="tagHelp"/>
-                    </div>
-                </div>
-            </div>
+            <div id="whitelist" th:text="${whitelist}" hidden></div>
+            <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+                   class="tagify-outside" aria-describedby="tagHelp"/>
         </div>
     </div>
 </main>
+
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <script th:replace="~{fragments/script.html :: ajax-csrf-header}"></script>

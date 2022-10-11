@@ -10,36 +10,16 @@
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
 <main class="container">
-    <div class="row mt-5 justify-content-center">
-        <div class="col-lg-2">
-            <!-- profile image -->
-            <svg th:if="${#strings.isEmpty(profile.profileImage)}"
-                 class="img-fluid float-left rounded img-thumbnail"
-                 th:data-jdenticon-value="${account.username}"
-                 width="136" height="136"></svg>
-            <img th:if="${!#strings.isEmpty(profile.profileImage)}"
-                 class="img-fluid float-left rounded img-thumbnail"
-                 th:src="${profile.profileImage}"
-                 width="136" height="136" alt="name" th:alt="${account.username}"/>
-        </div>
-        <div class="col-lg-4">
-            <!-- username -->
-            <h1 class="display-4 " th:text="${account.username}">username</h1>
-        </div>
-        <div class="col-lg-4">
-            <!-- alert -->
-            <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
-                <span th:text="${message}">message</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-3 justify-content-center">
+    <div class="row my-5 mx-4 justify-content-center">
         <div class="col-lg-2 mb-2">
             <!-- menu -->
             <div th:replace="fragments.html :: settings-menu(currentMenu='profile')"></div>
         </div>
         <div class="col-lg-8">
+            <!-- alert -->
+            <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
+                <span th:text="${message}">message</span>
+            </div>
             <div class="row justify-content-center">
                 <!-- profile image -->
                 <div class="mb-2">
@@ -95,7 +75,6 @@
                         <input id="location" type="text" th:field="*{location}" class="form-control" th:errorclass="field-error"
                                placeholder="Incheon, South Korea" aria-describedby="locationdHelp" required>
                     </div>
-
                     <div class="form-group mb-2">
                         <input id="profileImage" type="hidden" th:field="*{profileImage}" class="form-control" />
                     </div>
