@@ -1,19 +1,15 @@
 <!doctype html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
-  <title th:text="#{title.login}">title</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head.html :: head-title-links-no-basic(~{::title}, ~{::link})}">
+  <title th:text="#{title.login}">title.login</title>
   <link rel="stylesheet" th:href="@{/css/sign-in.css}" />
 </head>
 
-<body class="text-center">
-
-<main class="form-signin w-100 m-auto">
-  <div class="container">
+<body>
+<main class="form-signin text-center w-100 m-auto">
   <form class="needs-validation" action="#" th:action="@{/login}" method="post" novalidate>
-    <img class="mb-4" src="/assets/brand/logo-dark.png" alt="" width="160" height="160">
-    <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+    <a href="/"><img src="/assets/brand/logo-dark.png" alt="" width="160" height="160"></a>
 
     <div class="form-floating">
       <input type="text" class="form-control" name="username" id="floatingInputTop" placeholder="Username" required>
@@ -29,22 +25,20 @@
       </label>
     </div>
     <div class="form-floating">
-      <button class="w-100 btn btn-lg btn-primary" type="submit" >Sign in</button>
+      <button class="w-100 btn btn-lg btn-dark" type="submit" >Login</button>
     </div>
-
   </form>
-    <div class="find_text mt-1">
-      <small>
-      Forgot your <a target="_blank" id="pw-inquiry" href="#" th:href="@{/email-login}" class="en_find_text">Password</a>
-      or <a target="_blank" id="id-inquiry" href="#" class="en_find_text">Email</a>? |
-      <a target="_blank" id="join" href="#" th:href="@{/sign-up}" class="en_find_text"> Sign up</a>
-      </small>
-    </div>
-  </div>
-  <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
-</main>
 
+  <div class="find_text mt-1">
+    <small>
+    Forgot your <a target="_blank" id="pw-inquiry" href="#" th:href="@{/email-login}" class="en_find_text">Password</a>
+    or <a target="_blank" id="id-inquiry" href="#" class="en_find_text">Email</a>? |
+    <a target="_blank" id="join" href="#" th:href="@{/sign-up}" class="en_find_text">Sign up</a>
+    </small>
+  </div>
+</main>
 
 <script th:replace="~{fragments/script.html :: form-validation}"></script>
 </body>
+
 </html>

@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Mouken</title>
 </head>
-<body class="bg-light">
-<div>
+
+<body>
+<main>
     <p>Hello <span th:text="${username}"></span>.</p>
     <h6 th:text="${message}">message</h6>
     <div>
         <small th:text="${host + link}"></small>
     </div>
-</div>
+</main>
+
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 </body>
+
 </html>

@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
     <title th:text="#{title.party.settings}">title.party.settings</title>
-    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
-<body class="bg-light">
+
+<body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 <div th:replace="fragments.html :: party-banner"></div>
 
-<div class="container">
+<main class="container">
     <div th:replace="fragments.html :: party-info"></div>
     <div th:replace="fragments.html :: party-menu(partyMenu='tags')"></div>
 
@@ -33,10 +34,11 @@
             </div>
         </div>
     </div>
-</div>
+</main>
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <script th:replace="~{fragments/script.html :: ajax-csrf-header}"></script>
 <script th:replace="~{fragments/script.html :: update-tags(baseUrl='/party/' + ${party.path} + '/settings/tags')}"></script>
 </body>
+
 </html>

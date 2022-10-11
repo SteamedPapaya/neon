@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
     <title th:text="#{title.notification}">title.notification</title>
-    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
 
-<body class="bg-light">
+<body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
-<div class="container">
+<main class="container">
     <div class="row py-5 text-center">
         <div class="col-2">
             <ul class="list-group">
@@ -82,9 +81,10 @@
             </div>
         </div>
     </div>
-</div>
+</main>
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <script th:replace="~{fragments/script.html :: date-time}"></script>
 </body>
+
 </html>

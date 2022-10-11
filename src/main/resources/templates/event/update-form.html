@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
   <title th:text="#{title.event}">title.event</title>
-  <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
+
+<body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 <div th:replace="fragments.html :: party-banner"></div>
 
-<body class="bg-light">
-
-<div class="container">
+<main class="container">
   <div th:replace="fragments.html :: event-form (mode='edit', action='/party/' + ${party.path} + '/events/' + ${event.id} + '/edit')"></div>
-</div>
+</main>
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <script th:replace="~{fragments/script.html :: form-validation}"></script>
 <script th:replace="~{fragments/script.html :: editor-script}"></script>
 </body>
+
 </html>

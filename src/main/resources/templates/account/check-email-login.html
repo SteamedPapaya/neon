@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
     <title th:text="#{title.email-login}">title.email-login</title>
-    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
 
-<body class="bg-light">
+<body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
-<div class="container">
+<main class="container">
     <div th:if="${error}" class="alert alert-danger" role="alert">
         <h6 th:text="${error}"></h6>
         <small>You can contact our <a class="alert-link" href="#">customer service</a></small>
@@ -26,9 +25,9 @@
         </h2>
         <a class="btn btn-outline-info" th:href="@{/}">Main page</a>
     </div>
-    </div>
-</div>
+</main>
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 </body>
+
 </html>

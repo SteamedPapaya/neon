@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
     <title th:text="#{title.dashboard}">title.dashboard</title>
-    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
 
-<body class="bg-light">
+<body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
 <main>
@@ -88,6 +85,7 @@
         </div>
     </div>
 </main>
+
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <div th:replace="~{fragments/script.html :: date-time}"></div>
 </body>

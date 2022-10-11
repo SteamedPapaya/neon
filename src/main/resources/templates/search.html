@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{fragments/head.html :: head-title(~{::title})}">
     <title th:text="#{title}">title</title>
 </head>
 
-<body class="bg-light">
+<body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
 <main class="container">
@@ -95,4 +93,5 @@
     });
 </script>
 </body>
+
 </html>

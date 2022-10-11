@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
     <title th:text="#{title}">title</title>
-    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
 
-<body class="bg-light">
+<body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
-
 
 <main class="container">
     <!-- if the email is not verified -->
@@ -18,13 +14,13 @@
         <a href="#" th:href="@{/check-email}" class="alert-link">Please check your email to confirm.</a>
     </div>
 
-    <section class="py-5 text-center container">
+    <section class="py-5 text-center">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light">Mouken</h1>
                 <p class="lead text-muted">Look for a team you want.</p>
                 <p>
-                    <a href="#" th:href="@{/sign-up}" class="btn btn-primary my-2" >Create account</a>
+                    <a href="#" th:href="@{/sign-up}" class="btn btn-dark my-2" >Create account</a>
                     <a href="#" th:href="@{/login}" class="btn btn-secondary my-2">Sign in</a>
                 </p>
             </div>
@@ -33,9 +29,8 @@
 
     <div th:replace="fragments.html :: party-list (partyList=${partyList})"></div>
 </main>
+
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
-
-
 <div th:replace="~{fragments/script.html :: date-time}"></div>
 </body>
 

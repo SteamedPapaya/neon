@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/headers.css">
     <link rel="stylesheet" href="/css/mark-js.css">
     <link rel="stylesheet" href="/css/jumbotron.css">
+    <link rel="stylesheet" href="/css/basic.css">
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
@@ -22,6 +23,30 @@
 </head>
 
 <head th:fragment="head-title-links (title, links)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+
+    <!-- title -->
+    <title th:replace="${title}">Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=Noto+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
+    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
+    <link rel="stylesheet" href="/css/headers.css">
+    <link rel="stylesheet" href="/css/mark-js.css">
+    <link rel="stylesheet" href="/css/jumbotron.css">
+    <link rel="stylesheet" href="/css/basic.css">
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+
+    <!-- links -->
+    <th:block th:replace="${links}" />
+</head>
+
+<head th:fragment="head-title-links-no-basic (title, links)">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">

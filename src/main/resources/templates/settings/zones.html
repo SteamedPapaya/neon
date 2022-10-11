@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
-    <title>index</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+    <title th:text="#{title}">title</title>
     <link rel="stylesheet" th:href="@{/css/tagify.css}">
 </head>
-<body class="bg-light">
+
+<body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
 <main>
@@ -36,8 +37,10 @@
         </div>
     </div>
 </main>
+
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
 <script th:replace="~{fragments/script.html :: ajax-csrf-header}"></script>
 <script th:replace="~{fragments/script.html :: update-zones(baseUrl='/settings/zones')}"></script>
 </body>
+
 </html>

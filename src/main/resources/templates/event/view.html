@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
     <title th:text="#{title.event}">title.event</title>
-    <link rel="stylesheet" th:href="@{/css/basic.css}" />
 </head>
+
+<body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 <div th:replace="fragments.html :: party-banner"></div>
 
-<body>
-<div class="container">
+<main class="container">
 
     <div class="row">
         <nav aria-label="breadcrumb">
@@ -215,7 +215,8 @@
         </div>
     </div>
 
-</div>
+</main>
+
 <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
 <script type="application/javascript">
     $(function () {
@@ -237,4 +238,5 @@
     })
 </script>
 </body>
+
 </html>
