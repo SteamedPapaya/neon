@@ -1,36 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
     <title th:text="#{title.party.settings}">title.party.settings</title>
+    <link rel="stylesheet" href="/css/tagify.css">
 </head>
 
 <body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 <div th:replace="fragments.html :: party-banner"></div>
-<div th:replace="fragments.html :: party-info-menu(partyMenu='tags')"></div>
+<div th:replace="fragments.html :: party-info-menu(partyMenu='settings')"></div>
 
 <main class="container">
-
     <div class="row mt-3 justify-content-center">
-
-        <div class="col-2">
+        <div class="col-lg-2 col-3">
+            <!-- menu -->
             <div th:replace="fragments.html :: party-settings-menu(currentMenu='tags')"></div>
         </div>
         <div class="col-8">
-            <div class="row">
-                <h2 class="col-sm-12">Tags</h2>
+            <!-- description -->
+            <div class="alert alert-dark" role="alert">
+                You can add a tag with comma or enter key.
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="alert alert-info" role="alert">
-                        You can add a tag with comma or enter key.
-                    </div>
-                    <div id="whitelist" th:text="${whitelist}" hidden></div>
-                    <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
-                           class="tagify-outside" aria-describedby="tagHelp">
-                </div>
-            </div>
+            <div id="whitelist" th:text="${whitelist}" hidden></div>
+            <input name="tags-outside" class="tagify--outside" th:value="${#strings.listJoin(tags, ',')}"/>
         </div>
     </div>
 </main>

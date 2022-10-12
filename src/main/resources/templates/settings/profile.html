@@ -15,12 +15,12 @@
             <!-- menu -->
             <div th:replace="fragments.html :: settings-menu(currentMenu='profile')"></div>
         </div>
-        <div class="col-8">
+        <div class="col-8 row justify-content-center">
             <!-- alert -->
             <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
                 <span th:text="${message}">message</span>
             </div>
-            <div class="row justify-content-center">
+            <div class="">
                 <!-- profile image -->
                 <div class="mb-2">
                     <label for="profile-image" class="form-label">Profile Image</label>

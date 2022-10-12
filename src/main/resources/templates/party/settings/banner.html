@@ -12,57 +12,58 @@
 
 <main class="container">
     <div class="row mt-3 justify-content-center">
-        <div class="col-2">
+        <div class="col-lg-2 col-3">
             <div th:replace="fragments.html :: party-settings-menu(currentMenu='banner')"></div>
         </div>
         <div class="col-8">
-            <div th:replace="fragments.html :: message"></div>
-            <div class="row">
-                <h2 class="col-sm-12">Include Banner Image</h2>
-            </div>
-            <form th:if="${!party.useBanner}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner/enable'}" method="post" novalidate>
-                <div class="alert alert-primary" role="alert">
-                    You can upload image. if you don't upload any image, default image is applied.
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-outline-primary btn-block" type="submit" aria-describedby="submitHelp">Include Banner Image</button>
-                </div>
-            </form>
-            <form th:if="${party.useBanner}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner/disable'}" method="post" novalidate>
-                <div class="alert alert-info" role="alert">
-                    Banner image is not included in party page. But that is included in party list.
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-outline-primary btn-block" type="submit" aria-describedby="submitHelp">Not Include Banner Image</button>
-                </div>
-            </form>
-            <hr/>
-            <div class="row">
-                <h2 class="col-sm-12">Update Banner Image</h2>
-            </div>
-            <form id="imageForm" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner'}" method="post" novalidate>
-                <div class="form-group">
-                    <input id="partyImage" type="hidden" name="image" class="form-control" />
-                </div>
-            </form>
-            <div class="card text-center">
-                <div id="current-party-image" class="mt-3">
-                    <img class="rounded" th:src="${party.image}" width="640" alt="name" th:alt="${party.title}"/>
-                </div>
-                <div id="new-party-image" class="mt-3"></div>
-                <div class="card-body">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="party-image-file">
-                        <label class="custom-file-label" for="party-image-file">Update Banner Image</label>
+            <div class="mb-3">
+                <label for="banner-image" class="form-label">Banner Image</label>
+                <div th:replace="fragments.html :: message"></div>
+                <form th:if="${!party.useBanner}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner/enable'}" method="post" novalidate>
+                    <div class="alert alert-secondary" role="alert">
+                        Banner image has been currently hidden.
                     </div>
-                    <div id="new-party-image-control" class="mt-3">
-                        <button class="btn btn-outline-primary btn-block" id="cut-button">Cut</button>
-                        <button class="btn btn-outline-success btn-block" id="confirm-button">Confirm</button>
-                        <button class="btn btn-primary btn-block" id="save-button">Save</button>
-                        <button class="btn btn-outline-warning btn-block" id="reset-button">Cancel</button>
+                    <div class="form-group">
+                        <button class="btn btn-outline-secondary btn-block" type="submit" aria-describedby="submitHelp">Show Banner Image</button>
                     </div>
-                    <div id="cropped-new-party-image" class="mt-3"></div>
+                </form>
+                <form th:if="${party.useBanner}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner/disable'}" method="post" novalidate>
+                    <div class="alert alert-primary" role="alert">
+                        Banner image has been currently displayed.
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">Hide Banner Image</button>
+                    </div>
+                </form>
+            </div>
+            <div class="mb-3">
+                <div id="banner-image" class="card text-center">
+                    <div class="card-body">
+                        <div id="new-banner-image"></div>
+                        <div id="custom-file" class="custom-file mt-3">
+                            <input type="file" class="custom-file-input" id="banner-image-file" hidden>
+                            <label class="btn btn-outline-secondary custom-file-label" for="banner-image-file">Select file</label>
+                        </div>
+                        <div id="new-banner-image-control" class="my-3">
+                            <button class="btn btn-outline-primary btn-block" id="cut-button">Cut</button>
+                            <button class="btn btn-outline-warning btn-block" id="reset-button">Cancel</button>
+                        </div>
+                        <div id="cropped-new-banner-image"> </div>
+                        <div id="cropped-new-banner-image-control" class="my-3">
+                            <button class="btn btn-outline-success btn-block" id="confirm-button">Confirm</button>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="mb-3">
+                <form id="imageForm" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner'}" method="post" novalidate>
+                    <div class="form-group">
+                        <input id="bannerImage" type="hidden" name="image" class="form-control" />
+                    </div>
+                    <div class="form-group d-flex align-items-end flex-column">
+                        <button class="btn btn-primary btn-block" type="submit">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -74,24 +75,25 @@
 <script src="/node_modules/cropper/dist/cropper.min.js"></script>
 <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
 <script type="application/javascript">
+    <!-- jquery -->
     $(function() {
         cropper = '';
         let $confirmBtn = $("#confirm-button");
         let $resetBtn = $("#reset-button");
         let $cutBtn = $("#cut-button");
-        let $saveBtn = $("#save-button");
-        let $newStudyImage = $("#new-party-image");
-        let $currentStudyImage = $("#current-party-image");
-        let $resultImage = $("#cropped-new-party-image");
-        let $partyImage = $("#partyImage");
+        let $newBannerImage = $("#new-banner-image");
+        let $currentBannerImage = $("#current-banner-image");
+        let $resultImage = $("#cropped-new-banner-image");
+        let $bannerImage = $("#bannerImage");
+        let $bannerImageFile = $("#banner-image-file");
+        let $customFile = $("#custom-file");
 
-        $newStudyImage.hide();
+        $newBannerImage.hide();
         $cutBtn.hide();
         $resetBtn.hide();
         $confirmBtn.hide();
-        $saveBtn.hide();
 
-        $("#party-image-file").change(function(e) {
+        $("#banner-image-file").change(function(e) {
             if (e.target.files.length === 1) {
                 const reader = new FileReader();
                 reader.onload = e => {
@@ -102,16 +104,17 @@
                         }
 
                         let img = document.createElement("img");
-                        img.id = 'new-party';
+                        img.id = 'new-banner';
                         img.src = e.target.result;
                         img.setAttribute('width', '100%');
 
-                        $newStudyImage.html(img);
-                        $newStudyImage.show();
-                        $currentStudyImage.hide();
+                        $newBannerImage.html(img);
+                        $newBannerImage.show();
+                        $currentBannerImage.hide();
+                        $customFile.hide();
 
                         let $newImage = $(img);
-                        $newImage.cropper({aspectRatio: 13/2});
+                        $newImage.cropper({aspectRatio: 6/1});
                         cropper = $newImage.data('cropper');
 
                         $cutBtn.show();
@@ -125,14 +128,15 @@
         });
 
         $resetBtn.click(function() {
-            $currentStudyImage.show();
-            $newStudyImage.hide();
+            $currentBannerImage.show();
+            $customFile.show();
+            $newBannerImage.hide();
             $resultImage.hide();
             $resetBtn.hide();
             $cutBtn.hide();
             $confirmBtn.hide();
-            $saveBtn.hide();
-            $partyImage.val('');
+            $bannerImage.val('');
+            $bannerImageFile.val('');
         });
 
         $cutBtn.click(function () {
@@ -144,25 +148,20 @@
             }
 
             let newImage = document.createElement("img");
-            newImage.id = "cropped-new-party-image";
+            newImage.id = "cropped-new-banner-image";
             newImage.src = dataUrl;
-            newImage.width = 640;
+            newImage.width = 256;
             $resultImage.html(newImage);
             $resultImage.show();
             $confirmBtn.show();
 
             $confirmBtn.click(function () {
-                $newStudyImage.html(newImage);
+                $newBannerImage.html(newImage);
                 $cutBtn.hide();
                 $confirmBtn.hide();
-                $partyImage.val(dataUrl);
-                $saveBtn.show();
+                $bannerImage.val(dataUrl);
             });
         });
-
-        $saveBtn.click(function() {
-            $("#imageForm").submit();
-        })
     });
 </script>
 </body>

@@ -24,7 +24,8 @@ public class MainController {
     private final AccountRepository accountRepository;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(@CurrentAccount Account account, Model model) {
+        model.addAttribute("account", account);
         model.addAttribute("partyList", partyRepository.findFirst9ByPublishedAndClosedOrderByPublishedDateTimeDesc(true, false));
         return "index";
     }
