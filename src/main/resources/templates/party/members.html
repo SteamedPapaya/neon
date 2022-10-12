@@ -8,11 +8,9 @@
 <body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 <div th:replace="fragments.html :: party-banner"></div>
+<div th:replace="fragments.html :: party-info-menu(partyMenu='members')"></div>
 
 <main class="container">
-    <div th:replace="fragments.html :: party-info"></div>
-    <div th:replace="fragments.html :: party-menu(partyMenu='members')"></div>
-
     <div th:replace="fragments.html :: member-list(members=${party.managers},isManager=${true})"></div>
     <div th:replace="fragments.html :: member-list(members=${party.members},isManager=${false})"></div>
 </main>

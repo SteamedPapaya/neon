@@ -8,17 +8,16 @@
 <body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 <div th:replace="fragments.html :: party-banner"></div>
+<div th:replace="fragments.html :: party-info-menu(partyMenu='settings')"></div>
 
 <main class="container">
-    <div th:replace="fragments.html :: party-info"></div>
-    <div th:replace="fragments.html :: party-menu(partyMenu='settings')"></div>
 
     <div class="row mt-3 justify-content-center">
 
-        <div class="col-2">
+        <div class="col-md-2 col-10">
             <div th:replace="fragments.html :: party-settings-menu(currentMenu='description')"></div>
         </div>
-        <div class="col-8">
+        <div class="col-md-8 col-10">
             <div th:replace="fragments.html :: message"></div>
             <form class="needs-validation" th:action="@{'/party/' + ${party.getPath()} + '/settings/description'}"
                   th:object="${partyDescriptionForm}" method="post" novalidate>

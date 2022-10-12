@@ -10,12 +10,12 @@
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
 <main class="container">
-    <div class="row my-5 mx-5 justify-content-center">
-        <div class="col-md-3 mb-3">
+    <div class="row my-5 justify-content-center">
+        <div class="col-lg-2 col-3">
             <!-- menu -->
             <div th:replace="fragments.html :: settings-menu(currentMenu='tags')"></div>
         </div>
-        <div class="col-md-6">
+        <div class="col-8">
             <!-- description -->
             <div class="alert alert-dark" role="alert">
                 You can add a tag with comma or enter key.
