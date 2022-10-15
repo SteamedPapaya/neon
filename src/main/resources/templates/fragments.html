@@ -30,11 +30,11 @@
 
 <div th:fragment="party-info-menu(partyMenu)" class="bg-light">
     <div class="row pt-4 mx-5">
-        <div class="col-md-5 text-left">
+        <div class="col-8 text-left">
             <h2 th:text="${party.title}">party.title</h2>
             <p class="lead" th:text="${party.shortDescription}">party.shortDescription</p>
         </div>
-        <div class="col-md-5 d-md-flex flex-row-reverse">
+        <div class="col-4 d-flex justify-content-start flex-row-reverse gap-2">
             <span th:if="${!party.published}" class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="Wating for release">
                 <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>DRAFT</button>
             </span>
@@ -121,70 +121,68 @@
 
 
 <div th:fragment="event-form (mode, action)">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb text-center h2">
-            <li class="breadcrumb-item" th:href="@{'/party/' + ${party.path}}" ><a href="#">Party</a></li>
-            <li th:if="${mode == 'edit'}" class="breadcrumb-item active" aria-current="page" th:text="${event.title}">Edit</li>
-            <li th:if="${mode == 'new'}" class="breadcrumb-item active" aria-current="page">New Event</li>
-        </ol>
-    </nav>
-    <form class="needs-validation col-10 align-items-center"
-          th:action="@{${action}}"
-          th:object="${eventForm}" method="post" novalidate> <!--th:action="@{'/party/' + ${party.path} + '/new-event'}"-->
-        <div class="row mb-2">
-            <label for="title">Title</label>
-            <input id="title" type="text" th:field="*{title}" class="form-control"
-                   placeholder="Title" aria-describedby="titleHelp" required>
-            <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Error</small>
-        </div>
-        <div class="row mb-2" th:if="${mode == 'new'}">
-            <label for="eventType">Type</label>
-            <select th:field="*{eventType}"  class="custom-select mr-sm-2" id="eventType" aria-describedby="eventTypeHelp">
-                <option th:value="FCFS">FCFS</option>
-                <option th:value="CONFIRMATIVE">Confirmative</option>
-            </select>
-        </div>
-        <div class="row mb-2">
-            <label for="limitOfEnrollments">Limit of enrollment</label>
-            <input id="limitOfEnrollments" type="number" th:field="*{limitOfEnrollments}" class="form-control" placeholder="0"
-                   aria-describedby="limitOfEnrollmentsHelp">
-            <small class="form-text text-danger" th:if="${#fields.hasErrors('limitOfEnrollments')}" th:errors="*{limitOfEnrollments}">Error</small>
-        </div>
-        <div class="row g-3 mb-2">
-            <div class="col-md">
-                <label for="endEnrollmentDateTime">End of Enrollment</label>
-                <input id="endEnrollmentDateTime" type="datetime-local" th:field="*{endEnrollmentDateTime}" class="form-control"
-                       aria-describedby="endEnrollmentDateTimeHelp" required>
-                <small class="form-text text-danger" th:if="${#fields.hasErrors('endEnrollmentDateTime')}" th:errors="*{endEnrollmentDateTime}">Error</small>
+    <div class="mx-3 my-5">
+        <h3 th:text="#{new-event}">new-event</h3>
+        <p class="text-sm text-secondary text-opacity-50" th:text="#{new-event.desc}">new-event.desc</p>
+        <form class="needs-validation mt-5" th:action="@{${action}}" th:object="${eventForm}" method="post" novalidate>
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <label for="title" class="form-label">Title</label>
+                    <input id="title" type="text" th:field="*{title}" class="form-control" th:errorclass="field-error" placeholder="..." required>
+                    <small class="invalid-feedback" th:text="#{required}">required</small>
+                    <small class="form-text text-danger field-error" th:errors="*{title}">error.title</small>
+                </div>
             </div>
-            <div class="col-md">
-                <label for="startDateTime">Start of Event</label>
-                <input id="startDateTime" type="datetime-local" th:field="*{startDateTime}" class="form-control"
-                       aria-describedby="startDateTimeHelp" required>
-                <small class="form-text text-danger" th:if="${#fields.hasErrors('startDateTime')}" th:errors="*{startDateTime}">Error</small>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-6 mb-2" th:if="${mode == 'new'}">
+                    <label for="eventType" class="form-label">Type</label>
+                    <select id="eventType" th:field="*{eventType}" class="form-select">
+                        <option th:value="FCFS">FCFS</option>
+                        <option th:value="CONFIRMATIVE">Confirmative</option>
+                    </select>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6 mb-2">
+                    <label for="limitOfEnrollments" class="form-label">Limit</label>
+                    <input id="limitOfEnrollments" type="number" th:field="*{limitOfEnrollments}" class="form-control" th:errorclass="field-error" placeholder="0">
+                    <small class="form-text text-danger field-error" th:errors="*{limitOfEnrollments}">error.limit</small>
+                </div>
             </div>
-            <div class="col-md">
-                <label for="endDateTime">End of Event</label>
-                <input id="endDateTime" type="datetime-local" th:field="*{endDateTime}" class="form-control"
-                       aria-describedby="endDateTimeHelp" required>
-                <small class="form-text text-danger" th:if="${#fields.hasErrors('endDateTime')}" th:errors="*{endDateTime}">Error</small>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-6 mb-2">
+                    <label for="endEnrollmentDateTime" class="form-label">Enrollment End</label>
+                    <input id="endEnrollmentDateTime" type="datetime-local" th:field="*{endEnrollmentDateTime}" class="form-control" required>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('endEnrollmentDateTime')}" th:errors="*{endEnrollmentDateTime}">error</small>
+                </div>
             </div>
-        </div>
-        <div class="row mb-2">
-            <label for="description">Description</label>
-            <textarea id="description" type="textarea" th:field="*{description}" class="editor form-control"
-                      placeholder="This event is ..." aria-describedby="descriptionHelp" required></textarea>
-            <!--<small id="descriptionHelp" class="form-text text-muted">
-                모임에서 다루는 주제, 장소, 진행 방식 등을 자세히 적어 주세요.
-            </small>
-            <small class="invalid-feedback">모임 설명을 입력하세요.</small>-->
-            <small class="form-text text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Error</small>
-        </div>
-        <div class="row mb-2">
-            <button class="btn btn-primary btn-block" type="submit"
-                    aria-describedby="submitHelp">Confirm</button>
-        </div>
-    </form>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-6 mb-2">
+                    <label for="startDateTime" class="form-label">Event Start</label>
+                    <input id="startDateTime" type="datetime-local" th:field="*{startDateTime}" class="form-control" required>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('startDateTime')}" th:errors="*{startDateTime}">error</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-6 mb-2">
+                    <label for="endDateTime" class="form-label">Event End</label>
+                    <input id="endDateTime" type="datetime-local" th:field="*{endDateTime}" class="form-control" required>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('endDateTime')}" th:errors="*{endDateTime}">error</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea id="description" type="textarea" th:field="*{description}" class="editor form-control" th:errorclass="field-error" placeholder="..." required></textarea>
+                    <small class="form-text text-danger field-error" th:errors="*{description}">error.description</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="d-flex justify-content-center gap-2 mt-1">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" onclick="location.href='/'" class="btn btn-outline-secondary">Cancel</button><!-- todo move to party page -->
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <ul th:fragment="notification-list (notifications)" class="list-group list-group-flush">

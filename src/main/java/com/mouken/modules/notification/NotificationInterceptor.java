@@ -1,7 +1,8 @@
 package com.mouken.modules.notification;
 
-import com.mouken.modules.account.Account;
+import com.mouken.modules.account.domain.Account;
 import com.mouken.modules.account.UserAccount;
+import com.mouken.modules.notification.db.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

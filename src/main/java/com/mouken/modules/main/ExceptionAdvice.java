@@ -1,6 +1,6 @@
 package com.mouken.modules.main;
 
-import com.mouken.modules.account.Account;
+import com.mouken.modules.account.domain.Account;
 import com.mouken.modules.account.CurrentAccount;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;

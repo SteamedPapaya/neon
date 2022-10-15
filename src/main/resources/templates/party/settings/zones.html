@@ -22,8 +22,8 @@
             <div class="alert alert-dark" role="alert">
                 You can add a tag with comma or enter key.
             </div>
-            <div id="whitelist" th:text="${whitelist}" hidden></div>
-            <input name="tags-outside" class="tagify--outside" th:value="${#strings.listJoin(zones, ',')}"/>
+            <div id="whitelist-zone" th:text="${whitelist}" hidden></div>
+            <input name="tags-zone-outside" class="tagify--outside" th:value="${#strings.listJoin(zones, ',')}"/>
         </div>
     </div>
 </main>

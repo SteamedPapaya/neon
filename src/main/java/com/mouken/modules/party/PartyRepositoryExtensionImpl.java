@@ -1,12 +1,13 @@
 package com.mouken.modules.party;
 
+import com.mouken.modules.party.domain.Party;
+import com.mouken.modules.party.domain.QParty;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;
-import com.mouken.modules.account.QAccount;
-import com.mouken.modules.tag.QTag;
-import com.mouken.modules.tag.Tag;
-import com.mouken.modules.zone.QZone;
-import com.mouken.modules.zone.Zone;
+import com.mouken.modules.tag.domain.QTag;
+import com.mouken.modules.tag.domain.Tag;
+import com.mouken.modules.zone.domain.QZone;
+import com.mouken.modules.zone.domain.Zone;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

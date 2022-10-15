@@ -8,6 +8,7 @@
 <body>
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 <div th:replace="fragments.html :: party-banner"></div>
+<div th:replace="fragments.html :: party-info-menu(partyMenu='events')"></div>
 
 <main class="container">
   <div th:replace="fragments.html :: event-form (mode='edit', action='/party/' + ${party.path} + '/events/' + ${event.id} + '/edit')"></div>

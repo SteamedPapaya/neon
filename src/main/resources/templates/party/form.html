@@ -9,64 +9,39 @@
 <header th:replace="~{fragments/header.html :: header-common}"></header>
 
 <main class="container">
-    <div class="py-5 text-center">
-        <h2>New Party</h2>
-    </div>
-    <div class="row justify-content-center">
-        <form class="needs-validation col-sm-10" th:action="@{/new-party}" th:object="${partyForm}" method="post" novalidate>
-            <!--<div class="form-group">
-                <label for="path">스터디 URL</label>
-                <input id="path" type="text" th:field="*{path}" class="form-control"
-                       placeholder="예) party-path" aria-describedby="pathHelp" required min="2" max="20">
-                <small id="pathHelp" class="form-text text-muted">
-                    공백없이 문자, 숫자, 대시(-)와 언더바(_)만 2자 이상 20자 이내로 입력하세요. 스터디 홈 주소에 사용합니다. 예) /party/<b>party-path</b>
-                </small>
-                <small class="invalid-feedback">스터디 경로를 입력하세요.</small>
-                <small class="form-text text-danger" th:if="${#fields.hasErrors('path')}" th:errors="*{path}">Path Error</small>
-            </div>-->
-
-            <div class="form-group">
-                <label for="title">Party name</label>
-                <input id="title" type="text" th:field="*{title}" class="form-control"
-                       placeholder="team mouken" aria-describedby="titleHelp" required max="50">
-                <!--<small id="titleHelp" class="form-text text-muted">
-                    스터디 이름을 50자 이내로 입력하세요.
-                </small>
-                <small class="invalid-feedback">스터디 이름을 입력하세요.</small>-->
-                <small class="form-text text-danger"
-                       th:if="${#fields.hasErrors('title')}"
-                       th:errors="*{title}">Title Error</small>
+    <div class="mx-3 my-5">
+        <h3 th:text="#{new-party}">new-party</h3>
+        <p class="text-sm text-secondary text-opacity-50" th:text="#{new-party.desc}"></p>
+        <form class="needs-validation mt-5" th:action="@{/new-party}" th:object="${partyForm}" method="post" novalidate>
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <label for="title" class="form-label">Title</label>
+                    <input id="title" type="text" th:field="*{title}" class="form-control" th:fieldclass="field-error" placeholder="..." required max="50">
+                    <small class="invalid-feedback" th:text="${required}">required</small>
+                    <small class="form-text text-danger field-error" th:errors="*{title}">Title Error</small>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="shortDescription">Intro</label>
-                <textarea id="shortDescription" type="textarea" th:field="*{shortDescription}" class="form-control"
-                          placeholder="Please introduce your party in a sentence." aria-describedby="shortDescriptionHelp" required maxlength="100"></textarea>
-                <!--<small id="shortDescriptionHelp" class="form-text text-muted">
-                    100자 이내로 스터디를 짧은 소개해 주세요.
-                </small>
-                <small class="invalid-feedback">too long</small>-->
-                <small class="form-text text-danger"
-                       th:if="${#fields.hasErrors('shortDescription')}"
-                       th:errors="*{shortDescription}">ShortDescription Error</small>
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <label for="shortDescription" class="form-label">Intro</label>
+                    <textarea id="shortDescription" type="textarea" th:field="*{shortDescription}" class="form-control" th:errorclass="field-error" placeholder="Explain your party in a sentence." required maxlength="100"></textarea>
+                    <small class="invalid-feedback" th:text="${required}">required</small>
+                    <small class="form-text text-danger field-error" th:errors="*{shortDescription}">shortDescription</small>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="fullDescription">Description</label>
-                <textarea id="fullDescription" type="textarea" th:field="*{fullDescription}" class="form-control editor"
-                          placeholder="Please explain about your party" aria-describedby="fullDescriptionHelp" required></textarea>
-                <!--<small id="fullDescriptionHelp" class="form-text text-muted">
-                    스터디의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 스터디원 등 스터디에 대해 자세히 적어 주세요.
-                </small>
-                <small class="invalid-feedback">상세 소개를 입력하세요.</small>-->
-                <small class="form-text text-danger"
-                       th:if="${#fields.hasErrors('fullDescription')}"
-                       th:errors="*{fullDescription}">FullDescription Error</small>
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <label for="fullDescription" class="form-label">Description</label>
+                    <textarea id="fullDescription" type="textarea" th:field="*{fullDescription}" class="form-control editor" th:errorclass="field-error" placeholder="..." required></textarea>
+                    <small class="invalid-feedback" th:text="${required}">required</small>
+                    <small class="form-text text-danger field-error" th:errors="*{fullDescription}">fullDescription</small>
+                </div>
             </div>
-
-            <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit"
-                        aria-describedby="submitHelp">Confirm</button>
+            <div class="row">
+                <div class="d-flex justify-content-center gap-2 mt-1">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" onclick="location.href='/'" class="btn btn-outline-secondary">Cancel</button>
+                </div>
             </div>
         </form>
     </div>

@@ -1,7 +1,8 @@
 package com.mouken.modules.party;
 
-import com.mouken.modules.account.Account;
+import com.mouken.modules.account.domain.Account;
 import com.mouken.modules.account.UserAccount;
+import com.mouken.modules.party.domain.Party;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

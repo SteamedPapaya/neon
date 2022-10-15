@@ -50,7 +50,7 @@
             $(function () {
                 $('.editor').summernote({
                     fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Noto Sans KR'],
-                    placeholder: 'Mouken!',
+                    placeholder: '...',
                     tabsize: 2,
                     height: 300
                 });
@@ -266,12 +266,12 @@
                     }
                 })()
 
-                var inputElm = document.querySelector('input[name=tags-outside]')
+                var inputElm = document.querySelector('input[name=tags-zone-outside]')
 
                 // init Tagify script on the above inputs
                 var tagify = new Tagify(inputElm, {
                     pattern: /^.{0,50}$/,
-                    whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
+                    whitelist: JSON.parse(document.querySelector("#whitelist-zone").textContent),
                     dropdown: {
                         position: "input",
                         enabled: 0 // always opens dropdown when input gets focus

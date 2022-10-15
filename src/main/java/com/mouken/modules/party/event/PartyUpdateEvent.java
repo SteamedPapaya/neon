@@ -1,9 +1,8 @@
 package com.mouken.modules.party.event;
 
-import com.mouken.modules.party.Party;
+import com.mouken.modules.party.domain.Party;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEvent;
 
 @Getter
 @RequiredArgsConstructor
