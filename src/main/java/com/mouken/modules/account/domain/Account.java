@@ -24,8 +24,7 @@ public class Account {
     private Long id;
 
     /**
-     * signUp
-     * email
+     * login signUp email
      */
 
     @Column(unique = true)
@@ -84,11 +83,7 @@ public class Account {
 
     @ManyToMany
     private Set<Zone> zones = new HashSet<>();
-
-    /**
-     * signUp
-     * email
-     */
+    
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();

@@ -86,6 +86,7 @@ public class AccountController {
         return "account/check-email";
     }
 
+    //todo refactor: naming to send confirm email
     @GetMapping("/send-email")
     public String sendEmail(@CurrentAccount Account account, Model model, RedirectAttributes redirectAttributes) {
 
@@ -116,24 +117,12 @@ public class AccountController {
         return "account/profile";
     }
 
-
-
-    @GetMapping("/check-email-login")
-    public String checkEmailLoginForm(@CurrentAccount Account account, Model model) {
-        if (account != null) {
-            model.addAttribute(account);
-            model.addAttribute("username", account.getUsername());
-            model.addAttribute("email", account.getEmail());
-        }
-        return "account/check-email-login";
-    }
-
     @GetMapping("/send-email-login-link")
     public String sendEmailLoginLinkForm() {
         return "account/send-email-login-link";
     }
 
-    //@Transactional
+    //todo @Transactional need?
     @PostMapping("/send-email-login-link")
     public String sendEmailLoginLink(String email, Model model, RedirectAttributes attributes) {
         Account account = accountRepository.findByEmail(email);
@@ -153,6 +142,16 @@ public class AccountController {
         attributes.addFlashAttribute("email", account.getEmail());
         attributes.addFlashAttribute("info", "Login email has been sent.");
         return "redirect:/check-email-login";
+    }
+
+    @GetMapping("/check-email-login")
+    public String checkEmailLoginForm(@CurrentAccount Account account, Model model) {
+        if (account != null) {
+            model.addAttribute(account);
+            model.addAttribute("username", account.getUsername());
+            model.addAttribute("email", account.getEmail());
+        }
+        return "account/check-email-login";
     }
 
     @GetMapping("/email-login")

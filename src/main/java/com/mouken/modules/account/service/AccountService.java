@@ -81,7 +81,6 @@ public class AccountService implements UserDetailsService {
     }
 
     public void login(Account account) {
-
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 new UserAccount(account),
                 account.getPassword(),
@@ -129,7 +128,6 @@ public class AccountService implements UserDetailsService {
     }
 
     public void sendEmailLoginLink(Account account) {
-
         Context context = new Context();
         context.setVariable("link", "/email-login" +
                 "?token=" + account.getEmailCheckToken() +
