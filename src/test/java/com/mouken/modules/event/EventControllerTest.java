@@ -61,43 +61,50 @@ class EventControllerTest extends AbstractContainerBaseTest {
         accountRepository.deleteAll();
     }
 
-    @Test
-    @DisplayName("enroll to FCFS event - Accepted")
-    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    void newEnrollment_to_FCFS_event_accepted() throws Exception {
-        Account user1 = accountFactory.createAccount("user1");
-        Party party = partyFactory.createParty(user1);
-        Event event = createEvent("test-event", EventType.FCFS, 2, party, user1);
 
-        mockMvc.perform(post("/party/" + party.getPath() + "/events/" + event.getId() + "/enroll")
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/party/" + party.getPath() + "/events/" + event.getId()));
-
-        Account account = accountRepository.findByUsername("test");
-        isAccepted(account, event);
-    }
 
     @Test
     @DisplayName("enroll to FCFS event - Wating (overstaffed)")
     @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    void newEnrollment_to_FCFS_event_not_accepted() throws Exception {
+    void enroll_to_FCFS_event_not_accepted() throws Exception {
+        // given
         Account user1 = accountFactory.createAccount("user1");
+        Account user2 = accountFactory.createAccount("user2");
+        Account user3 = accountFactory.createAccount("user3");
         Party party = partyFactory.createParty(user1);
         Event event = createEvent("test-event", EventType.FCFS, 2, party, user1);
+        eventService.newEnrollment(event, user2);
+        eventService.newEnrollment(event, user3);
 
-        Account may = accountFactory.createAccount("may");
-        Account june = accountFactory.createAccount("june");
-        eventService.newEnrollment(event, may);
-        eventService.newEnrollment(event, june);
-
+        // when
         mockMvc.perform(post("/party/" + party.getPath() + "/events/" + event.getId() + "/enroll")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/party/" + party.getPath() + "/events/" + event.getId()));
 
+        // then
         Account account = accountRepository.findByUsername("test");
         isNotAccepted(account, event);
+    }
+
+    @Test
+    @DisplayName("enroll to FCFS event - Accepted")
+    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void enroll_to_FCFS_event_accepted() throws Exception {
+        // given
+        Account user1 = accountFactory.createAccount("user1");
+        Party party = partyFactory.createParty(user1);
+        Event event = createEvent("test-event", EventType.FCFS, 2, party, user1);
+
+        // when
+        mockMvc.perform(post("/party/" + party.getPath() + "/events/" + event.getId() + "/enroll")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/party/" + party.getPath() + "/events/" + event.getId()));
+
+        // then
+        Account account = accountRepository.findByUsername("test");
+        isAccepted(account, event);
     }
 
     @Test

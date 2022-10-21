@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
@@ -33,6 +35,13 @@ class AccountControllerTest extends AbstractContainerBaseTest {
     @MockBean
     EmailService emailService;
 
+    private final static String RANDOM_INPUT = UUID.randomUUID().toString();
+    private final static String USERNAME = "ryuu123";
+    private final static String EMAIL = "ryuu123@gmail.com";
+    private final static String PASSWORD = "12345678";
+    private final static String INVALID_USERNAME = "@@@";
+    private final static String INVALID_EMAIL = "@@@";
+    private final static String INVALID_PASSWORD = "@@@";
 
     @DisplayName("Sign Up - Form")
     @Test
@@ -45,73 +54,129 @@ class AccountControllerTest extends AbstractContainerBaseTest {
 
     }
 
-    @DisplayName("Sign Up - Incorrect Input")
+    @DisplayName("Sign Up")
     @Test
-    void signUpSubmit_with_wrong_input() throws Exception {
+    void signUpSubmit() throws Exception {
         mockMvc.perform(post("/sign-up")
-                        .param("username", "ryuu123")
-                        .param("email", "email..")
-                        .param("password", "12345")
+                        .param("username", USERNAME)
+                        .param("email", EMAIL)
+                        .param("password", PASSWORD)
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/check-email"))
+                .andExpect(authenticated().withUsername(USERNAME));
+
+        Account account = accountRepository.findByEmail(EMAIL);
+
+        // then
+        assertNotNull(account);
+        assertNotNull(account.getEmailCheckToken());
+        assertNotEquals(account.getPassword(), PASSWORD);
+        assertNotNull(account.getEmailCheckToken());
+        then(emailService).should().sendEmail(any(EmailMessage.class));
+    }
+
+    @DisplayName("Sign Up (Invalid username)")
+    @Test
+    void signUpSubmit_with_invalid_username() throws Exception {
+        mockMvc.perform(post("/sign-up")
+                        .param("username", INVALID_USERNAME) // invalid
+                        .param("email", EMAIL)
+                        .param("password", PASSWORD)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/sign-up"))
                 .andExpect(unauthenticated());
     }
 
-    @DisplayName("Sign Up - Correct Input")
+    @DisplayName("Sign Up (Invalid email)")
     @Test
-    void signUpSubmit_with_correct_input() throws Exception {
+    void signUpSubmit_with_invalid_email() throws Exception {
         mockMvc.perform(post("/sign-up")
-                        .param("username", "ryuu123")
-                        .param("email", "ryuu123@gmail.com")
-                        .param("password", "12345678")
+                        .param("username", USERNAME)
+                        .param("email", INVALID_EMAIL) // invalid
+                        .param("password", PASSWORD)
                         .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/check-email"))
-                .andExpect(authenticated().withUsername("ryuu123"));
-
-        // then
-        Account account = accountRepository.findByEmail("ryuu123@gmail.com");
-        assertNotNull(account);
-        assertNotNull(account.getEmailCheckToken());
-        // then; Is the password encoded?
-        assertNotEquals(account.getPassword(), "12345678");
-        assertNotNull(account.getEmailCheckToken());
-        then(emailService).should().sendEmail(any(EmailMessage.class));
-    }
-
-
-
-    @DisplayName("Email Checking - Incorrect Input")
-    @Test
-    void checkEmailToken_with_wrong_input() throws Exception {
-        mockMvc.perform(get("/check-email-token")
-                        .param("token", "WRONG_TOKEN")
-                        .param("email", "email@email.com"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(flash().attributeExists("error"))
-                .andExpect(view().name("redirect:/check-email"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/sign-up"))
                 .andExpect(unauthenticated());
     }
 
-    @DisplayName("Email Checking - Correct Input")
+    @DisplayName("Sign Up (Invalid password)")
+    @Test
+    void signUpSubmit_with_invalid_password() throws Exception {
+        mockMvc.perform(post("/sign-up")
+                        .param("username", USERNAME)
+                        .param("email", EMAIL)
+                        .param("password", INVALID_PASSWORD) // invalid
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/sign-up"))
+                .andExpect(unauthenticated());
+    }
+
+
+    @DisplayName("Email Checking")
     @Test
     void checkEmailToken() throws Exception {
-        Account account = Account.builder()
-                .email("ryuu123@email.com")
-                .password("12345678")
-                .username("ryuu123")
+        // todo refactor: using SignUpForm and AccountService.saveAccount(SignUpForm)
+        Account account = Account.builder() 
+                .username(USERNAME)
+                .email(EMAIL)
+                .password(PASSWORD)
                 .build();
         Account newAccount = accountRepository.save(account);
         newAccount.generateEmailCheckToken();
-
+        
         mockMvc.perform(get("/check-email-token")
                         .param("token", newAccount.getEmailCheckToken())
                         .param("email", newAccount.getEmail()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeExists("info"))
                 .andExpect(view().name("redirect:/check-email"))
-                .andExpect(authenticated().withUsername("ryuu123"));
+                .andExpect(authenticated().withUsername(USERNAME));
+    }
+
+    @DisplayName("Email Checking (Invalid token)")
+    @Test
+    void checkEmailToken_with_invalid_token() throws Exception {
+        // todo refactor: using SignUpForm and AccountService.saveAccount(SignUpForm)
+        Account account = Account.builder()
+                .username(USERNAME)
+                .email(EMAIL)
+                .password(PASSWORD)
+                .build();
+        Account newAccount = accountRepository.save(account);
+        newAccount.generateEmailCheckToken();
+
+        mockMvc.perform(get("/check-email-token")
+                        .param("token", RANDOM_INPUT) // invalid
+                        .param("email", newAccount.getEmail()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attributeExists("error"))
+                .andExpect(view().name("redirect:/check-email"))
+                .andExpect(unauthenticated());
+    }
+
+    @DisplayName("Email Checking (Invalid email)")
+    @Test
+    void checkEmailToken_with_invalid_email() throws Exception {
+        // todo refactor: using SignUpForm and AccountService.saveAccount(SignUpForm)
+        Account account = Account.builder()
+                .username(USERNAME)
+                .email(EMAIL)
+                .password(PASSWORD)
+                .build();
+        Account newAccount = accountRepository.save(account);
+        newAccount.generateEmailCheckToken();
+
+        mockMvc.perform(get("/check-email-token")
+                        .param("token", newAccount.getEmailCheckToken())
+                        .param("email", RANDOM_INPUT)) // invalid
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attributeExists("error"))
+                .andExpect(view().name("redirect:/check-email"))
+                .andExpect(unauthenticated());
     }
 
 }

@@ -14,6 +14,8 @@ import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
@@ -34,12 +36,18 @@ class MainControllerTest extends AbstractContainerBaseTest {
     @Autowired
     private AccountService accountService;
 
+    private final static String USERNAME = "ryuu123";
+    private final static String EMAIL = "ryuu123@gmail.com";
+    private final static String PASSWORD = "12345678";
+    private final static String WRONG_USERNAME = "wrong_username";
+    private final static String WRONG_PASSWORD = "87654321";
+
     @BeforeEach
     void beforeEach() {
         SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setUsername("test");
-        signUpForm.setEmail("test@email.com");
-        signUpForm.setPassword("12345678");
+        signUpForm.setUsername(USERNAME);
+        signUpForm.setEmail(EMAIL);
+        signUpForm.setPassword(PASSWORD);
         accountService.processNewAccount(signUpForm);
     }
 
@@ -49,44 +57,55 @@ class MainControllerTest extends AbstractContainerBaseTest {
     }
 
 
-
-    @DisplayName("Login with Email - correct input")
+    @DisplayName("Login with email")
     @Test
     void login_with_email() throws Exception {
-        mockMvc.perform(post("/login") // SS 에 의해 처리됨 (이때 redirection 발생)
-                        .param("username", "test@email.com")
-                        .param("password", "12345678")
+        mockMvc.perform(post("/login") // Spring Security 에 의해 처리됨 (이때 redirection 발생)
+                        .param("username", EMAIL)
+                        .param("password", PASSWORD)
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
-                .andExpect(authenticated().withUsername("test"));
+                .andExpect(authenticated().withUsername(USERNAME));
     }
 
-    @DisplayName("Login with Username - correct input")
+    @DisplayName("Login with username")
     @Test
     void login_with_username() throws Exception {
         mockMvc.perform(post("/login")
-                        .param("username", "test")
-                        .param("password", "12345678")
+                        .param("username", USERNAME)
+                        .param("password", PASSWORD)
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
-                .andExpect(authenticated().withUsername("test"));
+                .andExpect(authenticated().withUsername(USERNAME));
     }
 
-    @DisplayName("Login - wrong input")
+    @DisplayName("Login with username (Wrong username)")
     @Test
-    void login_fail() throws Exception {
+    void login_with_wrong_username() throws Exception {
         mockMvc.perform(post("/login")
-                        .param("username", "WRONG_USERNAME")
-                        .param("password", "WRONG_PASSWORD")
+                        .param("username", WRONG_USERNAME)
+                        .param("password", PASSWORD)
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?error"))
                 .andExpect(unauthenticated());
     }
 
-    @WithUserDetails(value="test", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("Login with username (Wrong password)")
+    @Test
+    void login_with_wrong_password() throws Exception {
+        mockMvc.perform(post("/login")
+                        .param("username", USERNAME)
+                        .param("password", WRONG_PASSWORD)
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login?error"))
+                .andExpect(unauthenticated());
+    }
+
+    @WithUserDetails(value=USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("Logout")
     @Test
     void logout() throws Exception {
