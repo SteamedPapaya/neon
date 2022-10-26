@@ -3,6 +3,7 @@ package com.mouken.modules.event.validator;
 import com.mouken.modules.event.domain.Event;
 import com.mouken.modules.event.web.form.EventForm;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -46,9 +47,9 @@ public class EventValidator implements Validator {
         return endDateTime.isBefore(eventForm.getStartDateTime()) || endDateTime.isBefore(eventForm.getEndEnrollmentDateTime());
     }
 
-    public void validateUpdateForm(EventForm eventForm, Event event, Errors errors) {
+    public void validateUpdateForm(EventForm eventForm, Event event, BindingResult bindingResult) {
         if (eventForm.getLimitOfEnrollments() < event.getNumberOfAcceptedEnrollments()) {
-            errors.rejectValue("limitOfEnrollments", "wrong.value", "limit number of enrollment should be more than the number of the confirmed members");
+            bindingResult.rejectValue("limitOfEnrollments", "wrong.value", "limit number of enrollment should be more than the number of the confirmed members");
         }
     }
 }

@@ -9,7 +9,9 @@
 <body>
 <main class="form-signup text-center w-100 m-auto">
     <form class="needs-validation" action="#" th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
-        <a href="/"><img src="/assets/brand/logo-dark.png" alt="" width="160" height="160"></a>
+        <div class="mb-4">
+            <a href="/"><img src="/assets/brand/logo-light.png" alt="" width="160" height="160"></a>
+        </div>
 
         <div class="form-floating">
             <input type="email" class="form-control" id="floatingInputTop" th:field="*{email}" th:errorclass="field-error" placeholder="name@example.com" required>
@@ -26,7 +28,7 @@
             <label for="floatingInputBottom">Password</label>
             <small class="field-error form-text text-danger" th:errors="*{password}">Password Error</small>
         </div>
-        <button class="w-100 btn btn-lg btn-dark" type="submit">Sign up</button>
+        <button class="w-100 btn btn-lg btn-light" type="submit">Sign up</button>
 <!--            <small id="submitHelp" class="form-text text-muted">-->
 <!--                <a href="#">terms</a>-->
 <!--            </small>-->

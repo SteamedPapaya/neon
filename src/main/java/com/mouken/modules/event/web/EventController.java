@@ -3,23 +3,23 @@ package com.mouken.modules.event.web;
 
 import com.mouken.modules.account.CurrentAccount;
 import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.event.db.EventRepository;
 import com.mouken.modules.event.domain.Enrollment;
 import com.mouken.modules.event.domain.Event;
-import com.mouken.modules.event.db.EventRepository;
 import com.mouken.modules.event.service.EventService;
-import com.mouken.modules.event.web.form.EventForm;
 import com.mouken.modules.event.validator.EventValidator;
+import com.mouken.modules.event.web.form.EventForm;
 import com.mouken.modules.party.domain.Party;
 import com.mouken.modules.party.service.PartyService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +32,9 @@ public class EventController {
     private final PartyService partyService;
     private final EventService eventService;
     private final ModelMapper modelMapper;
-    private final EventValidator eventValidator;
     private final EventRepository eventRepository;
-    
+    private final EventValidator eventValidator;
+
     @InitBinder("eventForm")
     public void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(eventValidator);
@@ -50,10 +50,9 @@ public class EventController {
     }
 
     @PostMapping("/new-event")
-    public String newEventSubmit(@CurrentAccount Account account, @PathVariable String path,
-                                 @Valid EventForm eventForm, Errors errors, Model model) {
+    public String newEventSubmit(@CurrentAccount Account account, @PathVariable String path, @Validated EventForm eventForm, BindingResult bindingResult, Model model) {
         Party party = partyService.getPartyToUpdateStatus(account, path);
-        if (errors.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute(account);
             model.addAttribute(party);
             return "event/form";
@@ -64,8 +63,7 @@ public class EventController {
     }
 
     @GetMapping("/events/{id}")
-    public String getEvent(@CurrentAccount Account account, @PathVariable String path, @PathVariable Long id,
-                           Model model) {
+    public String getEvent(@CurrentAccount Account account, @PathVariable Long id, @PathVariable String path, Model model) {
         model.addAttribute(account);
         model.addAttribute(eventRepository.findById(id).orElseThrow());
         model.addAttribute(partyService.getParty(path));
@@ -108,15 +106,14 @@ public class EventController {
     }
 
     @PostMapping("/events/{id}/edit")
-    public String updateEventSubmit(@CurrentAccount Account account, @PathVariable String path,
-                                    @PathVariable Long id, @Valid EventForm eventForm, Errors errors,
-                                    Model model) {
+    public String updateEventSubmit(@CurrentAccount Account account, @PathVariable String path, @PathVariable("id") Event event, @PathVariable Long id, @Validated EventForm eventForm, BindingResult bindingResult, Model model) {
         Party party = partyService.getPartyToUpdate(account, path);
-        Event event = eventRepository.findById(id).orElseThrow();
+        // todo delete after check @PathVariable("id") Event event 으로 Event 객체를 받을 수 있는가?
+        //  Event event = eventRepository.findById(id).orElseThrow();
         eventForm.setEventType(event.getEventType());
-        eventValidator.validateUpdateForm(eventForm, event, errors);
+        eventValidator.validateUpdateForm(eventForm, event, bindingResult);
 
-        if (errors.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute(account);
             model.addAttribute(party);
             model.addAttribute(event);

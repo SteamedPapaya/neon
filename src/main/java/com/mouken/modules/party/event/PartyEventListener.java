@@ -3,14 +3,14 @@ package com.mouken.modules.party.event;
 import com.mouken.infra.config.AppProperties;
 import com.mouken.infra.mail.EmailMessage;
 import com.mouken.infra.mail.EmailService;
-import com.mouken.modules.account.domain.Account;
 import com.mouken.modules.account.AccountPredicates;
 import com.mouken.modules.account.db.AccountRepository;
-import com.mouken.modules.notification.domain.Notification;
-import com.mouken.modules.notification.db.NotificationRepository;
+import com.mouken.modules.account.domain.Account;
 import com.mouken.modules.notification.NotificationType;
-import com.mouken.modules.party.domain.Party;
+import com.mouken.modules.notification.db.NotificationRepository;
+import com.mouken.modules.notification.domain.Notification;
 import com.mouken.modules.party.db.PartyRepository;
+import com.mouken.modules.party.domain.Party;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -49,7 +49,7 @@ public class PartyEventListener {
             }
 
             if (account.isPartyCreatedByWeb()) {
-                createNotification(party, account, party.getShortDescription(), NotificationType.STUDY_CREATED);
+                createNotification(party, account, party.getShortDescription(), NotificationType.PARTY_CREATED);
             }
         });
     }
@@ -68,7 +68,7 @@ public class PartyEventListener {
             }
 
             if (account.isPartyUpdatedByWeb()) {
-                createNotification(party, account, partyUpdateEvent.getMessage(), NotificationType.STUDY_UPDATED);
+                createNotification(party, account, partyUpdateEvent.getMessage(), NotificationType.PARTY_UPDATED);
             }
         });
     }

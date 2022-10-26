@@ -4,26 +4,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouken.modules.account.CurrentAccount;
 import com.mouken.modules.account.domain.Account;
-import com.mouken.modules.party.service.PartyService;
-import com.mouken.modules.party.domain.Party;
-import com.mouken.modules.party.web.form.PartyDescriptionForm;
 import com.mouken.modules.account.web.form.TagForm;
 import com.mouken.modules.account.web.form.ZoneForm;
-import com.mouken.modules.tag.domain.Tag;
+import com.mouken.modules.party.domain.Party;
+import com.mouken.modules.party.service.PartyService;
+import com.mouken.modules.party.web.form.PartyDescriptionForm;
 import com.mouken.modules.tag.db.TagRepository;
+import com.mouken.modules.tag.domain.Tag;
 import com.mouken.modules.tag.service.TagService;
-import com.mouken.modules.zone.domain.Zone;
 import com.mouken.modules.zone.db.ZoneRepository;
+import com.mouken.modules.zone.domain.Zone;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,12 +49,17 @@ public class PartySettingsController {
     }
 
     @PostMapping("/description")
-    public String updatePartyInfo(@CurrentAccount Account account, @PathVariable String path,
-                                  @Valid PartyDescriptionForm partyDescriptionForm, Errors errors,
-                                  Model model, RedirectAttributes attributes) {
+    public String updatePartyInfo(
+            @CurrentAccount Account account,
+            @PathVariable String path,
+            @Validated PartyDescriptionForm partyDescriptionForm,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes attributes) {
+
         Party party = partyService.getPartyToUpdate(account, path);
 
-        if (errors.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute(account);
             model.addAttribute(party);
             return "party/settings/description";
@@ -67,6 +72,7 @@ public class PartySettingsController {
 
     @GetMapping("/banner")
     public String partyBannerForm(@CurrentAccount Account account, @PathVariable String path, Model model) {
+
         Party party = partyService.getPartyToUpdate(account, path);
         model.addAttribute(account);
         model.addAttribute(party);
@@ -91,11 +97,6 @@ public class PartySettingsController {
     public String enablePartyBanner(@CurrentAccount Account account, @PathVariable String path) {
         Party party = partyService.getPartyToUpdate(account, path);
         partyService.enablePartyBanner(party);
-
-        int max_num = 5;
-        String random_num = String.valueOf((int) (Math.random() * max_num) + 1);
-        String image_path = "/assets/banner/" + random_num + ".png";
-        partyService.updatePartyBanner(party, image_path);
         return "redirect:/party/" + path + "/settings/banner";
     }
 
@@ -107,8 +108,7 @@ public class PartySettingsController {
     }
 
     @GetMapping("/tags")
-    public String partyTagsForm(@CurrentAccount Account account, @PathVariable String path, Model model)
-            throws JsonProcessingException {
+    public String partyTagsForm(@CurrentAccount Account account, @PathVariable String path, Model model) throws JsonProcessingException {
         Party party = partyService.getPartyToUpdate(account, path);
         model.addAttribute(account);
         model.addAttribute(party);
@@ -123,8 +123,7 @@ public class PartySettingsController {
 
     @PostMapping("/tags/add")
     @ResponseBody
-    public ResponseEntity addTag(@CurrentAccount Account account, @PathVariable String path,
-                                 @RequestBody TagForm tagForm) {
+    public ResponseEntity addTag(@CurrentAccount Account account, @PathVariable String path, @RequestBody TagForm tagForm) {
         Party party = partyService.getPartyToUpdateTag(account, path);
         Tag tag = tagService.findOrCreateNew(tagForm.getTagTitle());
         partyService.addTag(party, tag);
@@ -133,8 +132,7 @@ public class PartySettingsController {
 
     @PostMapping("/tags/remove")
     @ResponseBody
-    public ResponseEntity removeTag(@CurrentAccount Account account, @PathVariable String path,
-                                    @RequestBody TagForm tagForm) {
+    public ResponseEntity removeTag(@CurrentAccount Account account, @PathVariable String path, @RequestBody TagForm tagForm) {
         Party party = partyService.getPartyToUpdateTag(account, path);
         Tag tag = tagRepository.findByTitle(tagForm.getTagTitle());
         if (tag == null) {
@@ -146,8 +144,7 @@ public class PartySettingsController {
     }
 
     @GetMapping("/zones")
-    public String partyZonesForm(@CurrentAccount Account account, @PathVariable String path, Model model)
-            throws JsonProcessingException {
+    public String partyZonesForm(@CurrentAccount Account account, @PathVariable String path, Model model) throws JsonProcessingException {
         Party party = partyService.getPartyToUpdate(account, path);
         model.addAttribute(account);
         model.addAttribute(party);
@@ -160,8 +157,7 @@ public class PartySettingsController {
 
     @PostMapping("/zones/add")
     @ResponseBody
-    public ResponseEntity addZone(@CurrentAccount Account account, @PathVariable String path,
-                                  @RequestBody ZoneForm zoneForm) {
+    public ResponseEntity addZone(@CurrentAccount Account account, @PathVariable String path, @RequestBody ZoneForm zoneForm) {
         Party party = partyService.getPartyToUpdateZone(account, path);
         Zone zone = zoneRepository.findByCityAndCountry(zoneForm.getCityName(), zoneForm.getCountryName());
         if (zone == null) {
@@ -182,8 +178,7 @@ public class PartySettingsController {
     
     @PostMapping("/zones/remove")
     @ResponseBody
-    public ResponseEntity removeZone(@CurrentAccount Account account, @PathVariable String path,
-                                     @RequestBody ZoneForm zoneForm) {
+    public ResponseEntity removeZone(@CurrentAccount Account account, @PathVariable String path, @RequestBody ZoneForm zoneForm) {
         Party party = partyService.getPartyToUpdateZone(account, path);
         Zone zone = zoneRepository.findByCityAndCountry(zoneForm.getCityName(), zoneForm.getCountryName());
         if (zone == null) {
@@ -195,8 +190,7 @@ public class PartySettingsController {
     }
 
     @PostMapping("/party/publish")
-    public String publishParty(@CurrentAccount Account account, @PathVariable String path,
-                               RedirectAttributes attributes) {
+    public String publishParty(@CurrentAccount Account account, @PathVariable String path, RedirectAttributes attributes) {
         Party party = partyService.getPartyToUpdateStatus(account, path);
         partyService.publish(party);
         attributes.addFlashAttribute("message", "Party has been published.");
@@ -204,8 +198,7 @@ public class PartySettingsController {
     }
 
     @PostMapping("/party/close")
-    public String closeParty(@CurrentAccount Account account, @PathVariable String path,
-                             RedirectAttributes attributes) {
+    public String closeParty(@CurrentAccount Account account, @PathVariable String path, RedirectAttributes attributes) {
         Party party = partyService.getPartyToUpdateStatus(account, path);
         partyService.close(party);
         attributes.addFlashAttribute("message", "Party has been closed.");
@@ -213,8 +206,7 @@ public class PartySettingsController {
     }
 
     @PostMapping("/recruit/start")
-    public String startRecruit(@CurrentAccount Account account, @PathVariable String path, Model model,
-                               RedirectAttributes attributes) {
+    public String startRecruit(@CurrentAccount Account account, @PathVariable String path, Model model, RedirectAttributes attributes) {
         Party party = partyService.getPartyToUpdateStatus(account, path);
         if (!party.canUpdateRecruiting()) {
             attributes.addFlashAttribute("message", "You can not update it several times in a hour.");
@@ -227,8 +219,7 @@ public class PartySettingsController {
     }
 
     @PostMapping("/recruit/stop")
-    public String stopRecruit(@CurrentAccount Account account, @PathVariable String path, Model model,
-                              RedirectAttributes attributes) {
+    public String stopRecruit(@CurrentAccount Account account, @PathVariable String path, Model model, RedirectAttributes attributes) {
         Party party = partyService.getPartyToUpdate(account, path);
         if (!party.canUpdateRecruiting()) {
             attributes.addFlashAttribute("message", "You can not update it several times in a hour.");
@@ -241,10 +232,7 @@ public class PartySettingsController {
     }
 
     @PostMapping("/party/path")
-    public String updatePartyPath(@CurrentAccount Account account, @PathVariable String path,
-                                  Model model, RedirectAttributes attributes) {
-
-        String newPath = partyService.getNewPath();
+    public String updatePartyPath(@CurrentAccount Account account, @PathVariable String path, String newPath, Model model, RedirectAttributes attributes) {
 
         Party party = partyService.getPartyToUpdateStatus(account, path);
         if (!partyService.isValidPath(newPath)) {
@@ -260,8 +248,7 @@ public class PartySettingsController {
     }
 
     @PostMapping("/party/title")
-    public String updatePartyTitle(@CurrentAccount Account account, @PathVariable String path, String newTitle,
-                                   Model model, RedirectAttributes attributes) {
+    public String updatePartyTitle(@CurrentAccount Account account, @PathVariable String path, String newTitle, Model model, RedirectAttributes attributes) {
         Party party = partyService.getPartyToUpdateStatus(account, path);
         if (!partyService.isValidTitle(newTitle)) {
             model.addAttribute(account);

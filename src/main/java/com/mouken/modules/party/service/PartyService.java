@@ -10,12 +10,13 @@ import com.mouken.modules.tag.domain.Tag;
 import com.mouken.modules.zone.domain.Zone;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.mouken.modules.party.web.form.PartyForm.VALID_PATH_PATTERN;
 
 @Slf4j
 @Service
@@ -28,12 +29,7 @@ public class PartyService {
     private final ApplicationEventPublisher eventPublisher;
 
     public Party createNewParty(Party party, Account account) {
-        log.info("createNewParty");
-
-        party.setPath(getNewPath());
-
         Party newParty = partyRepository.save(party);
-        log.info("newParty Path = {}", newParty.getPath());
         newParty.addManager(account);
         eventPublisher.publishEvent(new PartyCreatedEvent(newParty));
         return newParty;
@@ -42,7 +38,6 @@ public class PartyService {
     public Party getParty(String path) {
         Party party = this.partyRepository.findByPath(path);
         checkIfExistingParty(path, party);
-
         return party;
     }
 
@@ -108,7 +103,7 @@ public class PartyService {
     
     private void checkIfManager(Account account, Party party) {
         if (!party.isManagedBy(account)) {
-            throw new AccessDeniedException("You're inaccessible.");
+            throw new AccessDeniedException("Access denied");
         }
     }
 
@@ -138,11 +133,16 @@ public class PartyService {
         eventPublisher.publishEvent(new PartyUpdateEvent(party, "Enrollment has been stopped."));
     }
 
-    public String getNewPath() {
+    /* todo delete
+        public String getNewPath() {
         return RandomStringUtils.randomAlphanumeric(20);
-    }
+    }*/
 
     public boolean isValidPath(String newPath) {
+        if (!newPath.matches(VALID_PATH_PATTERN)) {
+            return false;
+        }
+
         return !partyRepository.existsByPath(newPath);
     }
 

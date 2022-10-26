@@ -1,7 +1,7 @@
 package com.mouken.modules.account.domain;
 
-import com.mouken.modules.zone.domain.Zone;
 import com.mouken.modules.tag.domain.Tag;
+import com.mouken.modules.zone.domain.Zone;
 import lombok.*;
 
 import javax.persistence.*;

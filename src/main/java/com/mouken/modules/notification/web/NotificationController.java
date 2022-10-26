@@ -1,10 +1,10 @@
 package com.mouken.modules.notification.web;
 
-import com.mouken.modules.account.domain.Account;
 import com.mouken.modules.account.CurrentAccount;
+import com.mouken.modules.account.domain.Account;
 import com.mouken.modules.notification.db.NotificationRepository;
-import com.mouken.modules.notification.service.NotificationService;
 import com.mouken.modules.notification.domain.Notification;
+import com.mouken.modules.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,9 +54,9 @@ public class NotificationController {
         List<Notification> watchingPartyNotifications = new ArrayList<>();
         for (var notification : notifications) {
             switch (notification.getNotificationType()) {
-                case STUDY_CREATED: newPartyNotifications.add(notification); break;
+                case PARTY_CREATED: newPartyNotifications.add(notification); break;
                 case EVENT_ENROLLMENT: eventEnrollmentNotifications.add(notification); break;
-                case STUDY_UPDATED: watchingPartyNotifications.add(notification); break;
+                case PARTY_UPDATED: watchingPartyNotifications.add(notification); break;
             }
         }
 

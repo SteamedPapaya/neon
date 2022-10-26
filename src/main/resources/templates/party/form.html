@@ -15,6 +15,14 @@
         <form class="needs-validation mt-5" th:action="@{/new-party}" th:object="${partyForm}" method="post" novalidate>
             <div class="row">
                 <div class="col-12 mb-2">
+                    <label for="path" class="form-label">Path</label>
+                    <input id="path" type="text" th:field="*{path}" class="form-control" th:fieldclass="field-error" placeholder="..." required max="30">
+                    <small class="invalid-feedback" th:text="${required}">required</small>
+                    <small class="form-text text-danger field-error" th:errors="*{path}">Path Error</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-2">
                     <label for="title" class="form-label">Title</label>
                     <input id="title" type="text" th:field="*{title}" class="form-control" th:fieldclass="field-error" placeholder="..." required max="50">
                     <small class="invalid-feedback" th:text="${required}">required</small>

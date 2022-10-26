@@ -2,30 +2,29 @@ package com.mouken.modules.account.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mouken.modules.account.service.AccountService;
 import com.mouken.modules.account.CurrentAccount;
 import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.service.AccountService;
 import com.mouken.modules.account.validator.PasswordFormValidator;
-import com.mouken.modules.account.web.form.*;
-import com.mouken.modules.zone.domain.Zone;
-import com.mouken.modules.zone.db.ZoneRepository;
-import com.mouken.modules.tag.domain.Tag;
 import com.mouken.modules.account.validator.UsernameFormValidator;
+import com.mouken.modules.account.web.form.*;
 import com.mouken.modules.tag.db.TagRepository;
+import com.mouken.modules.tag.domain.Tag;
 import com.mouken.modules.tag.service.TagService;
+import com.mouken.modules.zone.db.ZoneRepository;
+import com.mouken.modules.zone.domain.Zone;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,11 +37,11 @@ public class SettingsController {
 
     private final AccountService accountService;
     private final ModelMapper modelMapper;
-    private final UsernameFormValidator usernameFormValidator;
     private final TagRepository tagRepository;
     private final ObjectMapper objectMapper;
     private final ZoneRepository zoneRepository;
     private final TagService tagService;
+    private final UsernameFormValidator UsernameFormValidator;
 
     @InitBinder("passwordForm")
     public void passwordFormInitBinder(WebDataBinder webDataBinder) {
@@ -50,8 +49,8 @@ public class SettingsController {
     }
 
     @InitBinder("usernameForm")
-    public void usernameFormInitBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(usernameFormValidator);
+    public void nicknameFormInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(UsernameFormValidator);
     }
 
     @GetMapping("/profile")
@@ -64,13 +63,12 @@ public class SettingsController {
     @PostMapping("/profile")
     public String updateProfile(
             @CurrentAccount Account account,
-            @Valid @ModelAttribute Profile profile,
-            Errors errors,
+            @Validated @ModelAttribute Profile profile,
+            BindingResult bindingResult,
             Model model,
             RedirectAttributes redirectAttributes) {
 
-
-        if (errors.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute(account);
             return "settings/profile";
         }
@@ -88,10 +86,9 @@ public class SettingsController {
     }
 
     @PostMapping("/password")
-    public String updatePassword(@CurrentAccount Account account, @Validated PasswordForm passwordForm, Errors errors,
-                                 Model model, RedirectAttributes attributes) {
+    public String updatePassword(@CurrentAccount Account account, @Validated PasswordForm passwordForm, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
 
-        if (errors.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute(account);
             return "settings/password";
         }
@@ -109,9 +106,8 @@ public class SettingsController {
     }
 
     @PostMapping("/notifications")
-    public String updateNotifications(@CurrentAccount Account account, @Valid Notifications notifications, Errors errors,
-                                      Model model, RedirectAttributes attributes) {
-        if (errors.hasErrors()) {
+    public String updateNotifications(@CurrentAccount Account account, @Validated Notifications notifications, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute(account);
             return "settings/notifications";
         }
@@ -129,9 +125,8 @@ public class SettingsController {
     }
 
     @PostMapping("/account")
-    public String updateAccount(@CurrentAccount Account account, @Valid UsernameForm usernameForm, Errors errors,
-                                Model model, RedirectAttributes attributes) {
-        if (errors.hasErrors()) {
+    public String updateAccount(@CurrentAccount Account account, @Validated UsernameForm usernameForm, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute(account);
             return "settings/account";
         }

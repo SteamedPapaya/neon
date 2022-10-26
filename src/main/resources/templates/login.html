@@ -9,7 +9,9 @@
 <body>
 <main class="form-signin text-center w-100 m-auto">
   <form class="needs-validation" action="#" th:action="@{/login}" method="post" novalidate>
-    <a href="/"><img src="/assets/brand/logo-dark.png" alt="" width="160" height="160"></a>
+    <div class="mb-4">
+      <a href="/"><img src="/assets/brand/logo-light.png" alt="" width="160" height="160"></a>
+    </div>
 
     <div class="form-floating">
       <input type="text" class="form-control" name="username" id="floatingInputTop" placeholder="Username" required>
@@ -21,11 +23,12 @@
     </div>
     <div class="checkbox mt-2 mb-2">
       <label>
-        <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me"> Remember me
+        <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me">
+        <span class="text-light"> Remember me</span>
       </label>
     </div>
     <div class="form-floating">
-      <button class="w-100 btn btn-lg btn-dark" type="submit" >Login</button>
+      <button class="w-100 btn btn-lg btn-light" type="submit" >Login</button>
     </div>
   </form>
 

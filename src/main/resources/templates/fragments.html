@@ -25,7 +25,7 @@
 </div>
 
 <div th:fragment="party-banner" th:if="${party.useBanner}" class="row-cols-1" id="party-logo">
-    <img th:src="${party.image}"/>
+    <img th:src="${party.image}" height="100"/>
 </div>
 
 <div th:fragment="party-info-menu(partyMenu)" class="bg-light">
@@ -62,8 +62,11 @@
             </p>
         </div>
     </div>
-    <nav class="nav nav-tabs">
-        <a class="nav-item nav-link ms-5" th:classappend="${partyMenu == 'info'}? active" href="#"  th:href="@{'/party/' + ${party.path}}">
+    <nav class="nav nav-tabs mx-5">
+        <a class="nav-item nav-link" th:classappend="${partyMenu == 'posts'}? active" href="#"  th:href="@{'/party/' + ${party.path}}">
+            <i class="fa fa-comments"></i>
+        </a>
+        <a class="nav-item nav-link" th:classappend="${partyMenu == 'info'}? active" href="#"  th:href="@{'/party/' + ${party.path} + '/info'}">
             <i class="fa fa-info-circle"></i>
         </a>
         <a class="nav-item nav-link" th:classappend="${partyMenu == 'members'}? active" href="#" th:href="@{'/party/' + ${party.path} + '/members'}">
@@ -72,7 +75,7 @@
         <a class="nav-item nav-link" th:classappend="${partyMenu == 'events'}? active" href="#" th:href="@{'/party/' + ${party.path} + '/events'}">
             <i class="fa fa-calendar"></i>
         </a>
-        <a class="nav-item nav-link me-5" th:classappend="${partyMenu == 'settings'}? active" href="#" th:href="@{'/party/' + ${party.path} + '/settings/description'}" sec:authorize="isAuthenticated()" th:if="${party.isManager(#authentication.principal)}" >
+        <a class="nav-item nav-link" th:classappend="${partyMenu == 'settings'}? active" href="#" th:href="@{'/party/' + ${party.path} + '/settings/description'}" sec:authorize="isAuthenticated()" th:if="${party.isManager(#authentication.principal)}" >
             <i class="fa fa-cog"></i>
         </a>
     </nav>
@@ -213,7 +216,7 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div class="col" th:each="party: ${partyList}">
             <div class="card shadow-sm">
-                <img th:src="${party.image}" class="card-img-top" th:alt="${party.title}" >
+                <img th:if="${party.useBanner}" th:src="${party.image}" class="card-img-top" th:alt="${party.title}" >
                 <!--{{< placeholder width="100%" height="225" background="#55595c" color="#eceeef" class="card-img-top" text="Thumbnail" >}}-->
                 <div class="card-body">
                     <a th:href="@{'/party/' + ${party.path}}" class="text-decoration-none">

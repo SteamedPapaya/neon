@@ -1,7 +1,7 @@
 package com.mouken.modules.party.domain;
 
-import com.mouken.modules.account.domain.Account;
 import com.mouken.modules.account.UserAccount;
+import com.mouken.modules.account.domain.Account;
 import com.mouken.modules.tag.domain.Tag;
 import com.mouken.modules.zone.domain.Zone;
 import lombok.*;
@@ -23,7 +23,6 @@ public class Party {
     @Id
     @GeneratedValue
     private Long id;
-
 
     @Column(unique = true)
     private String path;
