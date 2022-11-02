@@ -23,17 +23,16 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class EventService {
 
-    private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
-    private final EnrollmentRepository enrollmentRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final EventRepository eventRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
     public Event createEvent(Event event, Party party, Account account) {
         event.setCreatedBy(account);
         event.setCreatedDateTime(LocalDateTime.now());
         event.setParty(party);
-        eventPublisher.publishEvent(new PartyUpdateEvent(event.getParty(),
-                "'" + event.getTitle() + "' the new event."));
+        eventPublisher.publishEvent(new PartyUpdateEvent(event.getParty(), "new event : " + event.getId()));
         return eventRepository.save(event);
     }
 

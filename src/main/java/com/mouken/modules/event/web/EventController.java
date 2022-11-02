@@ -31,9 +31,9 @@ public class EventController {
 
     private final PartyService partyService;
     private final EventService eventService;
-    private final ModelMapper modelMapper;
     private final EventRepository eventRepository;
     private final EventValidator eventValidator;
+    private final ModelMapper modelMapper;
 
     @InitBinder("eventForm")
     public void initBinder(WebDataBinder webDataBinder) {

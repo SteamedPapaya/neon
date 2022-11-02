@@ -13,7 +13,10 @@ import java.time.LocalDateTime;
         attributeNodes = {
                 @NamedAttributeNode(value = "event", subgraph = "party")
         },
-        subgraphs = @NamedSubgraph(name = "party", attributeNodes = @NamedAttributeNode("party"))
+        subgraphs = @NamedSubgraph(
+                name = "party",
+                attributeNodes = @NamedAttributeNode("party")
+        )
 )
 @Entity
 @Getter

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+    <title th:text="#{title.post}">title.post</title>
+</head>
+
+<body>
+<header th:replace="~{fragments/header.html :: header-common}"></header>
+
+<main class="container">
+    <div th:replace="~{main/fragments.html :: post-form (mode='new', action='/new-post/')}"></div>
+</main>
+
+<footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
+<script th:replace="~{fragments/script.html :: form-validation}"></script>
+<script th:replace="~{fragments/script.html :: editor-script}"></script>
+</body>
+
+</html>

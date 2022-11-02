@@ -83,7 +83,11 @@ public class Account {
 
     @ManyToMany
     private Set<Zone> zones = new HashSet<>();
-    
+
+    /* todo
+    @ManyToMany
+    private Set<Zone> parties = new HashSet<>();
+    */
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();

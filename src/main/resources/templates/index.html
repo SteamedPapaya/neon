@@ -24,8 +24,9 @@
                     <a href="#" th:href="@{/login}" class="btn btn-secondary my-2">Sign in</a>
                 </p>
                 <p sec:authorize="isAuthenticated()">
-                    <a href="#" th:href="@{/}" class="btn btn-primary my-2" >Find a team</a><!--todo-->
-                    <a href="#" th:href="@{/new-party}" class="btn btn-secondary my-2">Make a team</a>
+                    <a href="#" th:href="@{/new-post}" class="btn btn-primary my-2" th:text="#{new-post}">new-post</a>
+                    <!--<a href="#" th:href="@{/new-party}" class="btn btn-secondary my-2" th:text="#{new-party}">new-party</a>-->
+                    <a href="#" th:href="@{/parties}" class="btn btn-secondary my-2" th:text="#{parties}">parties</a>
                 </p>
             </div>
         </div>

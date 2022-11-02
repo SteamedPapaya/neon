@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NamedEntityGraph(
-        name = "Event.withEnrollments",
-        attributeNodes = @NamedAttributeNode("enrollments")
-)
 @Entity
 @Getter
 @Setter

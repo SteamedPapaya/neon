@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<div th:fragment="post-form (mode, action)">
+    <div class="mx-3 my-5">
+        <h3 th:text="#{new-post}">new-post</h3>
+        <p class="text-sm text-secondary text-opacity-50" th:text="#{new-post.desc}">new-post.desc</p>
+        <form class="needs-validation mt-5" th:action="@{${action}}" th:object="${postForm}" method="post" novalidate>
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <label for="title" class="form-label">Title</label>
+                    <input id="title" type="text" th:field="*{title}" class="form-control" th:errorclass="field-error" placeholder="..." required>
+                    <small class="invalid-feedback" th:text="#{required}">required</small>
+                    <small class="form-text text-danger field-error" th:errors="*{title}">error.title</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-6 mb-2" th:if="${mode == 'new'}">
+                    <label for="partyPath" class="form-label">Party</label>
+                    <select id="partyPath" th:field="*{partyPath}" class="form-select" >
+                        <option th:each="party : ${parties}" th:value="${party.path}">party.title</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea id="description" type="textarea" th:field="*{description}" class="editor form-control" th:errorclass="field-error" placeholder="..." required></textarea>
+                    <small class="form-text text-danger field-error" th:errors="*{description}">error.description</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="d-flex justify-content-center gap-2 mt-1">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" onclick="location.href='/'" class="btn btn-outline-secondary">Cancel</button><!-- todo move to party page -->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</html>
