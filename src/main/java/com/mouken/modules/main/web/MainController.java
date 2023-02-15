@@ -1,18 +1,16 @@
 package com.mouken.modules.main.web;
 
 import com.mouken.modules.account.CurrentAccount;
-import com.mouken.modules.account.db.AccountRepository;
-import com.mouken.modules.account.domain.Account;
-import com.mouken.modules.event.db.EnrollmentRepository;
+import com.mouken.modules.account.repository.AccountRepository;
+import com.mouken.modules.account.Account;
+import com.mouken.modules.party.event.db.EnrollmentRepository;
 import com.mouken.modules.party.db.PartyRepository;
 import com.mouken.modules.party.domain.Party;
 import com.mouken.modules.party.service.PartyService;
-import com.mouken.modules.post.domain.Post;
-import com.mouken.modules.post.service.PostService;
-import com.mouken.modules.post.web.form.PostForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -21,23 +19,25 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
 public class MainController {
 
-    private final ModelMapper modelMapper;
+/*    private final ModelMapper modelMapper;
     private final PartyRepository partyRepository;
     private final EnrollmentRepository enrollmentRepository;
     private final AccountRepository accountRepository;
     private final PartyService partyService;
     private final PostService postService;
+    private final PostRepository postRepository;
 
     @GetMapping("/")
     public String home(@CurrentAccount Account account, Model model) {
         model.addAttribute("account", account);
+        PageRequest pageRequest = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "createdDateTime"));
+        model.addAttribute("postList", postRepository.findSliceBy(pageRequest));
         model.addAttribute("partyList", partyRepository.findFirst9ByPublishedAndClosedOrderByPublishedDateTimeDesc(true, false));
         return "index";
     }
@@ -54,10 +54,10 @@ public class MainController {
         return "dashboard";
     }
 
-    @GetMapping("/login")
+    *//* todo delete @GetMapping("/login")
     public String loginForm() {
         return "login";
-    }
+    }*//*
 
     @GetMapping("/search/party")
     public String searchParty(
@@ -93,5 +93,5 @@ public class MainController {
 
         Post post = postService.createPost(modelMapper.map(postForm, Post.class), party, account);
         return "redirect:/party/" + party.getPath() + "/posts/" + post.getPath();
-    }
+    }*/
 }

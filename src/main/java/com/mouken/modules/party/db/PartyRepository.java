@@ -1,6 +1,6 @@
 package com.mouken.modules.party.db;
 
-import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.Account;
 import com.mouken.modules.party.PartyRepositoryExtension;
 import com.mouken.modules.party.domain.Party;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -13,6 +13,8 @@ import java.util.List;
 public interface PartyRepository extends JpaRepository<Party, Long>, PartyRepositoryExtension {
 
     boolean existsByPath(String path);
+
+    List<Party> findAll();
 
     @EntityGraph(attributePaths = {"tags", "zones", "managers", "members"}, type = EntityGraph.EntityGraphType.LOAD)
     Party findByPath(String path);

@@ -1,6 +1,5 @@
 package com.mouken.modules.account;
 
-import com.mouken.modules.account.domain.Account;
 import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

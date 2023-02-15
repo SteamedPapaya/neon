@@ -3,13 +3,14 @@ package com.mouken.modules.event;
 import com.mouken.infra.AbstractContainerBaseTest;
 import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.account.*;
-import com.mouken.modules.account.db.AccountRepository;
-import com.mouken.modules.account.domain.Account;
-import com.mouken.modules.account.web.form.SignUpForm;
-import com.mouken.modules.account.service.AccountService;
-import com.mouken.modules.event.db.EnrollmentRepository;
-import com.mouken.modules.event.domain.Event;
-import com.mouken.modules.event.service.EventService;
+import com.mouken.modules.account.dto.AccountCreateForm;
+import com.mouken.modules.account.repository.AccountRepository;
+import com.mouken.modules.account.Account;
+import com.mouken.modules.account.service.CustomUserDetailsService;
+import com.mouken.modules.party.event.EventType;
+import com.mouken.modules.party.event.db.EnrollmentRepository;
+import com.mouken.modules.party.event.domain.Event;
+import com.mouken.modules.party.event.service.EventService;
 import com.mouken.modules.party.domain.Party;
 import com.mouken.modules.party.PartyFactory;
 import org.junit.jupiter.api.AfterEach;
@@ -43,17 +44,17 @@ class EventControllerTest extends AbstractContainerBaseTest {
     @Autowired
     AccountFactory accountFactory;
     @Autowired
-    AccountService accountService;
+    CustomUserDetailsService accountService;
     @Autowired
     PartyFactory partyFactory;
 
     @BeforeEach
     void beforeEach() {
-        SignUpForm signUpForm = new SignUpForm();
+        AccountCreateForm signUpForm = new AccountCreateForm();
         signUpForm.setEmail("test@email.com");
         signUpForm.setUsername("test");
         signUpForm.setPassword("12345678");
-        accountService.processNewAccount(signUpForm);
+        accountService.createAccount(signUpForm);
     }
 
     @AfterEach

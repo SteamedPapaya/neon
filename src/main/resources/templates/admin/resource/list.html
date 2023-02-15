@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+  <title th:text="#{admin}"></title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}" />
+</head>
+
+<body>
+<header th:replace="~{fragments/header.html :: header-common}"></header>
+<div th:replace="~{fragments/nav.html :: nav-admin}"></div>
+<main>
+  <table class="table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col" th:text="#{name.resource}">ResourceName</th>
+        <th scope="col" th:text="#{type.resource}">ResourceType</th>
+        <th scope="col" th:text="#{httpMethod}">HttpMethod</th>
+        <th scope="col" th:text="#{role}">role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="resource : ${resources}">
+        <td th:text="${resource.orderNum}"></td>
+        <td>
+          <a th:href="@{'/admin/resources/' + ${resource.id}}">
+            <span th:text="${resource.name}"></span>
+          </a>
+        </td>
+        <td th:text="${resource.type}"></td>
+        <td th:text="${resource.httpMethod}"></td>
+        <td>
+          <div th:each="role,iter : ${resource.roles}">
+            <span th:text="${role.name}"></span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="mx-2">
+    <a class="btn btn-dark" th:href="@{/admin/resources/create}">Create Resource</a>
+  </div>
+</main>
+<footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
+</body>
+</html>

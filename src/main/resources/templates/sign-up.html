@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head.html :: head-title-links-no-basic(~{::title}, ~{::link})}">
+    <title th:text="#{sign-up}">sign-up</title>
+    <link rel="stylesheet" th:href="@{/css/sign-up.css}" />
+</head>
+
+<body>
+<main class="form-signup text-center w-100 m-auto">
+<form action="#" th:action="@{/sign-up}" th:object="${accountCreateForm}" method="post">
+    <div class="mb-4">
+        <a href="/"><img src="/assets/brand/logo-light-lg.png" alt="" width="300"></a>
+    </div>
+    <div class="form-floating">
+        <input type="email" class="form-control" id="floatingInputTop" th:field="*{email}" th:errorclass="field-error" placeholder="Email" required>
+        <label for="floatingInputTop">Email</label>
+        <small class="field-error form-text text-danger" th:errors="*{email}">Email Error</small>
+    </div>
+    <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInputMiddle" th:field="*{username}" th:errorclass="field-error" placeholder="Username" required minlength="3" maxlength="20">
+        <label for="floatingInputMiddle">Username</label>
+        <small class="field-error form-text text-danger" th:errors="*{username}">Username Error</small>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="floatingInputBottom" th:field="*{password}" th:errorclass="field-error" placeholder="Password" required minlength="8" maxlength="50">
+        <label for="floatingInputBottom">Password</label>
+        <small class="field-error form-text text-danger" th:errors="*{password}">Password Error</small>
+    </div>
+    <button class="w-100 btn btn-lg btn-light" type="submit">Sign up</button>
+</form>
+</main>
+<script th:replace="~{fragments/script.html :: form-validation}"></script>
+</body>
+</html>
+
+

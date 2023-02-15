@@ -1,7 +1,7 @@
 package com.mouken.modules.notification.web;
 
 import com.mouken.modules.account.CurrentAccount;
-import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.Account;
 import com.mouken.modules.notification.db.NotificationRepository;
 import com.mouken.modules.notification.domain.Notification;
 import com.mouken.modules.notification.service.NotificationService;

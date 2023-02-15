@@ -3,7 +3,7 @@ package com.mouken.modules.party.web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouken.modules.account.CurrentAccount;
-import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.Account;
 import com.mouken.modules.account.web.form.TagForm;
 import com.mouken.modules.account.web.form.ZoneForm;
 import com.mouken.modules.party.domain.Party;

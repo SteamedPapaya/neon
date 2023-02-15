@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head.html :: head-title(~{::title})}">
+    <title th:text="#{error}"></title>
+</head>
+
+<body>
+<header th:replace="~{fragments/header.html :: header-common}"></header>
+<main class="container">
+    <section class="py-5 text-center">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <span th:text="${exception}"></span>
+                <span th:text="${username}"></span><!--todo for test-->
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
+</body>
+
+</html>

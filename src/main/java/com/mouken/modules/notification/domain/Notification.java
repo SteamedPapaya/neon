@@ -1,6 +1,6 @@
 package com.mouken.modules.notification.domain;
 
-import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.Account;
 import com.mouken.modules.notification.NotificationType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

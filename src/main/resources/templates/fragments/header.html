@@ -68,13 +68,13 @@
 
                     <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
                         <button type="button" class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">
-                            <svg th:if="${#strings.isEmpty(account?.profileImage)}"
+                            <svg th:if="${#strings.isEmpty(account?.picture)}"
                                  data-jdenticon-value="user127"
                                  th:data-jdenticon-value="${#authentication.name}"
                                  width="32" height="32" class="rounded-circle">
                             </svg>
-                            <img th:if="${!#strings.isEmpty(account?.profileImage)}"
-                                 th:src="${account.profileImage}"
+                            <img th:if="${!#strings.isEmpty(account?.picture)}"
+                                 th:src="${account.picture}"
                                  width="32" height="32" class="rounded border"/>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">

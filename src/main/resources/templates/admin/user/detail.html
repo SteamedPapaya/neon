@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+  <title th:text="#{admin}"></title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}" />
+</head>
+
+<body>
+<header th:replace="~{fragments/header.html :: header-common}"></header>
+<div th:replace="~{fragments/nav.html :: nav-admin}"></div>
+<main class="container">
+  <form class="mt-5" th:action="@{/admin/accounts}" method="post" th:object="${accountForm}">
+    <input th:type="hidden" name="id" th:value="*{id}" />
+    <div class="row">
+      <div class="col-12 mb-2">
+      <label for="username" class="form-label" th:text="#{username}">Username</label>
+      <input type="text" class="form-control" name="username" id="username" placeholder="Username" th:value="*{username}" required>
+      </div>
+    </div>
+    <!--<div class="row">
+      <div class="col-12 mb-2">
+        <label for="password" class="form-label" th:text="#{password}">Password</label>
+        <input type="text" class="form-control" name="password" id="password" placeholder="Password" data-minlength="8" required>
+      </div>
+    </div>-->
+    <div class="row">
+      <div class="col-12 mb-2">
+      <label for="email" class="form-label" th:text="#{email}">Email</label>
+      <input type="email" class="form-control" name="email" id="email" placeholder="Email" th:value="*{email}" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-2">
+      <label for="roleNameList" class="form-label">Role</label>
+      <div th:each="role: ${roles}">
+        <input th:type="checkbox" name="roleNameList" id="roleNameList"
+               th:text="${role.name}"
+               th:value="${role.name}"
+               th:checked="${accountForm.roleNameList.contains(role.name)} ? 'true' : 'false'" />
+      </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center gap-2 mt-1">
+      <button type="submit" class="btn btn-secondary">Save</button>
+      <a class="btn btn-secondary" th:href="@{/admin/accounts}">List</a>
+      <a class="btn btn-dark" th:href="@{'/admin/accounts/delete/' + *{id}}">Delete</a>
+    </div>
+  </form>
+</main>
+<footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
+</body>
+</html>

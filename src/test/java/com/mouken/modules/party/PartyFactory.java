@@ -1,6 +1,6 @@
 package com.mouken.modules.party;
 
-import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.Account;
 import com.mouken.modules.party.db.PartyRepository;
 import com.mouken.modules.party.domain.Party;
 import com.mouken.modules.party.service.PartyService;

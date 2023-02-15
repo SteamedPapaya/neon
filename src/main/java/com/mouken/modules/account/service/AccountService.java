@@ -1,152 +1,114 @@
 package com.mouken.modules.account.service;
 
-import com.mouken.infra.config.AppProperties;
-import com.mouken.infra.mail.EmailMessage;
-import com.mouken.infra.mail.EmailService;
-import com.mouken.modules.account.UserAccount;
-import com.mouken.modules.account.db.AccountRepository;
-import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.Account;
+import com.mouken.modules.account.ProviderUser;
+import com.mouken.modules.account.dto.AccountModifyForm;
+import com.mouken.modules.account.dto.Profile;
+import com.mouken.modules.account.repository.AccountRepository;
 import com.mouken.modules.account.web.form.Notifications;
-import com.mouken.modules.account.web.form.Profile;
-import com.mouken.modules.account.web.form.SignUpForm;
+import com.mouken.modules.role.service.RoleService;
+import com.mouken.infra.config.AppProperties;
 import com.mouken.modules.tag.domain.Tag;
+import com.mouken.modules.util.AuthorityMapper;
+import com.mouken.infra.mail.EmailService;
 import com.mouken.modules.zone.domain.Zone;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AccountService implements UserDetailsService {
+public class AccountService {
 
-    private final AccountRepository accountRepository;
-    private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final AuthorityMapper authorityMapper;
+    private final AccountRepository accountRepository;
+    private final RoleService roleService;
     private final EmailService emailService;
     private final TemplateEngine templateEngine;
     private final AppProperties appProperties;
+    private final PasswordEncoder passwordEncoder;
 
-    public Account processNewAccount(SignUpForm signUpForm) {
-        Account newAccount = saveAccount(signUpForm);
-        sendSignUpConfirmEmail(newAccount);
-        return newAccount;
-    }
 
-    public Account saveAccount(@Validated SignUpForm signUpForm) {
-        signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
-        Account account = modelMapper.map(signUpForm, Account.class);
-        account.generateEmailCheckToken();
-        return accountRepository.save(account);
-    }
-
-    public void sendSignUpConfirmEmail(Account account) {
-        Context context = new Context();
-        context.setVariable("link", "/check-email-token" +
-                "?token=" + account.getEmailCheckToken() +
-                "&email=" + account.getEmail());
-        context.setVariable("username", account.getUsername());
-        context.setVariable("linkName", "Link");
-        context.setVariable("message", "You can finish signing up. please click the link below.");
-        context.setVariable("host", appProperties.getHost());
-        String message = templateEngine.process("mail/simple-link", context);
-
-        EmailMessage emailMessage = EmailMessage.builder()
-                .to(account.getEmail())
-                .subject("Mouken Email Check")
-                .message(message)
+    public void createAccount(ProviderUser providerUser) {
+        Account account = Account.builder()
+                .email(providerUser.getEmail())
+                .provider(providerUser.getProvider())
+                .roles(authorityMapper.mapAuthorities(providerUser.getAuthorities()))
+                .username(providerUser.getUsername())
+                .nickname(providerUser.getNickname())
+                .picture(providerUser.getPicture())
                 .build();
-        emailService.sendEmail(emailMessage);
-
-        account.addEmailCheckTokenCount();
-        account.setEmailCheckTokenGeneratedAt(LocalDateTime.now());
+        accountRepository.save(account);
     }
 
-    public void login(Account account) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                new UserAccount(account),
-                account.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_USER")));
-        SecurityContextHolder.getContext().setAuthentication(token);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public UserDetails loadUserByUsername(String emailOrUsername) throws UsernameNotFoundException {
-        Account account = accountRepository.findByEmail(emailOrUsername);
-        if (account == null) {
-            account = accountRepository.findByUsername(emailOrUsername);
+    public void modifyAccount(Long id, AccountModifyForm accountForm) { // todo EH
+        // todo move to modifyAccountPassword() accountForm.setPassword(passwordEncoder.encode(accountForm.getPassword()));
+        Account account = accountRepository.findById(id).orElseThrow();
+        modelMapper.map(accountForm, account);
+        account.setRoles(roleService.getRolesByName(accountForm.getRoleNameList()));
+        if (account.getRoles() == null) {
+            account.setRoles(roleService.getDefaultRoles());
         }
-        if (account == null) {
-            throw new UsernameNotFoundException(emailOrUsername);
-        }
-        return new UserAccount(account);
+        accountRepository.save(account);
     }
 
-    public void completeSignUp(Account account) {
-        account.completeSignUp();
-        login(account);
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id).orElseThrow();
+    } // todo EH
+
+    public Account getAccountByEmail(String email) {
+        return accountRepository.findByEmail(email);
     }
+
+    public Account getAccountByUsername(String username) {
+        return accountRepository.findByUsername(username);
+    } // todo EH
+
+    public List<Account> getAccounts() {
+        return accountRepository.findAll(Sort.by(Sort.Order.desc("id")));
+    }
+
+    public Account getAccount(String username) {
+        return accountRepository.findByUsername(username);
+    } // todo EH
+
+    public AccountModifyForm getAccountForm(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow();
+        AccountModifyForm accountModifyForm = modelMapper.map(account, AccountModifyForm.class);
+        accountModifyForm.setRoleNameList(
+                account.getRoles().stream().map(role ->
+                        role.getName()).collect(Collectors.toList()));
+        return accountModifyForm;
+    }
+
+    public void deleteAccount(Long id) {
+        accountRepository.deleteById(id);
+    }
+
+    /* todo delete
+    private final String PREFIX_ROLE = "ROLE_";
+    private final String PREFIX_SCOPE = "SCOPE_";
+    */
 
     public void updateProfile(Account account, Profile profile) {
         modelMapper.map(profile, account);
         accountRepository.save(account);
     }
 
-    public void updatePassword(Account account, String newPassword) {
-        account.setPassword(passwordEncoder.encode(newPassword));
-        accountRepository.save(account);
-    }
-
     public void updateNotifications(Account account, Notifications notifications) {
         modelMapper.map(notifications, account);
         accountRepository.save(account);
-    }
-
-    public void updateUsername(Account account, String username) {
-        account.setUsername(username);
-        accountRepository.save(account);
-        login(account);
-    }
-
-    public void sendEmailLoginLink(Account account) {
-        Context context = new Context();
-        context.setVariable("link", "/email-login" +
-                "?token=" + account.getEmailCheckToken() +
-                "&email=" + account.getEmail());
-        context.setVariable("username", account.getUsername());
-        context.setVariable("linkName", "Link");
-        context.setVariable("message", "you can login with the link.");
-        context.setVariable("host", appProperties.getHost());
-        String message = templateEngine.process("mail/simple-link", context);
-
-        EmailMessage emailMessage = EmailMessage.builder()
-                .to(account.getEmail())
-                .subject("Mouken Login Link")
-                .message(message)
-                .build();
-        emailService.sendEmail(emailMessage);
-
-        account.addEmailCheckTokenCount();
-        account.setEmailCheckTokenGeneratedAt(LocalDateTime.now());
     }
 
     public Set<Tag> getTags(Account account) {
@@ -177,14 +139,6 @@ public class AccountService implements UserDetailsService {
     public void removeZone(Account account, Zone zone) {
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getZones().remove(zone));
-    }
-
-    public Account getAccount(String username, Account account) {
-        Account foundAccount = accountRepository.findByUsername(username);
-        if (account == null) {
-            throw new IllegalArgumentException("This user does not exist");
-        }
-        return foundAccount;
     }
 
 }

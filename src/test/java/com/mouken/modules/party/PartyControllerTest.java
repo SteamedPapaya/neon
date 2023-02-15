@@ -3,8 +3,10 @@ package com.mouken.modules.party;
 import com.mouken.infra.AbstractContainerBaseTest;
 import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.account.*;
-import com.mouken.modules.account.db.AccountRepository;
-import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.dto.AccountCreateForm;
+import com.mouken.modules.account.repository.AccountRepository;
+import com.mouken.modules.account.Account;
+import com.mouken.modules.account.service.CustomUserDetailsService;
 import com.mouken.modules.account.web.form.SignUpForm;
 import com.mouken.modules.account.service.AccountService;
 import com.mouken.modules.party.db.PartyRepository;
@@ -39,18 +41,18 @@ public class PartyControllerTest extends AbstractContainerBaseTest {
     @Autowired
     protected AccountRepository accountRepository;
     @Autowired
-    protected AccountService accountService;
+    protected CustomUserDetailsService accountService;
     @Autowired
     AccountFactory accountFactory;
     @Autowired PartyFactory partyFactory;
 
     @BeforeEach
     void beforeEach() {
-        SignUpForm signUpForm = new SignUpForm();
+        AccountCreateForm signUpForm = new AccountCreateForm();
         signUpForm.setEmail("test@email.com");
         signUpForm.setUsername("test");
         signUpForm.setPassword("12345678");
-        accountService.processNewAccount(signUpForm);
+        accountService.createAccount(signUpForm);
     }
 
     @AfterEach

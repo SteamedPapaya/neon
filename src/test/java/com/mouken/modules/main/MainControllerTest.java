@@ -2,8 +2,10 @@ package com.mouken.modules.main;
 
 import com.mouken.infra.AbstractContainerBaseTest;
 import com.mouken.infra.MockMvcTest;
-import com.mouken.modules.account.db.AccountRepository;
+import com.mouken.modules.account.dto.AccountCreateForm;
+import com.mouken.modules.account.repository.AccountRepository;
 import com.mouken.modules.account.service.AccountService;
+import com.mouken.modules.account.service.CustomUserDetailsService;
 import com.mouken.modules.account.web.form.SignUpForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.UUID;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
@@ -34,7 +34,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
     private AccountRepository accountRepository;
 
     @Autowired
-    private AccountService accountService;
+    private CustomUserDetailsService accountService;
 
     private final static String USERNAME = "ryuu123";
     private final static String EMAIL = "ryuu123@gmail.com";
@@ -44,11 +44,11 @@ class MainControllerTest extends AbstractContainerBaseTest {
 
     @BeforeEach
     void beforeEach() {
-        SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setUsername(USERNAME);
-        signUpForm.setEmail(EMAIL);
-        signUpForm.setPassword(PASSWORD);
-        accountService.processNewAccount(signUpForm);
+        AccountCreateForm signUpForm = new AccountCreateForm();
+        signUpForm.setEmail("test@email.com");
+        signUpForm.setUsername("test");
+        signUpForm.setPassword("12345678");
+        accountService.createAccount(signUpForm);
     }
 
     @AfterEach

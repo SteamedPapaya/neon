@@ -3,8 +3,9 @@ package com.mouken.modules.account;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouken.infra.AbstractContainerBaseTest;
 import com.mouken.infra.MockMvcTest;
-import com.mouken.modules.account.db.AccountRepository;
-import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.dto.AccountCreateForm;
+import com.mouken.modules.account.repository.AccountRepository;
+import com.mouken.modules.account.service.CustomUserDetailsService;
 import com.mouken.modules.account.web.form.SignUpForm;
 import com.mouken.modules.account.service.AccountService;
 import com.mouken.modules.tag.domain.Tag;
@@ -41,6 +42,8 @@ class SettingsControllerTest extends AbstractContainerBaseTest {
     @Autowired
     AccountService accountService;
     @Autowired
+    CustomUserDetailsService userDetailsService;
+    @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
     ObjectMapper objectMapper;
@@ -53,11 +56,11 @@ class SettingsControllerTest extends AbstractContainerBaseTest {
 
     @BeforeEach
     void beforeEach() {
-        SignUpForm signUpForm = new SignUpForm();
+        AccountCreateForm signUpForm = new AccountCreateForm();
         signUpForm.setEmail("test@email.com");
         signUpForm.setUsername("test");
         signUpForm.setPassword("12345678");
-        accountService.processNewAccount(signUpForm);
+        userDetailsService.createAccount(signUpForm);
         zoneRepository.save(testZone);
     }
 

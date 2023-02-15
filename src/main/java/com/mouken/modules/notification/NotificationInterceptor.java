@@ -1,7 +1,8 @@
 package com.mouken.modules.notification;
 
+import com.mouken.modules.account.PrincipalUser;
 import com.mouken.modules.account.UserAccount;
-import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.Account;
 import com.mouken.modules.notification.db.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -23,8 +24,8 @@ public class NotificationInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (modelAndView != null && !isRedirectView(modelAndView) && authentication != null && authentication.getPrincipal() instanceof UserAccount) {
-            Account account = ((UserAccount)authentication.getPrincipal()).getAccount();
+        if (modelAndView != null && !isRedirectView(modelAndView) && authentication != null && authentication.getPrincipal() instanceof PrincipalUser) {
+            Account account = ((PrincipalUser) authentication.getPrincipal()).getAccount();
             long count = notificationRepository.countByAccountAndChecked(account, false);
             modelAndView.addObject("hasNotification", count > 0);
         }

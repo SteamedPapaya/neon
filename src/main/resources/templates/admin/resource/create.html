@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head.html :: head-title-links(~{::title}, ~{::link})}">
+  <title th:text="#{admin}"></title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}" />
+</head>
+
+<body>
+<header th:replace="~{fragments/header.html :: header-common}"></header>
+<div th:replace="~{fragments/nav.html :: nav-admin}"></div>
+<main class="container">
+  <form class="mt-5" th:action="@{/admin/resources/create}" method="post" th:object="${resourceForm}">
+    <div class="row">
+      <div class="col-12 mb-2">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" name="name" id="name">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-2">
+      <label for="type" class="form-label">Type</label>
+      <input type="text" class="form-control" name="type" id="type">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-2">
+      <label for="httpMethod" class="form-label">HttpMethod</label>
+      <input type="text" class="form-control" name="httpMethod" id="httpMethod">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-2">
+      <label for="orderNum" class="form-label">Order</label>
+      <input type="text" class="form-control" name="orderNum" id="orderNum">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-2">
+      <label for="roleNameList" class="form-label">Role</label>
+        <select class="custom-select" name="roleNameList" id="roleNameList">
+          <option th:each="role: ${roles}"
+                  th:value="${role.name}"
+                  th:text="${role.name}"/>
+        </select>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center gap-2 mt-1">
+        <button type="submit" class="btn btn-dark">Submit</button>
+        <a class="btn btn-dark" th:href="@{/admin/resources}">Cancel</a>
+    </div>
+  </form>
+</main>
+<footer th:replace="~{fragments/footer.html :: footer-common}"></footer>
+</body>
+</html>

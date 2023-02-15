@@ -76,7 +76,7 @@
                                placeholder="Incheon, South Korea" aria-describedby="locationdHelp" required>
                     </div>
                     <div class="form-group mb-2">
-                        <input id="profileImage" type="hidden" th:field="*{profileImage}" class="form-control" />
+                        <input id="picture" type="hidden" th:field="*{picture}" class="form-control" />
                     </div>
                     <div class="form-group d-flex align-items-end flex-column">
                         <button class="btn btn-primary btn-block" type="submit">Confirm</button>
@@ -102,8 +102,8 @@
         let $newProfileImage = $("#new-profile-image");
         let $currentProfileImage = $("#current-profile-image");
         let $resultImage = $("#cropped-new-profile-image");
-        let $profileImage = $("#profileImage");
-        let $profileImageFile = $("#profile-image-file");
+        let $picture = $("#picture");
+        let $pictureFile = $("#profile-image-file");
         let $customFile = $("#custom-file");
 
         $newProfileImage.hide();
@@ -153,8 +153,8 @@
             $resetBtn.hide();
             $cutBtn.hide();
             $confirmBtn.hide();
-            $profileImage.val('');
-            $profileImageFile.val('');
+            $picture.val('');
+            $pictureFile.val('');
         });
 
         $cutBtn.click(function () {
@@ -177,7 +177,7 @@
                 $newProfileImage.html(newImage);
                 $cutBtn.hide();
                 $confirmBtn.hide();
-                $profileImage.val(dataUrl);
+                $picture.val(dataUrl);
             });
         });
     });

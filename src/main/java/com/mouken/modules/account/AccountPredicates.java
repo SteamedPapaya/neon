@@ -1,6 +1,5 @@
 package com.mouken.modules.account;
 
-import com.mouken.modules.account.domain.QAccount;
 import com.mouken.modules.tag.domain.Tag;
 import com.mouken.modules.zone.domain.Zone;
 import com.querydsl.core.types.Predicate;

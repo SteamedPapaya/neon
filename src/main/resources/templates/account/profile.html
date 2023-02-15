@@ -12,13 +12,13 @@
     <div class="row mt-5 justify-content-center">
         <div class="col-md-2 col-3">
             <!-- profile image -->
-            <svg th:if="${#strings.isEmpty(account.profileImage)}"
+            <svg th:if="${#strings.isEmpty(account.getPicture)}"
                  class="img-fluid float-left rounded img-thumbnail"
                  th:data-jdenticon-value="${account.username}"
                  width="136" height="136"></svg>
-            <img th:if="${!#strings.isEmpty(account.profileImage)}"
+            <img th:if="${!#strings.isEmpty(account.getPicture)}"
                  class="img-fluid float-left rounded img-thumbnail"
-                 th:src="${account.profileImage}"
+                 th:src="${account.getPicture}"
                  width="136" height="136"/>
         </div>
         <div class="col-md-8 col-7">

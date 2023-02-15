@@ -1,6 +1,6 @@
 package com.mouken.modules.account.validator;
 
-import com.mouken.modules.account.db.AccountRepository;
+import com.mouken.modules.account.repository.AccountRepository;
 import com.mouken.modules.account.web.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

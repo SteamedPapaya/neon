@@ -1,7 +1,9 @@
 package com.mouken.modules.party.domain;
 
+import com.mouken.modules.account.PrincipalUser;
+import com.mouken.modules.account.ProviderUser;
 import com.mouken.modules.account.UserAccount;
-import com.mouken.modules.account.domain.Account;
+import com.mouken.modules.account.Account;
 import com.mouken.modules.tag.domain.Tag;
 import com.mouken.modules.zone.domain.Zone;
 import lombok.*;
@@ -67,13 +69,14 @@ public class Party {
     @ManyToMany
     private Set<Zone> zones = new HashSet<>();
 
-
+    /*@OneToMany(mappedBy = "party")
+    private List<AccountParty> accountPartyList = new ArrayList<>();*/
 
     public void addManager(Account account) {
         this.managers.add(account);
     }
 
-    public boolean isJoinable(UserAccount userAccount) {
+    public boolean isJoinable(PrincipalUser userAccount) {
         Account account = userAccount.getAccount();
         return this.isPublished()
                 && this.isRecruiting()
@@ -81,11 +84,11 @@ public class Party {
                 && !this.managers.contains(account);
     }
 
-    public boolean isMember(UserAccount userAccount) {
+    public boolean isMember(PrincipalUser userAccount) {
         return this.members.contains(userAccount.getAccount());
     }
 
-    public boolean isManager(UserAccount userAccount) {
+    public boolean isManager(PrincipalUser userAccount) {
         return this.managers.contains(userAccount.getAccount());
     }
 
