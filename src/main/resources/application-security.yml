@@ -12,7 +12,6 @@ spring:
             client-secret: wIzZSQYPic
             authorization-grant-type: authorization_code
             client-name: naver-client-app
-
             redirect-uri: https://ec2-3-39-118-144.ap-northeast-2.compute.amazonaws.com/login/oauth2/code/naver
             scope: profile,email,nickname
           kakao:
