@@ -5,7 +5,6 @@ import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
 @AnalyzeClasses(packagesOf = MoukenApplication.class)
 public class PackageDependencyTests {

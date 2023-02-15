@@ -1,4 +1,4 @@
-package com.mouken.modules;
+package com.mouken.modules.main.web;
 
 import com.mouken.modules.account.Account;
 import com.mouken.modules.account.CurrentAccount;
