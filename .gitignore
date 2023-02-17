@@ -43,6 +43,7 @@ application-mail.properties
 src/main/resources/static/node_modules
 src/main/resources/static/node
 
-application-mail.properties
+application-real-mail.properties
 application-real-db.properties
 application-security.yml
+application-real-oauth.properties
