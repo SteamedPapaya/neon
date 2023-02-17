@@ -6,9 +6,11 @@ source ${ABSDIR}/profile.sh
 source ${ABSDIR}/switch.sh
 
 IDLE_PORT=$(find_idle_port)
+IDLE_PROFILE=$(find_idle_profile)
 
 echo "> Health checking"
 echo "> IDLE_PORT: $IDLE_PORT"
+echo "> IDLE_PROFILE: $IDLE_PROFILE"
 echo "> curl -s http://localhost:$IDLE_PORT/app-profile"
 sleep 10
 
