@@ -1,8 +1,8 @@
 package com.mouken.modules.account.service;
 
 import com.mouken.infra.config.AppProperties;
-import com.mouken.infra.mail.EmailMessage;
-import com.mouken.infra.mail.EmailService;
+import com.mouken.modules.util.mail.EmailMessage;
+import com.mouken.modules.util.mail.EmailService;
 import com.mouken.modules.account.Account;
 import com.mouken.modules.account.PrincipalUser;
 import com.mouken.modules.account.ProviderUser;
@@ -10,11 +10,10 @@ import com.mouken.modules.account.converter.ProviderUserConverter;
 import com.mouken.modules.account.converter.ProviderUserRequest;
 import com.mouken.modules.account.dto.AccountCreateForm;
 import com.mouken.modules.account.repository.AccountRepository;
-import com.mouken.modules.account.web.form.SignUpForm;
 import com.mouken.modules.role.service.RoleService;
-import com.mouken.modules.tag.domain.Tag;
-import com.mouken.modules.zone.domain.Zone;
+import com.mouken.modules.util.mail.HtmlEmailService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,8 +26,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -37,7 +34,8 @@ public class CustomUserDetailsService extends AbstractOAuth2UserService implemen
     private AccountRepository accountRepository;
     private ModelMapper modelMapper;
     private RoleService roleService;
-    private EmailService emailService;
+    @Autowired
+    private HtmlEmailService emailService;
     private TemplateEngine templateEngine;
     private AppProperties appProperties;
     private PasswordEncoder passwordEncoder;
@@ -46,10 +44,10 @@ public class CustomUserDetailsService extends AbstractOAuth2UserService implemen
             AccountService accountService,
             AccountRepository accountRepository,
             ProviderUserConverter<ProviderUserRequest, ProviderUser> providerUserConverter,
-            EmailService emailService, TemplateEngine templateEngine, AppProperties appProperties, PasswordEncoder passwordEncoder, ModelMapper modelMapper, RoleService roleService) {
+            TemplateEngine templateEngine, AppProperties appProperties, PasswordEncoder passwordEncoder, ModelMapper modelMapper, RoleService roleService) {
         super(accountService, accountRepository, providerUserConverter);
         this.accountRepository = accountRepository;
-        this.emailService = emailService;
+        //this.emailService = emailService;
         this.templateEngine = templateEngine;
         this.appProperties = appProperties;
         this.passwordEncoder = passwordEncoder;

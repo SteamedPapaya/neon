@@ -1,5 +1,6 @@
 package com.mouken.infra;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.env.MockEnvironment;
 
@@ -23,6 +24,37 @@ class AppProfileControllerUnitTest {
 
         //then
         assertThat(profile).isEqualTo(expectedProfile);
+    }
+
+    @Test
+    public void real_profile이_없으면_첫번째가조회된다() {
+        //given
+        String expectedProfile = "oauth";
+        MockEnvironment env = new MockEnvironment();
+        env.addActiveProfile(expectedProfile);
+        env.addActiveProfile("ops-db");
+        AppProfileController controller = new AppProfileController(env);
+
+        //when
+        String profile = controller.profile();
+
+        //then
+        Assertions.assertThat(profile).isEqualTo(expectedProfile);
+    }
+
+    @Test
+    public void active_profile없으면default조회된다() {
+        //given
+        String expectedProfile = "default";
+        MockEnvironment env = new MockEnvironment();
+        AppProfileController controller = new AppProfileController(env);
+
+        //when
+        String profile = controller.profile();
+
+        //then
+        Assertions.assertThat(profile).isEqualTo(expectedProfile);
+
     }
 
 }

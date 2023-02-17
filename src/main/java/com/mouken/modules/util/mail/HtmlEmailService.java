@@ -1,22 +1,25 @@
-package com.mouken.infra.mail;
+package com.mouken.modules.util.mail;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Slf4j
-@Profile({"aws", "real1", "real2", "dev"})
-@Component
+// todo @Profile({"aws", "real1", "real2", "dev"})
+@Service
 @RequiredArgsConstructor
 public class HtmlEmailService implements EmailService {
 
-    private final JavaMailSender javaMailSender;
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @Override
     public void sendEmail(EmailMessage emailMessage) {

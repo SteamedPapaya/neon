@@ -1,4 +1,4 @@
-package com.mouken.infra.mail;
+package com.mouken.modules.util.mail;
 
 import lombok.Builder;
 import lombok.Data;

@@ -10,7 +10,8 @@ import com.mouken.modules.role.service.RoleService;
 import com.mouken.infra.config.AppProperties;
 import com.mouken.modules.tag.domain.Tag;
 import com.mouken.modules.util.AuthorityMapper;
-import com.mouken.infra.mail.EmailService;
+import com.mouken.modules.util.mail.EmailService;
+import com.mouken.modules.util.mail.HtmlEmailService;
 import com.mouken.modules.zone.domain.Zone;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -34,10 +35,10 @@ public class AccountService {
     private final AuthorityMapper authorityMapper;
     private final AccountRepository accountRepository;
     private final RoleService roleService;
-    private final EmailService emailService;
-    private final TemplateEngine templateEngine;
-    private final AppProperties appProperties;
-    private final PasswordEncoder passwordEncoder;
+//    private final EmailService emailService;
+//    private final TemplateEngine templateEngine;
+//    private final AppProperties appProperties;
+//    private final PasswordEncoder passwordEncoder;
 
 
     public void createAccount(ProviderUser providerUser) {
