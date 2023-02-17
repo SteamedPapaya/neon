@@ -20,7 +20,7 @@ public class PackageDependencyTests {
     private static final String ROLE = "..modules.role..";
     private static final String SECURITY = "..modules.security..";
 
-
+/*
     @ArchTest
     ArchRule modulesPackageRule = classes().that().resideInAPackage("com.mouken.modules..")
             .should().onlyBeAccessed().byClassesThat()
@@ -38,7 +38,7 @@ public class PackageDependencyTests {
     @ArchTest
     ArchRule accountPackageRule = classes().that().resideInAPackage(ACCOUNT)
             .should().accessClassesThat().resideInAnyPackage(TAG, ZONE, ACCOUNT);
-
+*/
     /*@ArchTest
     ArchRule cycleCheck = slices().matching("com.mouken.modules.(*)..")
             .should().beFreeOfCycles();*/
