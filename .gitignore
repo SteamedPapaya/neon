@@ -42,3 +42,7 @@ application-mail.properties
 ### NPM ###
 src/main/resources/static/node_modules
 src/main/resources/static/node
+
+application-mail.properties
+application-real-db.properties
+application-security.yml
