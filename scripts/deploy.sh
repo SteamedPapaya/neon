@@ -9,8 +9,8 @@ cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
 echo "> check PID of application now running"
 
-CURRENT_PID=$(lsof -ti tcp:8080)
-#CURRENT_PID=$(pgrep -fl mouken | grep jar | awk '{print $1}')
+#CURRENT_PID=$(lsof -ti tcp:8080)
+CURRENT_PID=$(pgrep -fl mouken | grep jar | awk '{print $1}')
 
 echo "> pid : $CURRENT_PID"
 
@@ -35,6 +35,6 @@ chmod +x $JAR_NAME
 echo "> Run $JAR_NAME"
 
 nohup java -jar \
-  -Dspring.config.location=classpath:/application.properties,classpath:/application-aws.properties,/home/ec2-user/app/application-real-db.properties,/home/ec2-user/app/application-mail.properties \
-  -Dspring.profiles.active=aws \
+  -Dspring.config.location=classpath:/application.properties,classpath:/application-real.properties,/home/ec2-user/app/application-real-db.properties,/home/ec2-user/app/application-real-mail.properties,/home/ec2-user/app/application-real-oauth.properties \
+  -Dspring.profiles.active=real \
   $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
