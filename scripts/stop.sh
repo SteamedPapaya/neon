@@ -8,7 +8,7 @@ source ${ABSDIR}/profile.sh
 # this is similar to import in java
 # I can use the functions of profile.sh here
 
-IDLE_PORT=$(find_idle_port)
+IDLE_PORT=8080 # todo change $(find_idle_port)
 echo "> Check the pid of the applications running on $IDLE_PORT"
 IDLE_PID=$(lsof -ti tcp:${IDLE_PORT})
 
