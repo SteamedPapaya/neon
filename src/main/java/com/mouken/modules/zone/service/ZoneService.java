@@ -25,7 +25,7 @@ public class ZoneService {
     @PostConstruct // 해당 Bean 이 만들어진 이후에 바로 만들어지는 저장공간
     public void initZoneData() throws IOException {
         if (zoneRepository.count() == 0) {
-            Resource resource = new ClassPathResource("zones.csv");
+            Resource resource = new ClassPathResource("static/zones.csv");
             List<Zone> zoneList = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8).stream()
                     .map(line -> {
                         String[] split = line.split(",");

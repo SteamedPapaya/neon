@@ -46,4 +46,5 @@ src/main/resources/static/node
 application-real-db.properties
 application-real-mail.properties
 application-real-oauth.properties
+application-dev-oauth.yml
 application-security.yml
