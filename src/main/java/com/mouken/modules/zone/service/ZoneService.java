@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class ZoneService {
 
     private final ZoneRepository zoneRepository;
-
+/* todo  https://leegicheol.github.io/java/FileInputStream-error/
     @PostConstruct // 해당 Bean 이 만들어진 이후에 바로 만들어지는 저장공간
     public void initZoneData() throws IOException {
         if (zoneRepository.count() == 0) {
@@ -34,5 +35,5 @@ public class ZoneService {
             zoneRepository.saveAll(zoneList);
         }
     }
-
+*/
 }
