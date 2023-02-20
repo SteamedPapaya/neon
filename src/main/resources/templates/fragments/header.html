@@ -39,9 +39,9 @@
 
                 <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
                     <li class="nav-item col-6 col-lg-auto">
-                        <form class="navbar-nav navbar col-12 col-md-auto mb-3 mb-md-0 ms-auto me-4" role="search">
-                            <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-                        </form>
+                        <form th:action="@{/search/party}" method="get" class="navbar-nav navbar col-12 col-md-auto mb-3 mb-md-0 ms-auto me-4" role="search">
+                            <input type="search" name="keyword" class="form-control" placeholder="Search..." aria-label="Search">
+                         </form>
                     </li>
                     <li class="nav-item py-1 col-12 col-lg-auto">
                         <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
