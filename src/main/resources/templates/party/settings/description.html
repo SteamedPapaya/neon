@@ -11,18 +11,16 @@
 <div th:replace="fragments.html :: party-info-menu(partyMenu='settings')"></div>
 
 <main class="container">
-
     <div class="row mt-3 justify-content-center">
-
-        <div class="col-lg-2 col-3">
+        <div class="col-xs-10 col-sm-11 col-md-3 col-lg-2 col-xl-2 mb-3">
             <div th:replace="fragments.html :: party-settings-menu(currentMenu='description')"></div>
         </div>
-        <div class="col-8">
+        <div class="col-xs-10 col-sm-11 col-md-8 col-lg-9 col-xl-10">
             <div th:replace="fragments.html :: message"></div>
             <form class="needs-validation" th:action="@{'/party/' + ${party.getPath()} + '/settings/description'}"
                   th:object="${partyDescriptionForm}" method="post" novalidate>
-                <div class="form-group">
-                    <label for="shortDescription">Intro</label>
+                <div class="form-group mb-3">
+                    <label for="shortDescription" class="form-label">Intro</label>
                     <textarea id="shortDescription" type="textarea" th:field="*{shortDescription}" class="form-control"
                               placeholder="Please introduce your party in a sentence." aria-describedby="shortDescriptionHelp" required maxlength="100">
                         </textarea>
@@ -34,7 +32,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="fullDescription">Description</label>
+                    <label for="fullDescription" class="form-label">Description</label>
                     <textarea id="fullDescription" type="textarea" th:field="*{fullDescription}" class="form-control editor"
                               placeholder="Please explain about your party." aria-describedby="fullDescriptionHelp" required></textarea>
                     <!--<small id="fullDescriptionHelp" class="form-text text-muted">
@@ -44,8 +42,8 @@
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('fullDescription')}" th:errors="*{fullDescription}">FullDescription Error</small>
                 </div>
 
-                <div class="form-group">
-                    <button class="btn btn-primary btn-block" type="submit"
+                <div class="form-group d-flex align-items-end flex-column">
+                    <button class="btn btn-sky btn-block mt-3" type="submit"
                             aria-describedby="submitHelp">Confirm</button>
                 </div>
             </form>

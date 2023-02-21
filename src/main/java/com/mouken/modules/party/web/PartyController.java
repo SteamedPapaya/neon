@@ -39,32 +39,28 @@ public class PartyController {
     }
 
     @GetMapping("/party/{path}")
-    public String viewParty(@CurrentAccount Account account, @PathVariable String path, Model model) {
+    public String viewParty(@PathVariable String path, Model model) {
         Party party = partyService.getParty(path);
-        model.addAttribute(account);
         model.addAttribute(party);
         return "party/view";
     }
 
     @GetMapping("/party/{path}/members")
-    public String viewPartyMembers(@CurrentAccount Account account, @PathVariable String path, Model model) {
+    public String viewPartyMembers(@PathVariable String path, Model model) {
         Party party = partyService.getParty(path);
-        model.addAttribute(account);
         model.addAttribute(party);
         return "party/members";
     }
     
     @GetMapping("/party/{path}/info")
-    public String viewPartyInfo(@CurrentAccount Account account, @PathVariable String path, Model model) {
+    public String viewPartyInfo(@PathVariable String path, Model model) {
         Party party = partyService.getParty(path);
-        model.addAttribute(account);
         model.addAttribute(party);
         return "party/info";
     }
     
     @GetMapping("/new-party")
-    public String newPartyForm(@CurrentAccount Account account, Model model) {
-        model.addAttribute(account);
+    public String newPartyForm(Model model) {
         model.addAttribute(new PartyForm());
         return "party/form";
     }

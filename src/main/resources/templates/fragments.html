@@ -54,30 +54,30 @@
         <div class="col-md-10">
             <p>
                 <span th:replace="fragments.html :: party-tags"></span>
-                <span th:replace="fragments.html :: party-zones"></span>
+                <!--todo zone<span th:replace="fragments.html :: party-zones"></span>-->
             </p>
         </div>
     </div>
-    <nav class="nav nav-tabs mx-5">
-        <a class="nav-item nav-link" th:classappend="${partyMenu == 'posts'}? active" href="#"  th:href="@{'/party/' + ${party.path}}">
-            <i class="fa fa-comments"></i>
+    <nav class="nav nav-tabs">
+        <a class="nav-item nav-link ms-5" th:classappend="${partyMenu == 'posts'}? active" href="#"  th:href="@{'/party/' + ${party.path}}">
+            <i class="fa fa-comments fa-color-sky"></i>
         </a>
         <a class="nav-item nav-link" th:classappend="${partyMenu == 'info'}? active" href="#"  th:href="@{'/party/' + ${party.path} + '/info'}">
-            <i class="fa fa-info-circle"></i>
+            <i class="fa fa-info-circle fa-color-sky"></i>
         </a>
         <a class="nav-item nav-link" th:classappend="${partyMenu == 'members'}? active" href="#" th:href="@{'/party/' + ${party.path} + '/members'}">
-            <i class="fa fa-user"></i>
+            <i class="fa fa-user fa-color-sky"></i>
         </a>
         <a class="nav-item nav-link" th:classappend="${partyMenu == 'events'}? active" href="#" th:href="@{'/party/' + ${party.path} + '/events'}">
-            <i class="fa fa-calendar"></i>
+            <i class="fa fa-calendar fa-color-sky"></i>
         </a>
         <a class="nav-item nav-link" th:classappend="${partyMenu == 'settings'}? active" href="#" th:href="@{'/party/' + ${party.path} + '/settings/description'}" sec:authorize="isAuthenticated()" th:if="${party.isManager(#authentication.principal)}" >
-            <i class="fa fa-cog"></i>
+            <i class="fa fa-cog fa-color-sky" ></i>
         </a>
     </nav>
 </div>
 
-<div th:fragment="member-list (members, isManager)" class="px-3">
+<div th:fragment="member-list (members, isManager)">
     <div class="d-flex mt-3" th:each="member: ${members}">
         <div class="flex-shrink-0">
             <svg th:if="${#strings.isEmpty(member?.picture)}" th:data-jdenticon-value="${member.username}" width="64" height="64" class="rounded border"></svg>
@@ -85,8 +85,8 @@
         </div>
         <div class="flex-grow-1 ms-3">
             <h5>
-                <span th:text="${member.username}"></span>
-                <span th:if="${isManager}" class="badge bg-warning">Manager</span>
+                <span class="text-sm" th:text="${member.username}"></span>
+                <span th:if="${isManager}" class="badge bg-secondary">Manager</span>
             </h5>
             <span th:text="${member.bio}"></span>
         </div>

@@ -21,26 +21,27 @@
             </button>
         </div>
 
-        <div class="offcanvas-lg offcanvas-end flex-grow-1" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel" data-bs-scroll="true">
+        <div class="offcanvas-lg offcanvas-end flex-grow-1" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel" data-bs-scroll="true" style="background-color: #c4d7ec;">
             <div class="offcanvas-header px-4 pb-0">
-                <img src="/assets/brand/logo-sky-lg.png" width="96">
+                <img src="/assets/brand/logo-sky-lg.png" width="180">
 <!--                todo delete <h5 class="offcanvas-title text-black" id="bdNavbarOffcanvasLabel">Mouken</h5>-->
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
             </div>
 
             <div class="offcanvas-body p-4 pt-0 p-lg-0">
-                <hr class="d-lg-none">
+                <!--<hr class="d-lg-none text-white-50">
+
                 <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav mt-1">
                     <li class="nav-item col-6 col-lg-auto">
                         <a class="nav-link" href="#" th:href="@{/admin}" th:text="#{admin}">Admin</a>
                     </li>
-                </ul>
+                </ul>-->
 
                 <hr class="d-lg-none text-white-50">
 
                 <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
                     <li class="nav-item col-6 col-lg-auto">
-                        <form th:action="@{/search/party}" method="get" class="navbar-nav navbar col-12 col-md-auto mb-3 mb-md-0 ms-auto me-4" role="search">
+                        <form th:action="@{/search/party}" method="get" class="navbar-nav navbar col-12 col-md-auto  mb-md-0 ms-auto me-4" role="search">
                             <input type="search" name="keyword" class="form-control" placeholder="Search..." aria-label="Search">
                          </form>
                     </li>
@@ -52,7 +53,6 @@
 
                     <li sec:authorize="!isAuthenticated()" class="nav-item dropdown">
                         <button type="button" class="btn btn-link nav-link mt-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">
-
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><h6 class="dropdown-header">Account</h6></li>

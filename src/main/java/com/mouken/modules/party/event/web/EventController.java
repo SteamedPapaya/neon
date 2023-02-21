@@ -71,9 +71,8 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    public String viewPartyEvents(@CurrentAccount Account account, @PathVariable String path, Model model) {
+    public String viewPartyEvents(@PathVariable String path, Model model) {
         Party party = partyService.getParty(path);
-        model.addAttribute(account);
         model.addAttribute(party);
 
         List<Event> events = eventRepository.findByPartyOrderByStartDateTime(party);

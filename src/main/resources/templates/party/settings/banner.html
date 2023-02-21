@@ -11,62 +11,62 @@
 <div th:replace="fragments.html :: party-info-menu(partyMenu='settings')"></div>
 
 <main class="container">
-    <div class="row mt-3 justify-content-center">
-        <div class="col-lg-2 col-3">
-            <div th:replace="fragments.html :: party-settings-menu(currentMenu='banner')"></div>
+<div class="row mt-3 justify-content-center">
+    <div class="col-xs-10 col-sm-11 col-md-3 col-lg-2 col-xl-2 mb-3">
+        <div th:replace="fragments.html :: party-settings-menu(currentMenu='banner')"></div>
+    </div>
+    <div class="col-xs-10 col-sm-11 col-md-8 col-lg-9 col-xl-10">
+        <div class="mb-3">
+            <label for="banner-image" class="form-label">Banner Image</label>
+            <div th:replace="fragments.html :: message"></div>
+            <form th:if="${!party.useBanner}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner/enable'}" method="post" novalidate>
+                <div class="alert alert-secondary" role="alert">
+                    Banner image has been currently hidden.
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-outline-secondary btn-block" type="submit" aria-describedby="submitHelp">Show Banner Image</button>
+                </div>
+            </form>
+            <form th:if="${party.useBanner}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner/disable'}" method="post" novalidate>
+                <div class="alert alert-primary" role="alert">
+                    Banner image has been currently displayed.
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">Hide Banner Image</button>
+                </div>
+            </form>
         </div>
-        <div class="col-8">
-            <div class="mb-3">
-                <label for="banner-image" class="form-label">Banner Image</label>
-                <div th:replace="fragments.html :: message"></div>
-                <form th:if="${!party.useBanner}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner/enable'}" method="post" novalidate>
-                    <div class="alert alert-secondary" role="alert">
-                        Banner image has been currently hidden.
+        <div class="mb-3">
+            <div id="banner-image" class="card text-center">
+                <div class="card-body">
+                    <div id="new-banner-image"></div>
+                    <div id="custom-file" class="custom-file mt-3">
+                        <input type="file" class="custom-file-input" id="banner-image-file" hidden>
+                        <label class="btn btn-outline-secondary custom-file-label" for="banner-image-file">Select file</label>
                     </div>
-                    <div class="form-group">
-                        <button class="btn btn-outline-secondary btn-block" type="submit" aria-describedby="submitHelp">Show Banner Image</button>
+                    <div id="new-banner-image-control" class="my-3">
+                        <button class="btn btn-outline-primary btn-block" id="cut-button">Cut</button>
+                        <button class="btn btn-outline-warning btn-block" id="reset-button">Cancel</button>
                     </div>
-                </form>
-                <form th:if="${party.useBanner}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner/disable'}" method="post" novalidate>
-                    <div class="alert alert-primary" role="alert">
-                        Banner image has been currently displayed.
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">Hide Banner Image</button>
-                    </div>
-                </form>
-            </div>
-            <div class="mb-3">
-                <div id="banner-image" class="card text-center">
-                    <div class="card-body">
-                        <div id="new-banner-image"></div>
-                        <div id="custom-file" class="custom-file mt-3">
-                            <input type="file" class="custom-file-input" id="banner-image-file" hidden>
-                            <label class="btn btn-outline-secondary custom-file-label" for="banner-image-file">Select file</label>
-                        </div>
-                        <div id="new-banner-image-control" class="my-3">
-                            <button class="btn btn-outline-primary btn-block" id="cut-button">Cut</button>
-                            <button class="btn btn-outline-warning btn-block" id="reset-button">Cancel</button>
-                        </div>
-                        <div id="cropped-new-banner-image"> </div>
-                        <div id="cropped-new-banner-image-control" class="my-3">
-                            <button class="btn btn-outline-success btn-block" id="confirm-button">Confirm</button>
-                        </div>
+                    <div id="cropped-new-banner-image"> </div>
+                    <div id="cropped-new-banner-image-control" class="my-3">
+                        <button class="btn btn-outline-success btn-block" id="confirm-button">Confirm</button>
                     </div>
                 </div>
             </div>
-            <div class="mb-3">
-                <form id="imageForm" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner'}" method="post" novalidate>
-                    <div class="form-group">
-                        <input id="bannerImage" type="hidden" name="image" class="form-control" />
-                    </div>
-                    <div class="form-group d-flex align-items-end flex-column">
-                        <button class="btn btn-sky btn-block" type="submit">Save</button>
-                    </div>
-                </form>
-            </div>
+        </div>
+        <div class="mb-3">
+            <form id="imageForm" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/banner'}" method="post" novalidate>
+                <div class="form-group">
+                    <input id="bannerImage" type="hidden" name="image" class="form-control" />
+                </div>
+                <div class="form-group d-flex align-items-end flex-column">
+                    <button class="btn btn-sky btn-block" type="submit">Save</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 </main>
 
 <footer th:replace="~{fragments/footer.html :: footer-common}"></footer>

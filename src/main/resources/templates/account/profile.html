@@ -34,13 +34,13 @@
         <div class="col-md-2 col-3">
             <!-- tab -->
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link active" id="v-pills-intro-tab" data-toggle="pill" href="#v-pills-profile"
-                   role="tab" aria-controls="v-pills-profile" aria-selected="true" th:text="#{intro}" style="background-color: #c4d7ec">Intro</a>
-                <a class="nav-link nav-link-sky" id="v-pills-party-tab" data-toggle="pill" href="#v-pills-party"
-                   role="tab" aria-controls="v-pills-party" aria-selected="false" th:text="#{party}">Party</a>
+                <!--todo profile intro <a class="nav-link active" id="v-pills-intro-tab" data-toggle="pill" href="#v-pills-profile"
+                   role="tab" aria-controls="v-pills-profile" aria-selected="true" th:text="#{intro}" style="background-color: #c4d7ec">Intro</a>-->
+                <!-- todo party <a class="nav-link nav-link-sky" id="v-pills-party-tab" data-toggle="pill" href="#v-pills-party"
+                   role="tab" aria-controls="v-pills-party" aria-selected="false" th:text="#{party}">Party</a>-->
                 <div th:if="${isOwner}">
-                <a class="nav-link nav-link-sky" id="v-pills-profile-settings-tab" data-toggle="pill" href="#" th:href="@{/settings/profile}"
-                   role="tab" aria-controls="v-pills-profile-settings" aria-selected="false" th:text="#{settings}">settings</a>
+                <a class="nav-link nav-link-sky active" id="v-pills-profile-settings-tab" data-toggle="pill" href="#" th:href="@{/settings/profile}"
+                   role="tab" aria-controls="v-pills-profile-settings" aria-selected="false" th:text="#{settings}" style="background-color: #c4d7ec">settings</a>
                 </div>
             </div>
         </div>
