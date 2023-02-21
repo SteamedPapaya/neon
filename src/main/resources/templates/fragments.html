@@ -6,7 +6,7 @@
 <div th:fragment="settings-menu (currentMenu)" class="nav flex-column nav-pills" id="v-pills-settings-tab" role="tablist" aria-orientation="vertical">
     <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'profile'}? active"
        id="v-pills-settings-profile-tab" data-toggle="pill" href="#" th:href="@{/settings/profile}"
-       role="tab" aria-controls="v-pills-settings-profile" aria-selected="false" th:text="#{profile}">profile</a>
+       role="tab" aria-controls="v-pills-settings-profile" aria-selected="false" th:text="#{profile}" >profile</a>
     <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'password'}? active "
        id="v-pills-settings-password-tab" data-toggle="pill" href="#" th:href="@{/settings/password}"
        role="tab" aria-controls="v-pills-settings-password" aria-selected="false" th:text="#{password}">password</a>

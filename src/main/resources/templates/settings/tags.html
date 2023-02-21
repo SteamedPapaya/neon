@@ -18,7 +18,7 @@
         <div class="col-8">
             <!-- description -->
             <div class="alert alert-dark" role="alert">
-                You can add a tag with comma or enter key.
+                You can add tags with comma or enter key.
             </div>
             <div id="whitelist" th:text="${whitelist}" hidden></div>
             <input name="tags-outside" class="tagify--outside" th:value="${#strings.listJoin(tags, ',')}"/>

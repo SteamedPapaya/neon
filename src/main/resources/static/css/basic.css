@@ -81,3 +81,10 @@ footer{
 .fa-color-sky {
     color: #c4d7ec;
 }
+.nav-pills .nav-link.active {
+    background-color: #c4d7ec; /* Change the background color to red */
+    color: white; /* Change the text color to white */
+}
+
+/*
+style="background: #c4d7ec"*/
