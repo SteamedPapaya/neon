@@ -79,7 +79,7 @@ public class PartyController {
         Party newParty = partyService.createNewParty(modelMapper.map(partyForm, Party.class), account);
 
         // set default party banner
-        int max_num = 5;
+        int max_num = 24;
         String random_num = String.valueOf((int) (Math.random() * max_num) + 1);
         String image_path = "/assets/banner/" + random_num + ".png";
         partyService.updatePartyBanner(newParty, image_path);
