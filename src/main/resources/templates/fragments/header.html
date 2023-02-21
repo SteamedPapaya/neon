@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<header th:fragment="header-common" class="navbar navbar-expand-lg navbar-dark bd-navbar sticky-top" style="background-color: #212529;">
+<header th:fragment="header-common" class="navbar navbar-expand-lg navbar-dark bd-navbar sticky-top" style="background-color: #c4d7ec;">
     <nav class="container-xxl flex-wrap flex-md-nowrap" aria-label="Main navigation">
 
         <div class="d-lg-none" style="width: 1.5rem;"></div>
@@ -21,10 +21,11 @@
             </button>
         </div>
 
-        <div class="offcanvas-lg offcanvas-end flex-grow-1" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel" data-bs-scroll="true" style="background-color: #212529;">
+        <div class="offcanvas-lg offcanvas-end flex-grow-1" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel" data-bs-scroll="true">
             <div class="offcanvas-header px-4 pb-0">
-                <h5 class="offcanvas-title text-white" id="bdNavbarOffcanvasLabel">Bootstrap</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
+                <img src="/assets/brand/logo-sky-lg.png" width="96">
+<!--                todo delete <h5 class="offcanvas-title text-black" id="bdNavbarOffcanvasLabel">Mouken</h5>-->
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
             </div>
 
             <div class="offcanvas-body p-4 pt-0 p-lg-0">
@@ -61,11 +62,11 @@
                     </li>
 
                     <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-                        <button type="button" class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">
+                        <button type="button" class="btn btn-link nav-link" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">
                             <svg th:if="${#strings.isEmpty(account?.picture)}"
                                  data-jdenticon-value="user127"
                                  th:data-jdenticon-value="${#authentication.name}"
-                                 width="32" height="32" class="rounded-circle">
+                                 width="36" height="36" class="img-thumbnail rounded" style="padding: 0px;">
                             </svg>
                             <img th:if="${!#strings.isEmpty(account?.picture)}"
                                  th:src="${account.picture}"
