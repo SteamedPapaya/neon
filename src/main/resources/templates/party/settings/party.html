@@ -18,13 +18,10 @@
         <div class="col-8">
             <div th:replace="fragments.html :: message"></div>
 
-
-
-
-            <label for="party-settings-info" class="form-label">Info</label>
+            <!--<label for="party-settings-info" class="form-label">Info</label>
             <div th:if="${!party.closed}" id="party-settings-info" class="mb-3">
-                <!--update title-->
-                <!--<form  class="needs-validation" th:object="${partyUpdateForm}" action="#" th:action="@{'/party/' + ${party.path} + '/settings/party/title'}" method="post">
+                &lt;!&ndash;update title&ndash;&gt;
+                <form  class="needs-validation" th:object="${partyUpdateForm}" action="#" th:action="@{'/party/' + ${party.path} + '/settings/party/title'}" method="post">
                     <div class="form-group">
                         <label for="update-title">Update Title</label>
                         <input id="update-title" type="text" th:value="${party.title}" class="form-control" th:errorclass="field-error" placeholder="title" required maxlength="50">
@@ -33,80 +30,78 @@
                     <div class="form-group">
                         <button class="btn btn-outline-warning" type="submit">Save</button>
                     </div>
-                </form>-->
+                </form>
 
-                <!--update path-->
-                <form action="#" th:action="@{'/party/' + ${party.path} + '/settings/party/path'}" method="post">
+                &lt;!&ndash;update path&ndash;&gt;
+                todo update path <form action="#" th:action="@{'/party/' + ${party.path} + '/settings/party/path'}" method="post">
                     <div class="alert alert-warning" role="alert">
                         if you update path, the old path is permanently unavailable.
                     </div>
                     <div class="form-group">
-                        <!--todo disable now-->
+                        &lt;!&ndash;todo disable now&ndash;&gt;
                         <button class="btn btn-outline-warning" type="submit" disabled>Update Path</button>
                     </div>
                 </form>
-            </div>
+            </div>-->
 
-            <label for="party-settings-recruitment" class="form-label">Recruitment</label>
-            <div id="party-settings-recruitment" class="mb-3">
+
+
+            <label for="party-settings-status" class="form-label">Status</label>
+            <div id="party-settings-status" class="mb-3">
+                <!--open-->
+                <form class="mb-3" th:if="${!party.published && !party.closed}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/party/publish'}" method="post" novalidate>
+                    <div class="alert alert-primary" role="alert">
+                        You need to open at first.
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Open</button>
+                    </div>
+                </form>
+                <form class="mb-3" th:if="${party.published && !party.closed}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/party/close'}" method="post" novalidate>
+                    <div class="alert alert-danger" role="alert">
+                        Temporarily disabled
+                        <!--If you close, this party will be permanently unavailable.-->
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-danger" type="submit" disabled>Close</button>
+                    </div>
+                </form>
+
                 <!--Recruitment-->
-                <form th:if="${!party.closed && !party.recruiting && party.published}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/recruit/start'}" method="post" novalidate>
-                    <div class="alert alert-primary" role="alert">
-                        <!--todo-->
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary" type="submit">Recruitment Start</button>
-                    </div>
-                </form>
-                <form th:if="${!party.closed && party.recruiting && party.published}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/recruit/stop'}" method="post" novalidate>
-                    <div class="alert alert-warning" role="alert">
-                        <!--todo-->
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-outline-warning" type="submit">Recruitment End</button>
-                    </div>
-                </form>
-            </div>
-
-            <!--open/close-->
-            <label for="party-settings-open" class="form-label">Status</label>
-            <div id="party-settings-open" class="mb-3">
-                <form th:if="${!party.published && !party.closed}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/party/publish'}" method="post" novalidate>
-                    <div class="alert alert-primary" role="alert">
-                        Party is closed now.
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary" type="submit">Open party</button>
-                    </div>
-                </form>
-                <form th:if="${party.published && !party.closed}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/party/close'}" method="post" novalidate>
+                <form class="mb-3" th:if="${!party.closed && !party.recruiting && party.published}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/recruit/start'}" method="post" novalidate>
                     <div class="alert alert-danger" role="alert">
-                        If you close, this party will be permanently unavailable.
+                        Start recruiting.
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-outline-danger" type="submit">Close party</button>
+                        <button class="btn btn-success" type="submit">Recruitment Starts</button>
                     </div>
                 </form>
-                <!--<div th:if="${party.closed}" class="col-sm-12 alert alert-info">
-                    이 파티는 <span class="date-time" th:text="${party.closedDateTime}"></span>에 종료됐습니다.<br/>
-                    다시 파티를 진행하고 싶다면 새로운 파티를 만드세요.<br/>
-                </div>-->
-            </div>
-
-            <!--delete-->
-            <label for="party-settings-delete" class="form-label">Delete</label>
-            <div id="party-settings-delete" class="mb-3">
-                <form action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/party/remove'}" method="post">
+                <form class="mb-3" th:if="${!party.closed && party.recruiting && party.published}" action="#" th:action="@{'/party/' + ${party.getPath()} + '/settings/recruit/stop'}" method="post" novalidate>
                     <div class="alert alert-danger" role="alert">
-                        If you delete, this party's history will be permanently deleted.
-                        <!--todo 공개 중이거나 모임을 했던 파티는 삭제할 수 없습니다.-->
+                        Temporarily disabled <!--You can close the recruitment.-->
                     </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-success" type="submit" disabled>Recruitment End</button>
+                    </div>
+                </form>
+
+                <form class="mb-3" action="#" th:if="${party.closed}" th:action="@{'/party/' + ${party.getPath()} + '/settings/party/remove'}" method="post">
                     <div class="form-group">
                         <button th:if="${party.isRemovable()}" class="btn btn-outline-danger" type="submit">Delete</button>
                         <button th:if="${!party.isRemovable()}" class="btn btn-outline-danger" type="submit" disabled>Delete</button>
                     </div>
                 </form>
             </div>
+            <!--<div th:if="${party.closed}" class="col-sm-12 alert alert-info">
+                이 파티는 <span class="date-time" th:text="${party.closedDateTime}"></span>에 종료됐습니다.<br/>
+                다시 파티를 진행하고 싶다면 새로운 파티를 만드세요.<br/>
+            </div>-->
+            <!--delete-->
+            <!--If you delete, this party's history will be permanently deleted.-->
+            <!--todo 공개 중이거나 모임을 했던 파티는 삭제할 수 없습니다.-->
+<!--            <div id="party-settings-delete" class="mb-3">
+
+            </div>-->
         </div>
     </div>
 </main>

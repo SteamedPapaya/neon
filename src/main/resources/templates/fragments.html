@@ -4,22 +4,22 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div th:fragment="settings-menu (currentMenu)" class="nav flex-column nav-pills" id="v-pills-settings-tab" role="tablist" aria-orientation="vertical">
-    <a class="nav-link" th:classappend="${currentMenu == 'profile'}? active"
+    <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'profile'}? active"
        id="v-pills-settings-profile-tab" data-toggle="pill" href="#" th:href="@{/settings/profile}"
        role="tab" aria-controls="v-pills-settings-profile" aria-selected="false" th:text="#{profile}">profile</a>
-    <a class="nav-link" th:classappend="${currentMenu == 'password'}? active"
+    <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'password'}? active "
        id="v-pills-settings-password-tab" data-toggle="pill" href="#" th:href="@{/settings/password}"
        role="tab" aria-controls="v-pills-settings-password" aria-selected="false" th:text="#{password}">password</a>
-    <a class="nav-link" th:classappend="${currentMenu == 'notifications'}? active"
+    <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'notifications'}? active"
        id="v-pills-settings-notifications-tab" data-toggle="pill" href="#" th:href="@{/settings/notifications}"
        role="tab" aria-controls="v-pills-settings-notifications" aria-selected="false" th:text="#{notifications}">notifications</a>
-    <a class="nav-link" th:classappend="${currentMenu == 'tags'}? active"
+    <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'tags'}? active"
        id="v-pills-settings-tags-tab" data-toggle="pill" href="#" th:href="@{/settings/tags}"
        role="tab" aria-controls="v-pills-settings-tags" aria-selected="false" th:text="#{tags}">tags</a>
-    <a class="nav-link" th:classappend="${currentMenu == 'zones'}? active"
+    <!-- todo zone <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'zones'}? active"
        id="v-pills-settings-zones-tab" data-toggle="pill" href="#" th:href="@{/settings/zones}"
-       role="tab" aria-controls="v-pills-settings-zones" aria-selected="false" th:text="#{zones}">zones</a>
-    <a class="nav-link" th:classappend="${currentMenu == 'account'}? active"
+       role="tab" aria-controls="v-pills-settings-zones" aria-selected="false" th:text="#{zones}">zones</a>-->
+    <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'account'}? active"
        id="v-pills-settings-account-tab" data-toggle="pill" href="#" th:href="@{/settings/account}"
        role="tab" aria-controls="v-pills-settings-account" aria-selected="false" th:text="#{account}">account</a>
 </div>
@@ -44,13 +44,9 @@
             <span th:if="${!party.recruiting}" class="d-inline-block ml-1" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="Not recruiting">
                 <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>OFF</button>
             </span>
-            <span sec:authorize="isAuthenticated()" th:if="${party.isJoinable(#authentication.principal)}" class="btn-group" role="group" aria-label="Basic example">
-                <a class="btn btn-primary" th:href="@{'/party/' + ${party.path} + '/join'}">
-                    Join the party
-                </a>
-                <a class="btn btn-outline-primary" th:href="@{'/party/' + ${party.path} + '/members'}" th:text="${party.members.size()}">
-                    1
-                </a>
+            <span sec:authorize="isAuthenticated()" th:if="${party.isJoinable(#authentication.principal)}" class="btn-group d-inline-block" role="group" aria-label="Basic example">
+                <a class="btn btn-primary" th:href="@{'/party/' + ${party.path} + '/join'}">Join</a>
+                <a class="btn btn-outline-primary disabled" th:href="@{'/party/' + ${party.path} + '/members'}" th:text="${party.members.size()}">1</a>
             </span>
         </div>
     </div>
@@ -98,19 +94,19 @@
 </div>
 
 <div th:fragment="party-settings-menu (currentMenu)" class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-    <a class="nav-link" th:classappend="${currentMenu == 'description'}? active"
+    <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'description'}? active"
        id="v-pills-party-settings-description-tab" data-toggle="pill" href="#" th:href="@{'/party/' + ${party.path} + '/settings/description'}"
        role="tab" aria-controls="v-pills-party-settings-description" aria-selected="false" th:text="#{description}">description</a>
-    <a class="nav-link" th:classappend="${currentMenu == 'banner'}? active"
+    <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'banner'}? active"
        id="v-pills-party-settings-banner-tab" data-toggle="pill" href="#" th:href="@{'/party/' + ${party.path} + '/settings/banner'}"
        role="tab" aria-controls="v-pills-party-settings-banner" aria-selected="false" th:text="#{banner}">banner</a>
-    <a class="nav-link" th:classappend="${currentMenu == 'tags'}? active"
+    <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'tags'}? active"
        id="v-pills-party-settings-tags-tab" data-toggle="pill" href="#" th:href="@{'/party/' + ${party.path} + '/settings/tags'}"
        role="tab" aria-controls="v-pills-party-settings-tags" aria-selected="false" th:text="#{tags}">tags</a>
-    <a class="nav-link" th:classappend="${currentMenu == 'zones'}? active"
+    <!--todo zone<a class="nav-link" th:classappend="${currentMenu == 'zones'}? active"
        id="v-pills-party-settings-zones-tab" data-toggle="pill" href="#" th:href="@{'/party/' + ${party.path} + '/settings/zones'}"
-       role="tab" aria-controls="v-pills-party-settings-zones" aria-selected="false" th:text="#{zones}">zones</a>
-    <a class="nav-link" th:classappend="${currentMenu == 'party'}? active"
+       role="tab" aria-controls="v-pills-party-settings-zones" aria-selected="false" th:text="#{zones}">zones</a>-->
+    <a class="nav-link nav-link-sky" th:classappend="${currentMenu == 'party'}? active"
        id="v-pills-party-settings-party-tab" data-toggle="pill" href="#" th:href="@{'/party/' + ${party.path} + '/settings/party'}"
        role="tab" aria-controls="v-pills-party-settings-party" aria-selected="false" th:text="#{party}">party</a>
 </div>

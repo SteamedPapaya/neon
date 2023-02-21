@@ -69,3 +69,12 @@ footer{
 .text-sky {
     color: #c4d7ec;
 }
+
+.nav-link-sky {
+    background: #c4d7ec;
+    color: #c4d7ec;
+}
+
+.nav-link-sky:hover {
+    color: #a8b6c5;
+}
