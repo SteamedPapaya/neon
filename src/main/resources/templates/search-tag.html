@@ -25,19 +25,19 @@
                 <li><a class="dropdown-item"
                        th:classappend="${#strings.equals(sortProperty, 'publishedDateTime')}? active"
                        href="#"
-                       th:href="@{'/search/party?sort=publishedDateTime,desc&keyword=' + ${keyword}}">Newest</a></li>
+                       th:href="@{'/search/tag?sort=publishedDateTime,desc&keyword=' + ${keyword}}">Newest</a></li>
                 <!--<li><a class="dropdown-item"
                        th:classappend="${#strings.equals(sortProperty, 'publishedDateTime')}? active"
                        href="#"
-                       th:href="@{'/search/party?sort=publishedDateTime,asc&keyword=' + ${keyword}}">Oldest</a></li>-->
+                       th:href="@{'/search/tag?sort=publishedDateTime,asc&keyword=' + ${keyword}}">Oldest</a></li>-->
                 <li><a class="dropdown-item"
                        th:classappend="${#strings.equals(sortProperty, 'memberCount')}? active"
                        href="#"
-                       th:href="@{'/search/party?sort=memberCount,desc&keyword=' + ${keyword}}">Most Members</a></li>
+                       th:href="@{'/search/tag?sort=memberCount,desc&keyword=' + ${keyword}}">Most Members</a></li>
                 <!--<li><a class="dropdown-item"
-                       th:classappend="${#strings.equals(sortProperty, 'memberCount') && #strings.equals(s, 'asc')}? active"
+                       th:classappend="${#strings.equals(sortProperty, 'memberCount')}? active"
                        href="#"
-                       th:href="@{'/search/party?sort=memberCount,asc&keyword=' + ${keyword}}">Least Members</a></li>-->
+                       th:href="@{'/search/tag?sort=memberCount,asc&keyword=' + ${keyword}}">Least Members</a></li>-->
             </ul>
         </div>
     </div>
@@ -49,18 +49,18 @@
             <nav>
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${!partyPage.hasPrevious()}? disabled">
-                        <a th:href="@{'/search/party?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${partyPage.getNumber() - 1}}"
+                        <a th:href="@{'/search/tag?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${partyPage.getNumber() - 1}}"
                            class="page-link" tabindex="-1" aria-disabled="true">
                             Previous
                         </a>
                     </li>
                     <li class="page-item" th:classappend="${i == partyPage.getNumber()}? active"
                         th:each="i: ${#numbers.sequence(0, partyPage.getTotalPages() - 1)}">
-                        <a th:href="@{'/search/party?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${i}}"
+                        <a th:href="@{'/search/tag?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${i}}"
                            class="page-link" href="#" th:text="${i + 1}">1</a>
                     </li>
                     <li class="page-item" th:classappend="${!partyPage.hasNext()}? disabled">
-                        <a th:href="@{'/search/party?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${partyPage.getNumber() + 1}}"
+                        <a th:href="@{'/search/tag?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${partyPage.getNumber() + 1}}"
                            class="page-link">
                             Next
                         </a>

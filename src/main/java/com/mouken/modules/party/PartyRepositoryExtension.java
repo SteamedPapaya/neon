@@ -14,6 +14,7 @@ import java.util.Set;
 public interface PartyRepositoryExtension {
 
     Page<Party> findByKeyword(String keyword, Pageable pageable);
+    Page<Party> findByTag(String keyword, Pageable pageable);
 
     List<Party> findByAccount(Set<Tag> tags, Set<Zone> zones);
 

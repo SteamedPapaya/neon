@@ -38,6 +38,18 @@ public class PartyRepositoryExtensionImpl extends QuerydslRepositorySupport impl
     }
 
     @Override
+    public Page<Party> findByTag(String keyword, Pageable pageable) {
+        QParty party = QParty.party;
+        JPQLQuery<Party> query = from(party).where(party.published.isTrue()
+                        .and(party.tags.any().title.equalsIgnoreCase(keyword)))
+                .leftJoin(party.tags, QTag.tag).fetchJoin()
+                .distinct();
+        JPQLQuery<Party> pageableQuery = getQuerydsl().applyPagination(pageable, query);
+        QueryResults<Party> fetchResults = pageableQuery.fetchResults();
+        return new PageImpl<>(fetchResults.getResults(), pageable, fetchResults.getTotal());
+    }
+
+    @Override
     public List<Party> findByAccount(Set<Tag> tags, Set<Zone> zones) {
         QParty party = QParty.party;
         JPQLQuery<Party> query = from(party).where(party.published.isTrue()

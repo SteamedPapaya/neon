@@ -3,6 +3,8 @@ package com.mouken.modules.party.db;
 import com.mouken.modules.account.Account;
 import com.mouken.modules.party.PartyRepositoryExtension;
 import com.mouken.modules.party.domain.Party;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,4 +47,5 @@ public interface PartyRepository extends JpaRepository<Party, Long>, PartyReposi
     List<Party> findFirst5ByManagersContainingAndClosedOrderByPublishedDateTimeDesc(Account account, boolean closed);
 
     List<Party> findFirst5ByMembersContainingAndClosedOrderByPublishedDateTimeDesc(Account account, boolean closed);
+
 }

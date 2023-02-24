@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.mouken.modules.util.SecurityUrl.ACCESS_DENIED_URL;
@@ -106,5 +107,18 @@ public class HomeController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortProperty", pageable.getSort().toString().contains("publishedDateTime") ? "publishedDateTime" : "memberCount");
         return "search";
+    }
+
+    @GetMapping("/search/tag")
+    public String searchPartyByTag( // todo 멤버 정렬 시 멤버 수 동일하면 Newest 순으로
+            @PageableDefault(size = 9, sort = "publishedDateTime", direction = Sort.Direction.DESC) Pageable pageable,
+            String keyword,
+            Model model) {
+
+        Page<Party> partyPage = partyRepository.findByTag(keyword, pageable);
+        model.addAttribute("partyPage", partyPage);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("sortProperty", pageable.getSort().toString().contains("publishedDateTime") ? "publishedDateTime" : "memberCount");
+        return "search-tag";
     }
 }

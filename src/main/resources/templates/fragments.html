@@ -195,15 +195,14 @@
     </a>
 </ul>
 
-
 <span th:fragment="party-tags" th:each="tag: ${party.tags}" class="font-monospace badge">
-    <a th:href="@{'/search/tag/' + ${tag.title}}" class="text-decoration-none text-info">
+    <a th:href="@{'/search/tag?keyword=' + ${tag.title}}" class="text-decoration-none text-info">
         <i class="fa fa-tag"></i> <span th:text="${tag.title}">Tag</span>
     </a>
 </span>
 
 <span th:fragment="party-zones" th:each="zone: ${party.zones}" class="font-monospace badge">
-    <a th:href="@{'/search/zone/' + ${zone.id}}" class="text-decoration-none text-secondary">
+    <a th:href="@{'/search/zone?keyword=' + ${zone.id}}" class="text-decoration-none text-secondary">
         <i class="fa fa-globe"></i> <span th:text="${zone.city}">City</span>
     </a>
 </span>
