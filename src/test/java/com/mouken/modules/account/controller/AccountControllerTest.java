@@ -5,7 +5,6 @@ import com.mouken.modules.account.Account;
 import com.mouken.modules.account.repository.AccountRepository;
 import com.mouken.modules.util.mail.EmailMessage;
 import com.mouken.modules.util.mail.EmailService;
-import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +41,6 @@ class AccountControllerTest {
     private final static String INVALID_USERNAME = "@@@";
     private final static String INVALID_EMAIL = "@@@";
     private final static String INVALID_PASSWORD = "@@@";
-
-    @Before
-    public void create() {
-
-    }
 
     final String SIGN_UP = "sign-up";
 
