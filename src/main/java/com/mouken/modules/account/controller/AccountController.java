@@ -68,7 +68,7 @@ public class AccountController {
         }
 
         // verify account
-        customUserDetailsService.completeSignUp(account);
+        // todo customUserDetailsService.completeSignUp(account);
         redirectAttributes.addFlashAttribute("info", "Complete");
         return "redirect:/check-email";
     }
