@@ -11,7 +11,8 @@ import com.mouken.modules.account.converter.ProviderUserRequest;
 import com.mouken.modules.account.dto.AccountCreateForm;
 import com.mouken.modules.account.repository.AccountRepository;
 import com.mouken.modules.role.service.RoleService;
-import com.mouken.modules.util.mail.HtmlEmailService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,31 +30,16 @@ import java.time.LocalDateTime;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class CustomUserDetailsService extends AbstractOAuth2UserService implements UserDetailsService {
 
-    private AccountRepository accountRepository;
-    private ModelMapper modelMapper;
-    private RoleService roleService;
-    @Autowired
-    private HtmlEmailService emailService;
-    private TemplateEngine templateEngine;
-    private AppProperties appProperties;
-    private PasswordEncoder passwordEncoder;
-
-    public CustomUserDetailsService(
-            AccountService accountService,
-            AccountRepository accountRepository,
-            ProviderUserConverter<ProviderUserRequest, ProviderUser> providerUserConverter,
-            TemplateEngine templateEngine, AppProperties appProperties, PasswordEncoder passwordEncoder, ModelMapper modelMapper, RoleService roleService) {
-        super(accountService, accountRepository, providerUserConverter);
-        this.accountRepository = accountRepository;
-        //this.emailService = emailService;
-        this.templateEngine = templateEngine;
-        this.appProperties = appProperties;
-        this.passwordEncoder = passwordEncoder;
-        this.modelMapper = modelMapper;
-        this.roleService = roleService;
-    }
+    private final AccountRepository accountRepository;
+    private final ModelMapper modelMapper;
+    private final RoleService roleService;
+    private final EmailService emailService;
+    private final TemplateEngine templateEngine;
+    private final AppProperties appProperties;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

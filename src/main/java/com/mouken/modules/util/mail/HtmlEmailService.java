@@ -13,13 +13,12 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Slf4j
-// todo @Profile({"aws", "real1", "real2", "dev"})
+@Profile({"real", "real1", "real2", "dev"})
 @Service
 @RequiredArgsConstructor
 public class HtmlEmailService implements EmailService {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
     @Override
     public void sendEmail(EmailMessage emailMessage) {

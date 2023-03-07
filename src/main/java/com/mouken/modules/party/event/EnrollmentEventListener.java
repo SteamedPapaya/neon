@@ -10,7 +10,6 @@ import com.mouken.modules.notification.NotificationType;
 import com.mouken.modules.notification.db.NotificationRepository;
 import com.mouken.modules.notification.domain.Notification;
 import com.mouken.modules.party.domain.Party;
-import com.mouken.modules.util.mail.HtmlEmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -32,7 +31,7 @@ public class EnrollmentEventListener {
     private final NotificationRepository notificationRepository;
     private final AppProperties appProperties;
     private final TemplateEngine templateEngine;
-    private final HtmlEmailService emailService;
+    private final EmailService emailService;
 
     @EventListener
     public void handleEnrollmentEvent(EnrollmentEvent enrollmentEvent) {

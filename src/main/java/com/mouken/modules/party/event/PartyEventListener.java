@@ -11,7 +11,6 @@ import com.mouken.modules.notification.db.NotificationRepository;
 import com.mouken.modules.notification.domain.Notification;
 import com.mouken.modules.party.db.PartyRepository;
 import com.mouken.modules.party.domain.Party;
-import com.mouken.modules.util.mail.HtmlEmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -34,7 +33,7 @@ public class PartyEventListener {
 
     private final PartyRepository partyRepository;
     private final AccountRepository accountRepository;
-    private final HtmlEmailService emailService;
+    private final EmailService emailService;
     private final TemplateEngine templateEngine;
     private final AppProperties appProperties;
     private final NotificationRepository notificationRepository;

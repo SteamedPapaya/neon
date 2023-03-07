@@ -11,7 +11,6 @@ import com.mouken.infra.config.AppProperties;
 import com.mouken.modules.tag.domain.Tag;
 import com.mouken.modules.util.AuthorityMapper;
 import com.mouken.modules.util.mail.EmailService;
-import com.mouken.modules.util.mail.HtmlEmailService;
 import com.mouken.modules.zone.domain.Zone;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
