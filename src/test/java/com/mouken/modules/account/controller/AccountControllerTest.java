@@ -60,7 +60,7 @@ class AccountControllerTest {
                 .andExpect(unauthenticated());
     }
 
-    @DisplayName("After signing up, an email should be sent.")
+    @DisplayName("After signing up, an email should be sent")
     @Test
     void AfterSigningUpEmailShouldBeSent() throws Exception {
         mockMvc.perform(post("/sign-up")
@@ -80,7 +80,7 @@ class AccountControllerTest {
         then(emailService).should().sendEmail(any(EmailMessage.class));
     }
 
-    @DisplayName("Signing up with an invalid username.")
+    @DisplayName("Signing up with an invalid username")
     @Test
     void signUpWithInvalidUsername() throws Exception {
         mockMvc.perform(post("/sign-up")
@@ -93,7 +93,7 @@ class AccountControllerTest {
                 .andExpect(unauthenticated());
     }
 
-    @DisplayName("Signing up with an invalid email.")
+    @DisplayName("Signing up with an invalid email")
     @Test
     void signUpWithInvalidEmail() throws Exception {
         mockMvc.perform(post("/sign-up")
@@ -106,7 +106,7 @@ class AccountControllerTest {
                 .andExpect(unauthenticated());
     }
 
-    @DisplayName("Signing up with an invalid password.")
+    @DisplayName("Signing up with an invalid password")
     @Test
     void signUpWithInvalidPassword() throws Exception {
         mockMvc.perform(post("/sign-up")
@@ -119,7 +119,7 @@ class AccountControllerTest {
                 .andExpect(unauthenticated());
     }
 
-    @DisplayName("Email checking with a valid token.")
+    @DisplayName("Email checking with a valid token")
     @Test
     void checkEmailToken() throws Exception {
         // todo refactor: using SignUpForm and AccountService.saveAccount(SignUpForm)
@@ -139,7 +139,7 @@ class AccountControllerTest {
                 .andExpect(view().name("redirect:/check-email"));
     }
 
-    @DisplayName("Email checking with an invalid token.")
+    @DisplayName("Email checking with an invalid token")
     @Test
     void checkEmailTokenWithAnInvalidToken() throws Exception {
         // todo refactor: using SignUpForm and AccountService.saveAccount(SignUpForm)
@@ -160,9 +160,9 @@ class AccountControllerTest {
                 .andExpect(unauthenticated());
     }
 
-    @DisplayName("Email checking with an invalid email.")
+    @DisplayName("Email checking with an invalid email")
     @Test
-    void checkEmailToken_with_invalid_email() throws Exception {
+    void checkEmailTokenWithAnInvalidEmail() throws Exception {
         // todo refactor: using SignUpForm and AccountService.saveAccount(SignUpForm)
         Account account = Account.builder()
                 .username(USERNAME)
