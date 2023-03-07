@@ -30,7 +30,6 @@ import java.time.LocalDateTime;
 
 @Service
 @Transactional
-@AllArgsConstructor
 public class CustomUserDetailsService extends AbstractOAuth2UserService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
@@ -40,6 +39,17 @@ public class CustomUserDetailsService extends AbstractOAuth2UserService implemen
     private final TemplateEngine templateEngine;
     private final AppProperties appProperties;
     private final PasswordEncoder passwordEncoder;
+
+    public CustomUserDetailsService(AccountService accountService, AccountRepository accountRepository, ProviderUserConverter<ProviderUserRequest, ProviderUser> providerUserConverter, AccountRepository accountRepository1, ModelMapper modelMapper, RoleService roleService, EmailService emailService, TemplateEngine templateEngine, AppProperties appProperties, PasswordEncoder passwordEncoder) {
+        super(accountService, accountRepository, providerUserConverter);
+        this.accountRepository = accountRepository1;
+        this.modelMapper = modelMapper;
+        this.roleService = roleService;
+        this.emailService = emailService;
+        this.templateEngine = templateEngine;
+        this.appProperties = appProperties;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
