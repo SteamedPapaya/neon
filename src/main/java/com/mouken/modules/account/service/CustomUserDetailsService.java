@@ -89,7 +89,7 @@ public class CustomUserDetailsService extends AbstractOAuth2UserService implemen
 
     public void completeSignUp(Account account) {
         account.completeSignUp();
-        login(account);
+        // todo login(account);
     }
 
     public void login(Account account) {
