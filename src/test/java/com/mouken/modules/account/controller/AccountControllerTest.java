@@ -35,8 +35,8 @@ class AccountControllerTest {
     EmailService emailService;
 
     private final static String RANDOM_INPUT = UUID.randomUUID().toString();
-    private final static String USERNAME = "ryuu123";
-    private final static String EMAIL = "ryuu123@gmail.com";
+    private final static String USERNAME = "test123";
+    private final static String EMAIL = "test123@gmail.com";
     private final static String PASSWORD = "12345678";
     private final static String INVALID_USERNAME = "@@@";
     private final static String INVALID_EMAIL = "@@@";
