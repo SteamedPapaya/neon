@@ -114,9 +114,9 @@ public class CustomUserDetailsService extends AbstractOAuth2UserService implemen
 
 
 
-    public Account getAccount(String username, Account account) {
+    public Account getAccount(String username) {
         Account foundAccount = accountRepository.findByUsername(username);
-        if (account == null) {
+        if (foundAccount == null) {
             throw new IllegalArgumentException("This user does not exist");
         }
         return foundAccount;
