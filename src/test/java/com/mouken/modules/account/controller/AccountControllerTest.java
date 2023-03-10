@@ -174,5 +174,4 @@ class AccountControllerTest {
                 .andExpect(view().name("redirect:/check-email"))
                 .andExpect(unauthenticated());
     }
-
 }
