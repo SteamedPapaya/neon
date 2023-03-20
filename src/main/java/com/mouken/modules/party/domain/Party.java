@@ -76,7 +76,8 @@ public class Party {
         this.managers.add(account);
     }
 
-    public boolean isJoinable(PrincipalUser userAccount) {
+    // todo : PrincipalUser vs UserAccount
+    public boolean isJoinable(UserAccount userAccount) {
         Account account = userAccount.getAccount();
         return this.isPublished()
                 && this.isRecruiting()
@@ -84,11 +85,11 @@ public class Party {
                 && !this.managers.contains(account);
     }
 
-    public boolean isMember(PrincipalUser userAccount) {
+    public boolean isMember(UserAccount userAccount) {
         return this.members.contains(userAccount.getAccount());
     }
 
-    public boolean isManager(PrincipalUser userAccount) {
+    public boolean isManager(UserAccount userAccount) {
         return this.managers.contains(userAccount.getAccount());
     }
 
