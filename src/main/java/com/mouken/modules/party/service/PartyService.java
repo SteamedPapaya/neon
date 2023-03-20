@@ -1,11 +1,10 @@
 package com.mouken.modules.party.service;
 
 import com.mouken.modules.account.Account;
-import com.mouken.modules.account.ProviderUser;
 import com.mouken.modules.party.db.PartyRepository;
 import com.mouken.modules.party.domain.Party;
-import com.mouken.modules.party.event.PartyCreatedEvent;
-import com.mouken.modules.party.event.PartyUpdateEvent;
+import com.mouken.modules.event.PartyCreatedEvent;
+import com.mouken.modules.event.PartyUpdateEvent;
 import com.mouken.modules.party.web.form.PartyDescriptionForm;
 import com.mouken.modules.tag.domain.Tag;
 import com.mouken.modules.zone.domain.Zone;

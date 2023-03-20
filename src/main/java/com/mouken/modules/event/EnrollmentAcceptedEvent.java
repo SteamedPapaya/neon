@@ -1,6 +1,6 @@
-package com.mouken.modules.party.event;
+package com.mouken.modules.event;
 
-import com.mouken.modules.party.event.domain.Enrollment;
+import com.mouken.modules.event.domain.Enrollment;
 
 public class EnrollmentAcceptedEvent extends EnrollmentEvent{
 

@@ -1,4 +1,4 @@
-package com.mouken.modules.party.event.domain;
+package com.mouken.modules.event.domain;
 
 import com.mouken.modules.account.Account;
 import lombok.EqualsAndHashCode;

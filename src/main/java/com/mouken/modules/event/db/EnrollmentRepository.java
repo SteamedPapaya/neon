@@ -1,8 +1,8 @@
-package com.mouken.modules.party.event.db;
+package com.mouken.modules.event.db;
 
 import com.mouken.modules.account.Account;
-import com.mouken.modules.party.event.domain.Enrollment;
-import com.mouken.modules.party.event.domain.Event;
+import com.mouken.modules.event.domain.Enrollment;
+import com.mouken.modules.event.domain.Event;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;

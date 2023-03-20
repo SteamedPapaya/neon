@@ -1,15 +1,15 @@
-package com.mouken.modules.party.event.service;
+package com.mouken.modules.event.service;
 
 import com.mouken.modules.account.Account;
-import com.mouken.modules.party.event.EnrollmentAcceptedEvent;
-import com.mouken.modules.party.event.EnrollmentRejectedEvent;
-import com.mouken.modules.party.event.db.EnrollmentRepository;
-import com.mouken.modules.party.event.db.EventRepository;
-import com.mouken.modules.party.event.domain.Enrollment;
-import com.mouken.modules.party.event.domain.Event;
-import com.mouken.modules.party.event.web.form.EventForm;
+import com.mouken.modules.event.EnrollmentAcceptedEvent;
+import com.mouken.modules.event.EnrollmentRejectedEvent;
+import com.mouken.modules.event.db.EnrollmentRepository;
+import com.mouken.modules.event.db.EventRepository;
+import com.mouken.modules.event.domain.Enrollment;
+import com.mouken.modules.event.domain.Event;
+import com.mouken.modules.event.web.form.EventForm;
 import com.mouken.modules.party.domain.Party;
-import com.mouken.modules.party.event.PartyUpdateEvent;
+import com.mouken.modules.event.PartyUpdateEvent;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;

@@ -1,6 +1,6 @@
-package com.mouken.modules.party.event.db;
+package com.mouken.modules.event.db;
 
-import com.mouken.modules.party.event.domain.Event;
+import com.mouken.modules.event.domain.Event;
 import com.mouken.modules.party.domain.Party;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;

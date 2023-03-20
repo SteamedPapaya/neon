@@ -1,4 +1,4 @@
-package com.mouken.modules.party.event;
+package com.mouken.modules.event;
 
 import com.mouken.modules.party.domain.Party;
 import lombok.Getter;

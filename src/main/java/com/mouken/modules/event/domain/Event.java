@@ -1,9 +1,8 @@
-package com.mouken.modules.party.event.domain;
+package com.mouken.modules.event.domain;
 
 import com.mouken.modules.account.PrincipalUser;
-import com.mouken.modules.account.UserAccount;
 import com.mouken.modules.account.Account;
-import com.mouken.modules.party.event.EventType;
+import com.mouken.modules.event.EventType;
 import com.mouken.modules.party.domain.Party;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

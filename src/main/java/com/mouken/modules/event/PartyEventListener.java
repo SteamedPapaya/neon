@@ -1,4 +1,4 @@
-package com.mouken.modules.party.event;
+package com.mouken.modules.event;
 
 import com.mouken.infra.config.AppProperties;
 import com.mouken.modules.util.mail.EmailMessage;

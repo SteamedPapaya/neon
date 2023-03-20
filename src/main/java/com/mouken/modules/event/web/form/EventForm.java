@@ -1,6 +1,6 @@
-package com.mouken.modules.party.event.web.form;
+package com.mouken.modules.event.web.form;
 
-import com.mouken.modules.party.event.EventType;
+import com.mouken.modules.event.EventType;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;

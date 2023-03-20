@@ -1,7 +1,7 @@
-package com.mouken.modules.party.event.validator;
+package com.mouken.modules.event.validator;
 
-import com.mouken.modules.party.event.domain.Event;
-import com.mouken.modules.party.event.web.form.EventForm;
+import com.mouken.modules.event.domain.Event;
+import com.mouken.modules.event.web.form.EventForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;

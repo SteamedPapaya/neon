@@ -1,14 +1,14 @@
-package com.mouken.modules.party.event.web;
+package com.mouken.modules.event.web;
 
 
 import com.mouken.modules.account.CurrentAccount;
 import com.mouken.modules.account.Account;
-import com.mouken.modules.party.event.db.EventRepository;
-import com.mouken.modules.party.event.domain.Enrollment;
-import com.mouken.modules.party.event.domain.Event;
-import com.mouken.modules.party.event.service.EventService;
-import com.mouken.modules.party.event.validator.EventValidator;
-import com.mouken.modules.party.event.web.form.EventForm;
+import com.mouken.modules.event.domain.Enrollment;
+import com.mouken.modules.event.domain.Event;
+import com.mouken.modules.event.service.EventService;
+import com.mouken.modules.event.validator.EventValidator;
+import com.mouken.modules.event.web.form.EventForm;
+import com.mouken.modules.event.db.EventRepository;
 import com.mouken.modules.party.domain.Party;
 import com.mouken.modules.party.service.PartyService;
 import lombok.RequiredArgsConstructor;

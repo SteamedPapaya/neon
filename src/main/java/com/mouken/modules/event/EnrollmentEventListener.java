@@ -1,11 +1,11 @@
-package com.mouken.modules.party.event;
+package com.mouken.modules.event;
 
 import com.mouken.infra.config.AppProperties;
+import com.mouken.modules.event.domain.Enrollment;
+import com.mouken.modules.event.domain.Event;
 import com.mouken.modules.util.mail.EmailMessage;
 import com.mouken.modules.util.mail.EmailService;
 import com.mouken.modules.account.Account;
-import com.mouken.modules.party.event.domain.Enrollment;
-import com.mouken.modules.party.event.domain.Event;
 import com.mouken.modules.notification.NotificationType;
 import com.mouken.modules.notification.db.NotificationRepository;
 import com.mouken.modules.notification.domain.Notification;
