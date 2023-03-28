@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/settings")
 public class SettingsController {
     private final AccountService accountService;
+
     private final ModelMapper modelMapper;
     private final TagRepository tagRepository;
     private final ObjectMapper objectMapper;
@@ -70,10 +71,7 @@ public class SettingsController {
         redirectAttributes.addFlashAttribute("message", "Profile has been updated.");
         return "redirect:/settings/profile";
     }
-/*
 
-
-*/
     @InitBinder("passwordForm")
     public void passwordFormInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(new PasswordFormValidator());
@@ -83,31 +81,31 @@ public class SettingsController {
     public void nicknameFormInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(UsernameFormValidator);
     }
-/*
-    @GetMapping("/profile")
-    public String profileUpdateForm(@CurrentAccount Account account, Model model) {
-        model.addAttribute(account);
-        model.addAttribute(modelMapper.map(account, Profile.class));
-        return "settings/profile";
-    }
 
-    @PostMapping("/profile")
-    public String updateProfile(
-            @CurrentAccount Account account,
-            @Validated @ModelAttribute Profile profile,
-            BindingResult bindingResult,
-            Model model,
-            RedirectAttributes redirectAttributes) {
+//    @GetMapping("/profile")
+//    public String profileUpdateForm(@CurrentAccount Account account, Model model) {
+//        model.addAttribute(account);
+//        model.addAttribute(modelMapper.map(account, Profile.class));
+//        return "settings/profile";
+//    }
 
-        if (bindingResult.hasErrors()) {
-            model.addAttribute(account);
-            return "settings/profile";
-        }
-
-        accountService.updateProfile(account, profile);
-        redirectAttributes.addFlashAttribute("message", "Profile has been updated.");
-        return "redirect:/settings/profile";
-    }*/
+//    @PostMapping("/profile")
+//    public String updateProfile(
+//            @CurrentAccount Account account,
+//            @Validated @ModelAttribute Profile profile,
+//            BindingResult bindingResult,
+//            Model model,
+//            RedirectAttributes redirectAttributes) {
+//
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute(account);
+//            return "settings/profile";
+//        }
+//
+//        accountService.updateProfile(account, profile);
+//        redirectAttributes.addFlashAttribute("message", "Profile has been updated.");
+//        return "redirect:/settings/profile";
+//    }
 
     @GetMapping("/password")
     public String updatePasswordForm(@CurrentAccount Account account, Model model) {
@@ -129,24 +127,24 @@ public class SettingsController {
         return "redirect:/settings/password";
     }
 
-    @GetMapping("/notifications")
-    public String updateNotificationsForm(@CurrentAccount Account account, Model model) {
-        model.addAttribute(account);
-        model.addAttribute(modelMapper.map(account, Notifications.class));
-        return "settings/notifications";
-    }
+//    @GetMapping("/notifications")
+//    public String updateNotificationsForm(@CurrentAccount Account account, Model model) {
+//        model.addAttribute(account);
+//        model.addAttribute(modelMapper.map(account, Notifications.class));
+//        return "settings/notifications";
+//    }
 
-    @PostMapping("/notifications")
-    public String updateNotifications(@CurrentAccount Account account, @Validated Notifications notifications, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute(account);
-            return "settings/notifications";
-        }
-
-        accountService.updateNotifications(account, notifications);
-        attributes.addFlashAttribute("message", "Notification settings has been updated.");
-        return "redirect:/settings/notifications";
-    }
+//    @PostMapping("/notifications")
+//    public String updateNotifications(@CurrentAccount Account account, @Validated Notifications notifications, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute(account);
+//            return "settings/notifications";
+//        }
+//
+//        accountService.updateNotifications(account, notifications);
+//        attributes.addFlashAttribute("message", "Notification settings has been updated.");
+//        return "redirect:/settings/notifications";
+//    }
 
     @GetMapping("/account")
     public String updateAccountForm(@CurrentAccount Account account, Model model) {
@@ -201,43 +199,43 @@ public class SettingsController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/zones")
-    public String updateZonesForm(
-            @CurrentAccount Account account,
-            Model model) throws JsonProcessingException {
-        model.addAttribute(account);
+//    @GetMapping("/zones")
+//    public String updateZonesForm(
+//            @CurrentAccount Account account,
+//            Model model) throws JsonProcessingException {
+//        model.addAttribute(account);
+//
+//        Set<Zone> zones = accountService.getZones(account);
+//        model.addAttribute("zones", zones.stream().map(Zone::toString).collect(Collectors.toList()));
+//
+//        List<String> allZones = zoneRepository.findAll().stream().map(Zone::toString).collect(Collectors.toList());
+//        model.addAttribute("whitelist", objectMapper.writeValueAsString(allZones));
+//
+//        return "settings/zones";
+//    }
 
-        Set<Zone> zones = accountService.getZones(account);
-        model.addAttribute("zones", zones.stream().map(Zone::toString).collect(Collectors.toList()));
+//    @PostMapping("/zones/add")
+//    @ResponseBody
+//    public ResponseEntity addZone(@CurrentAccount Account account, @RequestBody ZoneForm zoneForm) {
+//        Zone zone = zoneRepository.findByCityAndCountry(zoneForm.getCityName(), zoneForm.getCountryName());
+//        if (zone == null) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        accountService.addZone(account, zone);
+//        return ResponseEntity.ok().build();
+//    }
 
-        List<String> allZones = zoneRepository.findAll().stream().map(Zone::toString).collect(Collectors.toList());
-        model.addAttribute("whitelist", objectMapper.writeValueAsString(allZones));
-
-        return "settings/zones";
-    }
-
-    @PostMapping("/zones/add")
-    @ResponseBody
-    public ResponseEntity addZone(@CurrentAccount Account account, @RequestBody ZoneForm zoneForm) {
-        Zone zone = zoneRepository.findByCityAndCountry(zoneForm.getCityName(), zoneForm.getCountryName());
-        if (zone == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        accountService.addZone(account, zone);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping( "/zones/remove")
-    @ResponseBody
-    public ResponseEntity removeZone(@CurrentAccount Account account, @RequestBody ZoneForm zoneForm) {
-        Zone zone = zoneRepository.findByCityAndCountry(zoneForm.getCityName(), zoneForm.getCountryName());
-        if (zone == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        accountService.removeZone(account, zone);
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping( "/zones/remove")
+//    @ResponseBody
+//    public ResponseEntity removeZone(@CurrentAccount Account account, @RequestBody ZoneForm zoneForm) {
+//        Zone zone = zoneRepository.findByCityAndCountry(zoneForm.getCityName(), zoneForm.getCountryName());
+//        if (zone == null) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        accountService.removeZone(account, zone);
+//        return ResponseEntity.ok().build();
+//    }
 
 }
