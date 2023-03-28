@@ -2,13 +2,16 @@ package com.mouken.modules.account.controller;
 
 import com.mouken.infra.MockMvcTest;
 import com.mouken.modules.account.Account;
+import com.mouken.modules.account.dto.AccountCreateForm;
 import com.mouken.modules.account.repository.AccountRepository;
+import com.mouken.modules.account.service.CustomUserDetailsService;
 import com.mouken.modules.util.mail.EmailMessage;
 import com.mouken.modules.util.mail.EmailService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -33,6 +36,9 @@ class AccountControllerTest {
 
     @MockBean
     EmailService emailService;
+    @Autowired
+    CustomUserDetailsService accountService;
+
 
     private final static String RANDOM_INPUT = UUID.randomUUID().toString();
     private final static String USERNAME = "test123";
@@ -44,6 +50,20 @@ class AccountControllerTest {
 
     final String SIGN_UP = "sign-up";
 
+    @BeforeEach
+    void beforeEach() {
+        AccountCreateForm signUpForm = new AccountCreateForm();
+        signUpForm.setEmail("test123@email.com");
+        signUpForm.setUsername("test123");
+        signUpForm.setPassword("12345678");
+        accountService.createAccount(signUpForm);
+    }
+
+    @AfterEach
+    void afterEach() {
+        accountRepository.deleteAll();
+    }
+
     @DisplayName("Sign-up page")
     @Test
     public void signUpForm() throws Exception {
@@ -52,6 +72,50 @@ class AccountControllerTest {
                 .andExpect(view().name(SIGN_UP))
                 .andExpect(model().attributeExists("accountCreateForm"))
                 .andExpect(unauthenticated());
+    }
+
+    @DisplayName("Profile view")
+    @WithUserDetails(value=USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    void profileView() throws Exception {
+        mockMvc.perform(get("/profile/" + USERNAME)
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/profile"));
+    }
+
+    @DisplayName("Check email view")
+    @WithUserDetails(value=USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    void checkEmailView() throws Exception {
+        mockMvc.perform(get("/check-email")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/check-email"));
+    }
+
+    @Disabled
+    @DisplayName("Send email.")
+    @WithUserDetails(value=USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    void sendEmail() throws Exception {
+        // account.canSendConfirmEmail() = false
+    }
+
+    @Disabled
+    @DisplayName("Send email when email is already verified.")
+    @WithUserDetails(value=USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    void sendEmailWhenItIsAlreadyVerified() throws Exception {
+        // account.isEmailVerified = true
+    }
+
+    @Disabled
+    @DisplayName("Send email when it can not be sent now.")
+    @WithUserDetails(value=USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    void sendEmailWhenItCanNotBeSent() throws Exception {
+        // account.canSendConfirmEmail() = false
     }
 
     @DisplayName("After signing up, an email should be sent")
@@ -174,4 +238,5 @@ class AccountControllerTest {
                 .andExpect(view().name("redirect:/check-email"))
                 .andExpect(unauthenticated());
     }
+
 }
