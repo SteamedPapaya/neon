@@ -44,7 +44,7 @@
             <span th:if="${!party.recruiting}" class="d-inline-block ml-1" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="Not recruiting">
                 <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>OFF</button>
             </span>
-            <span sec:authorize="isAuthenticated()" th:if="${party.isJoinable(#authentication.principal)}" class="btn-group d-inline-block" role="group" aria-label="Basic example">
+            <span sec:authorize="isAuthenticated()" th:if="${party.isJoinable(#authentication.principal.account)}" class="btn-group d-inline-block" role="group" aria-label="Basic example">
                 <a class="btn btn-primary" th:href="@{'/party/' + ${party.path} + '/join'}">Join</a>
                 <a class="btn btn-outline-primary disabled" th:href="@{'/party/' + ${party.path} + '/members'}" th:text="${party.members.size()}">1</a>
             </span>
@@ -71,7 +71,7 @@
         <a class="nav-item nav-link" th:classappend="${partyMenu == 'events'}? active" href="#" th:href="@{'/party/' + ${party.path} + '/events'}">
             <i class="fa fa-calendar fa-color-sky"></i>
         </a>
-        <a class="nav-item nav-link" th:classappend="${partyMenu == 'settings'}? active" href="#" th:href="@{'/party/' + ${party.path} + '/settings/description'}" sec:authorize="isAuthenticated()" th:if="${party.isManager(#authentication.principal)}" >
+        <a class="nav-item nav-link" th:classappend="${partyMenu == 'settings'}? active" href="#" th:href="@{'/party/' + ${party.path} + '/settings/description'}" sec:authorize="isAuthenticated()" th:if="${party.isManager(#authentication.principal.account)}" >
             <i class="fa fa-cog fa-color-sky" ></i>
         </a>
     </nav>

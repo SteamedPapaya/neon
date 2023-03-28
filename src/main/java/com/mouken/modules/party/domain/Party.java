@@ -85,12 +85,23 @@ public class Party {
                 && !this.managers.contains(account);
     }
 
+    public boolean isJoinable(Account account) {
+        return this.isPublished()
+                && this.isRecruiting()
+                && !this.members.contains(account)
+                && !this.managers.contains(account);
+    }
+
     public boolean isMember(UserAccount userAccount) {
         return this.members.contains(userAccount.getAccount());
     }
 
     public boolean isManager(UserAccount userAccount) {
         return this.managers.contains(userAccount.getAccount());
+    }
+
+    public boolean isManager(Account account) {
+        return this.managers.contains(account);
     }
 
     public String getImage() {
