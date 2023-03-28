@@ -5,11 +5,14 @@ import com.mouken.modules.account.Account;
 import com.mouken.modules.account.dto.AccountCreateForm;
 import com.mouken.modules.account.repository.AccountRepository;
 import com.mouken.modules.account.service.CustomUserDetailsService;
+import com.mouken.modules.role.service.RoleService;
 import com.mouken.modules.util.mail.EmailMessage;
 import com.mouken.modules.util.mail.EmailService;
 import org.junit.jupiter.api.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,9 +41,15 @@ class AccountControllerTest {
     EmailService emailService;
     @Autowired
     CustomUserDetailsService accountService;
-
-
+    @Autowired
+    private ModelMapper modelMapper;
+    @MockBean
+    private RoleService roleService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private final static String RANDOM_INPUT = UUID.randomUUID().toString();
+    private final static String NEW_USERNAME = "test1234";
+    private final static String NEW_EMAIL = "test1234@gmail.com";
     private final static String USERNAME = "test123";
     private final static String EMAIL = "test123@gmail.com";
     private final static String PASSWORD = "12345678";
@@ -53,10 +62,14 @@ class AccountControllerTest {
     @BeforeEach
     void beforeEach() {
         AccountCreateForm signUpForm = new AccountCreateForm();
-        signUpForm.setEmail("test123@email.com");
-        signUpForm.setUsername("test123");
-        signUpForm.setPassword("12345678");
-        accountService.createAccount(signUpForm);
+        signUpForm.setEmail(EMAIL);
+        signUpForm.setUsername(USERNAME);
+        signUpForm.setPassword(PASSWORD);
+        signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+        Account account = modelMapper.map(signUpForm, Account.class);
+        account.generateEmailCheckToken();
+        account.setRoles(roleService.getDefaultRoles());
+        accountRepository.save(account);
     }
 
     @AfterEach
@@ -122,19 +135,18 @@ class AccountControllerTest {
     @Test
     void AfterSigningUpEmailShouldBeSent() throws Exception {
         mockMvc.perform(post("/sign-up")
-                        .param("username", USERNAME)
-                        .param("email", EMAIL)
+                        .param("username", NEW_USERNAME)
+                        .param("email", NEW_EMAIL)
                         .param("password", PASSWORD)
                         .with(csrf()))
                         .andExpect(status().is3xxRedirection())
                         .andExpect(view().name("redirect:/"));
 
-        Account account = accountRepository.findByEmail(EMAIL);
+        Account account = accountRepository.findByEmail(NEW_EMAIL);
 
         assertNotNull(account);
         assertNotNull(account.getEmailCheckToken());
         assertNotEquals(account.getPassword(), PASSWORD);
-        assertNotNull(account.getEmailCheckToken());
         then(emailService).should().sendEmail(any(EmailMessage.class));
     }
 
@@ -182,8 +194,8 @@ class AccountControllerTest {
     void checkEmailToken() throws Exception {
         // todo refactor: using SignUpForm and AccountService.saveAccount(SignUpForm)
         Account account = Account.builder()
-                .username(USERNAME)
-                .email(EMAIL)
+                .username(NEW_USERNAME)
+                .email(NEW_EMAIL)
                 .password(PASSWORD)
                 .build();
         Account newAccount = accountRepository.save(account);
@@ -202,8 +214,8 @@ class AccountControllerTest {
     void checkEmailTokenWithAnInvalidToken() throws Exception {
         // todo refactor: using SignUpForm and AccountService.saveAccount(SignUpForm)
         Account account = Account.builder()
-                .username(USERNAME)
-                .email(EMAIL)
+                .username(NEW_USERNAME)
+                .email(NEW_EMAIL)
                 .password(PASSWORD)
                 .build();
         Account newAccount = accountRepository.save(account);
@@ -223,8 +235,8 @@ class AccountControllerTest {
     void checkEmailTokenWithAnInvalidEmail() throws Exception {
         // todo refactor: using SignUpForm and AccountService.saveAccount(SignUpForm)
         Account account = Account.builder()
-                .username(USERNAME)
-                .email(EMAIL)
+                .username(NEW_USERNAME)
+                .email(NEW_EMAIL)
                 .password(PASSWORD)
                 .build();
         Account newAccount = accountRepository.save(account);
