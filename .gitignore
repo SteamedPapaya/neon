@@ -138,3 +138,6 @@ gradle-app.setting
 ### Gradle Patch ###
 # Java heap dump
 *.hprof
+
+### Spring Boot configuration files ###
+*.yml
