@@ -4,4 +4,4 @@ Please refer to **[this page](https://www.notion.so/Mouken-1-0-8fa7cae2301d48679
 
 <img src="https://img.shields.io/badge/Java-FF4000?style=flat-square&logo=openjdk&logoColor=white"> <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/Hibernate-59666C?style=flat-square&logo=hibernate&logoColor=white"> <img src="https://img.shields.io/badge/EC2-FF9900?style=flat-square&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/RDS-527FFF?style=flat-square&logo=amazonrds&logoColor=white">
 
-A group study community where you can find the study mate you're looking for.
+A group study community where you can find the study mate you're looking for.
